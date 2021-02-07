@@ -415,7 +415,7 @@ for node in node_pool_urls{
 </span></code></pre></pre>
 <h1><a class="header" href="#general-high-level-api" id="general-high-level-api"><code>General high level API</code></a></h1>
 <p>Here is the high level abstraction API collection with sensible default values for users easy to use.</p>
-<h2><a class="header" href="#send" id="send"><code>send()</code></a></h2>
+<h2><a class="header" href="#message" id="message"><code>message()</code></a></h2>
 <p>A generic send function for easily sending a message.</p>
 <h3><a class="header" href="#parameters-1" id="parameters-1">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Default</th><th>Type</th><th>Definition</th></tr></thead><tbody>
@@ -702,7 +702,7 @@ for node in node_pool_urls{
 }
 </code></pre>
 <p>An IOTA seed that inner structure is omitted. Users can create this type by passing a String. It will verify and return an error if it’s not valid. |</p>
-<h2><a class="header" href="#message" id="message"><code>Message</code></a></h2>
+<h2><a class="header" href="#message-1" id="message-1"><code>Message</code></a></h2>
 <p>The message object returned by various functions; based on the <a href="https://github.com/GalRogozinski/protocol-rfcs/blob/message/text/0017-message/0017-message.md">RFC</a> for the Message object. Here's the brief overview of each components in Message type would look like:</p>
 <pre><pre class="playground"><code class="language-rust">
 <span class="boring">#![allow(unused)]
