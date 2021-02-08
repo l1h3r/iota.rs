@@ -661,6 +661,7 @@
 <span id="658">658</span>
 <span id="659">659</span>
 <span id="660">660</span>
+<span id="661">661</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -1257,12 +1258,13 @@
     <span class="kw">let</span> <span class="ident">done</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">AtomicBool</span>::<span class="ident">new</span>(<span class="bool-val">false</span>));
     <span class="kw">let</span> <span class="ident">local_pow</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">get_network_info</span>().<span class="ident">local_pow</span>;
     <span class="kw">let</span> <span class="ident">min_pow_score</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">get_network_info</span>().<span class="ident">min_pow_score</span>;
+    <span class="kw">let</span> <span class="ident">tips_interval</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">get_network_info</span>().<span class="ident">tips_interval</span>;
     <span class="kw">loop</span> {
         <span class="kw">let</span> <span class="ident">abort1</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="ident">done</span>);
         <span class="kw">let</span> <span class="ident">abort2</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="ident">done</span>);
         <span class="kw">let</span> <span class="ident">payload_</span> <span class="op">=</span> <span class="ident">payload</span>.<span class="ident">clone</span>();
         <span class="kw">let</span> <span class="ident">parent_messages</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">get_tips</span>().<span class="ident">await</span><span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">time_thread</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="ident">pow_timeout</span>(<span class="number">15</span>, <span class="kw-2">&amp;</span><span class="ident">abort1</span>));
+        <span class="kw">let</span> <span class="ident">time_thread</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="ident">pow_timeout</span>(<span class="ident">tips_interval</span>, <span class="kw-2">&amp;</span><span class="ident">abort1</span>));
         <span class="kw">let</span> <span class="ident">pow_thread</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
             <span class="ident">do_pow</span>(
                 <span class="kw">crate</span>::<span class="ident">client</span>::<span class="ident">ClientMinerBuilder</span>::<span class="ident">new</span>()
