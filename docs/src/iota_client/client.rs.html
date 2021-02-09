@@ -821,6 +821,30 @@
 <span id="818">818</span>
 <span id="819">819</span>
 <span id="820">820</span>
+<span id="821">821</span>
+<span id="822">822</span>
+<span id="823">823</span>
+<span id="824">824</span>
+<span id="825">825</span>
+<span id="826">826</span>
+<span id="827">827</span>
+<span id="828">828</span>
+<span id="829">829</span>
+<span id="830">830</span>
+<span id="831">831</span>
+<span id="832">832</span>
+<span id="833">833</span>
+<span id="834">834</span>
+<span id="835">835</span>
+<span id="836">836</span>
+<span id="837">837</span>
+<span id="838">838</span>
+<span id="839">839</span>
+<span id="840">840</span>
+<span id="841">841</span>
+<span id="842">842</span>
+<span id="843">843</span>
+<span id="844">844</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -839,7 +863,9 @@
 <span class="kw">use</span> <span class="ident">bee_rest_api</span>::{
     <span class="ident">handlers</span>::{
         <span class="ident">balance_ed25519</span>::<span class="ident">BalanceForAddressResponse</span>, <span class="ident">info</span>::<span class="ident">InfoResponse</span> <span class="kw">as</span> <span class="ident">NodeInfo</span>,
-        <span class="ident">milestone</span>::<span class="ident">MilestoneResponse</span> <span class="kw">as</span> <span class="ident">MilestoneResponseDto</span>, <span class="ident">output</span>::<span class="ident">OutputResponse</span>, <span class="ident">tips</span>::<span class="ident">TipsResponse</span>,
+        <span class="ident">milestone</span>::<span class="ident">MilestoneResponse</span> <span class="kw">as</span> <span class="ident">MilestoneResponseDto</span>,
+        <span class="ident">milestone_utxo_changes</span>::<span class="ident">MilestoneUtxoChanges</span> <span class="kw">as</span> <span class="ident">MilestoneUTXOChanges</span>, <span class="ident">output</span>::<span class="ident">OutputResponse</span>,
+        <span class="ident">tips</span>::<span class="ident">TipsResponse</span>,
     },
     <span class="ident">types</span>::{<span class="ident">MessageDto</span>, <span class="ident">PeerDto</span>},
 };
@@ -1421,6 +1447,7 @@
             <span class="prelude-val">Ok</span>(<span class="ident">output_response</span>.<span class="ident">data</span>)
         })
     }
+
     <span class="doccomment">/// Find all outputs based on the requests criteria. This method will try to query multiple nodes if</span>
     <span class="doccomment">/// the request amount exceed individual node limit.</span>
     <span class="kw">pub</span> <span class="ident">async</span> <span class="kw">fn</span> <span class="ident">find_outputs</span>(
@@ -1483,6 +1510,27 @@
                 <span class="ident">message_id</span>: <span class="ident">MessageId</span>::<span class="ident">new</span>(<span class="ident">message_id</span>),
                 <span class="ident">timestamp</span>: <span class="ident">milestone</span>.<span class="ident">timestamp</span>,
             })
+        })
+    }
+
+    <span class="doccomment">/// GET /api/v1/milestones/{index}/utxo-changes endpoint</span>
+    <span class="doccomment">/// Get the milestone by the given index.</span>
+    <span class="kw">pub</span> <span class="ident">async</span> <span class="kw">fn</span> <span class="ident">get_milestone_utxo_changes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MilestoneUTXOChanges</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">url</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_node</span>()<span class="question-mark">?</span>;
+        <span class="ident">url</span>.<span class="ident">set_path</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;api/v1/milestones/{}/utxo-changes&quot;</span>, <span class="ident">index</span>));
+        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="self">self</span>
+            .<span class="ident">client</span>
+            .<span class="ident">get</span>(<span class="ident">url</span>)
+            .<span class="ident">timeout</span>(<span class="self">self</span>.<span class="ident">get_timeout</span>(<span class="ident">Api</span>::<span class="ident">GetMilestone</span>))
+            .<span class="ident">send</span>()
+            .<span class="ident">await</span><span class="question-mark">?</span>;
+        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+        <span class="kw">struct</span> <span class="ident">MilestoneUTXOChangesWrapper</span> {
+            <span class="ident">data</span>: <span class="ident">MilestoneUTXOChanges</span>,
+        }
+        <span class="macro">parse_response</span><span class="macro">!</span>(<span class="ident">resp</span>, <span class="number">200</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="kw">let</span> <span class="ident">milestone</span> <span class="op">=</span> <span class="ident">resp</span>.<span class="ident">json</span>::<span class="op">&lt;</span><span class="ident">MilestoneUTXOChangesWrapper</span><span class="op">&gt;</span>().<span class="ident">await</span><span class="question-mark">?</span>.<span class="ident">data</span>;
+            <span class="prelude-val">Ok</span>(<span class="ident">milestone</span>)
         })
     }
 
