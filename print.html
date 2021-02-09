@@ -330,7 +330,7 @@ cargo run --example address # execute the `address` example
 <li><a href="specs/index.html#Builder">Builder</a></li>
 <li><a href="specs/index.html#General-high-level-API">General high level API</a>
 <ul>
-<li><a href="specs/index.html#send"><code>send</code></a></li>
+<li><a href="specs/index.html#message"><code>message</code></a></li>
 <li><a href="specs/index.html#get_message"><code>get_message</code></a></li>
 <li><a href="specs/index.html#find_messages"><code>find_messages</code></a></li>
 <li><a href="specs/index.html#get_unspent_address"><code>get_unspent_address</code></a></li>
@@ -432,7 +432,6 @@ for node in node_pool_urls{
 <tr><td><strong>index</strong></td><td>✘</td><td>None</td><td>&amp;str</td><td>An optional indexation key for an indexation payload. 1-64 bytes long.</td></tr>
 <tr><td><strong>data</strong></td><td>✘</td><td>None</td><td>Vec<u8></td><td>Optional data for the indexation payload.</td></tr>
 <tr><td><strong>parents</strong></td><td>✘</td><td>None</td><td><a href="specs/index.html#MessageId">MessageId</a></td><td>1-8 optional parents <a href="specs/index.html#MessageId">MessageId</a> to be used.</td></tr>
-<tr><td><strong>network</strong></td><td>✘</td><td>None</td><td>&amp;str</td><td>Optional select a network to get default nodes for it if no other node is provided. Can be &quot;mainnet&quot; or &quot;testnet&quot;</td></tr>
 </tbody></table>
 <p>Depending on the provided values this function will create a message with:</p>
 <ul>
