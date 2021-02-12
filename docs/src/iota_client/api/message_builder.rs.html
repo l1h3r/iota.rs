@@ -653,6 +653,18 @@
 <span id="650">650</span>
 <span id="651">651</span>
 <span id="652">652</span>
+<span id="653">653</span>
+<span id="654">654</span>
+<span id="655">655</span>
+<span id="656">656</span>
+<span id="657">657</span>
+<span id="658">658</span>
+<span id="659">659</span>
+<span id="660">660</span>
+<span id="661">661</span>
+<span id="662">662</span>
+<span id="663">663</span>
+<span id="664">664</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -663,7 +675,12 @@
 <span class="kw">use</span> <span class="ident">bee_message</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">bee_pow</span>::<span class="ident">providers</span>::<span class="ident">ProviderBuilder</span>;
 <span class="kw">use</span> <span class="ident">bee_rest_api</span>::<span class="ident">types</span>::{<span class="ident">AddressDto</span>, <span class="ident">OutputDto</span>};
+<span class="kw">use</span> <span class="ident">blake2</span>::{
+    <span class="ident">digest</span>::{<span class="ident">Update</span>, <span class="ident">VariableOutput</span>},
+    <span class="ident">VarBlake2b</span>,
+};
 <span class="kw">use</span> <span class="ident">slip10</span>::<span class="ident">BIP32Path</span>;
+
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">collections</span>::{<span class="ident">HashMap</span>, <span class="ident">HashSet</span>},
     <span class="ident">ops</span>::<span class="ident">Range</span>,
@@ -1082,6 +1099,13 @@
             .<span class="ident">pack</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">serialized_essence</span>)
             .<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">Error</span>::<span class="ident">InvalidParameter</span>(<span class="string">&quot;inputs&quot;</span>.<span class="ident">to_string</span>()))<span class="question-mark">?</span>;
 
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hasher</span> <span class="op">=</span> <span class="ident">VarBlake2b</span>::<span class="ident">new</span>(<span class="number">32</span>).<span class="ident">unwrap</span>();
+        <span class="ident">hasher</span>.<span class="ident">update</span>(<span class="ident">serialized_essence</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hashed_essence</span>: [<span class="ident">u8</span>; <span class="number">32</span>] <span class="op">=</span> [<span class="number">0</span>; <span class="number">32</span>];
+        <span class="ident">hasher</span>.<span class="ident">finalize_variable</span>(<span class="op">|</span><span class="ident">res</span><span class="op">|</span> {
+            <span class="ident">hashed_essence</span>[..<span class="number">32</span>].<span class="ident">clone_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">res</span>[..<span class="number">32</span>]);
+        });
+
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">unlock_blocks</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">signature_indexes</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">usize</span><span class="op">&gt;</span>::<span class="ident">new</span>();
         <span class="ident">address_index_recorders</span>.<span class="ident">sort_by</span>(<span class="op">|</span><span class="ident">a</span>, <span class="ident">b</span><span class="op">|</span> <span class="ident">a</span>.<span class="ident">input</span>.<span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="ident">b</span>.<span class="ident">input</span>));
@@ -1102,7 +1126,7 @@
                     .<span class="ident">generate_private_key</span>(<span class="kw-2">&amp;</span><span class="ident">recorder</span>.<span class="ident">address_path</span>)<span class="question-mark">?</span>;
                 <span class="kw">let</span> <span class="ident">public_key</span> <span class="op">=</span> <span class="ident">private_key</span>.<span class="ident">public_key</span>().<span class="ident">to_compressed_bytes</span>();
                 <span class="comment">// The block should sign the entire transaction essence part of the transaction payload</span>
-                <span class="kw">let</span> <span class="ident">signature</span> <span class="op">=</span> <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">private_key</span>.<span class="ident">sign</span>(<span class="kw-2">&amp;</span><span class="ident">serialized_essence</span>).<span class="ident">to_bytes</span>());
+                <span class="kw">let</span> <span class="ident">signature</span> <span class="op">=</span> <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">private_key</span>.<span class="ident">sign</span>(<span class="kw-2">&amp;</span><span class="ident">hashed_essence</span>).<span class="ident">to_bytes</span>());
                 <span class="ident">unlock_blocks</span>.<span class="ident">push</span>(<span class="ident">UnlockBlock</span>::<span class="ident">Signature</span>(<span class="ident">SignatureUnlock</span>::<span class="ident">Ed25519</span>(<span class="ident">Ed25519Signature</span>::<span class="ident">new</span>(
                     <span class="ident">public_key</span>, <span class="ident">signature</span>,
                 ))));
