@@ -876,7 +876,7 @@
         }
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">paths</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">essence</span> <span class="op">=</span> <span class="ident">TransactionPayloadEssence</span>::<span class="ident">builder</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">essence</span> <span class="op">=</span> <span class="ident">RegularEssence</span>::<span class="ident">builder</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">address_index_recorders</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
 
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">inputs</span>.<span class="ident">clone</span>() {
@@ -1138,7 +1138,7 @@
             }
         }
         <span class="comment">// TODO overflow check</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">payload_builder</span> <span class="op">=</span> <span class="ident">TransactionPayloadBuilder</span>::<span class="ident">new</span>().<span class="ident">with_essence</span>(<span class="ident">essence</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">payload_builder</span> <span class="op">=</span> <span class="ident">TransactionPayloadBuilder</span>::<span class="ident">new</span>().<span class="ident">with_essence</span>(<span class="ident">Essence</span>::<span class="ident">Regular</span>(<span class="ident">essence</span>));
         <span class="kw">for</span> <span class="ident">unlock</span> <span class="kw">in</span> <span class="ident">unlock_blocks</span> {
             <span class="ident">payload_builder</span> <span class="op">=</span> <span class="ident">payload_builder</span>.<span class="ident">add_unlock_block</span>(<span class="ident">unlock</span>);
         }
@@ -1190,7 +1190,7 @@
                 .<span class="number">1</span>
                 .<span class="ident">unwrap</span>()
             }
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">finish_pow</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">client</span>, <span class="ident">payload</span>.<span class="ident">clone</span>()).<span class="ident">await</span><span class="question-mark">?</span>,
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">finish_pow</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">client</span>, <span class="ident">payload</span>).<span class="ident">await</span><span class="question-mark">?</span>,
         };
 
         <span class="kw">let</span> <span class="ident">msg_id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">client</span>.<span class="ident">post_message</span>(<span class="kw-2">&amp;</span><span class="ident">final_message</span>).<span class="ident">await</span><span class="question-mark">?</span>;
