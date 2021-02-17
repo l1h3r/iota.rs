@@ -171,7 +171,31 @@
 <h2><a class="header" href="#requirements" id="requirements">Requirements</a></h2>
 <p>To use the library, we recommend you update Rust to latest stable version <a href="https://github.com/rust-lang/rustup.rs#keeping-rust-up-to-date"><code>$ rustup update stable</code></a>. Nightly should be fine but some changes might not be compatible.</p>
 <p><code>no_std</code> is not currently supported, but we are working on it in <a href="https://github.com/iotaledger/bee">bee</a>, and will provide it as feature once the new implementation is ready.</p>
-<h3><a class="header" href="#dependencies" id="dependencies">Dependencies</a></h3>
+<h2><a class="header" href="#using-the-library" id="using-the-library">Using the library</a></h2>
+<p>Using the library is easy, just add it as dependency in your <code>Cargo.toml</code>:</p>
+<pre><code class="language-bash">[dependencies]
+iota-core = { git = &quot;https://github.com/iotaledger/iota.rs&quot;, branch = &quot;dev&quot; }
+</code></pre>
+<p>And then you can use the library in your code with <code>use iota;</code>.</p>
+<h3><a class="header" href="#initialisation" id="initialisation">Initialisation</a></h3>
+<p>This example fetches node information</p>
+<pre><pre class="playground"><code class="language-rust">use iota::Client;
+
+#[tokio::main]
+async fn main() {
+    let iota = Client::builder() // Crate a client instance builder
+        .with_node(&quot;http://api.lb-0.testnet.chrysalis2.com&quot;)
+        .unwrap()
+        .finish()
+        .await
+        .unwrap();
+
+    let info = iota.get_info().await.unwrap();
+    println!(&quot;Nodeinfo: {:?}&quot;, info);
+}
+</code></pre></pre>
+<h3><a class="header" href="#required-dependencies-when-using-the-mqtt-feature" id="required-dependencies-when-using-the-mqtt-feature">Required dependencies when using the mqtt feature</a></h3>
+<p><code>iota-core = { git = &quot;https://github.com/iotaledger/iota.rs&quot;, branch = &quot;dev&quot;, features = [&quot;mqtt&quot;] }</code></p>
 <p><code>cmake</code> and <code>openssl</code> are required. In order to run the build process succesfully using Cargo you might need install additional build tools on your system. </p>
 <h3><a class="header" href="#windows" id="windows">Windows</a></h3>
 <p><code>cmake</code> can be downloaded on the <a href="https://cmake.org/download/">official website</a> and <code>openssl</code> can be installed with <a href="https://github.com/microsoft/vcpkg">vcpkg</a> or <a href="https://chocolatey.org/">chocolatey</a>.</p>
@@ -196,27 +220,6 @@ $ set OPENSSL_DIR=&quot;C:\Program Files\OpenSSL-Win64&quot;
 </code></pre>
 <h3><a class="header" href="#linux" id="linux">Linux</a></h3>
 <p>Install <code>cmake</code> and <code>openssl</code> with your distro's package manager or download from their websites. On Debian and Ubuntu you will also need <code>build-essential</code>.</p>
-<h2><a class="header" href="#using-the-library" id="using-the-library">Using the library</a></h2>
-<p>Using the library is easy, just add it as dependancy in <code>Cargo.toml</code>:</p>
-<pre><code class="language-bash">[dependencies]
-iota-core = { git = &quot;https://github.com/iotaledger/iota.rs&quot;, branch = &quot;dev&quot; }
-</code></pre>
-<p>And then you can use the library in your code with <code>iota</code>.</p>
-<h3><a class="header" href="#initialisation" id="initialisation">Initialisation</a></h3>
-<p>This example fetches node information with  the</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>    let iota = Client::builder() // Crate a client instance builder
-    .node(&quot;https://api.lb-0.testnet.chrysalis2.com&quot;) // Insert the node here
-        .unwrap()
-        .build()
-        .unwrap();
-
-    let node_info = iota.get_info().await.unwrap();
-    println!(&quot;{:#?}&quot;, node_info);
-<span class="boring">}
-</span></code></pre></pre>
 
                     </main>
 

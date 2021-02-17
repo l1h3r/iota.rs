@@ -218,7 +218,31 @@
 <h2><a class="header" href="#requirements" id="requirements">Requirements</a></h2>
 <p>To use the library, we recommend you update Rust to latest stable version <a href="https://github.com/rust-lang/rustup.rs#keeping-rust-up-to-date"><code>$ rustup update stable</code></a>. Nightly should be fine but some changes might not be compatible.</p>
 <p><code>no_std</code> is not currently supported, but we are working on it in <a href="https://github.com/iotaledger/bee">bee</a>, and will provide it as feature once the new implementation is ready.</p>
-<h3><a class="header" href="#dependencies" id="dependencies">Dependencies</a></h3>
+<h2><a class="header" href="#using-the-library" id="using-the-library">Using the library</a></h2>
+<p>Using the library is easy, just add it as dependency in your <code>Cargo.toml</code>:</p>
+<pre><code class="language-bash">[dependencies]
+iota-core = { git = &quot;https://github.com/iotaledger/iota.rs&quot;, branch = &quot;dev&quot; }
+</code></pre>
+<p>And then you can use the library in your code with <code>use iota;</code>.</p>
+<h3><a class="header" href="#initialisation" id="initialisation">Initialisation</a></h3>
+<p>This example fetches node information</p>
+<pre><pre class="playground"><code class="language-rust">use iota::Client;
+
+#[tokio::main]
+async fn main() {
+    let iota = Client::builder() // Crate a client instance builder
+        .with_node(&quot;http://api.lb-0.testnet.chrysalis2.com&quot;)
+        .unwrap()
+        .finish()
+        .await
+        .unwrap();
+
+    let info = iota.get_info().await.unwrap();
+    println!(&quot;Nodeinfo: {:?}&quot;, info);
+}
+</code></pre></pre>
+<h3><a class="header" href="#required-dependencies-when-using-the-mqtt-feature" id="required-dependencies-when-using-the-mqtt-feature">Required dependencies when using the mqtt feature</a></h3>
+<p><code>iota-core = { git = &quot;https://github.com/iotaledger/iota.rs&quot;, branch = &quot;dev&quot;, features = [&quot;mqtt&quot;] }</code></p>
 <p><code>cmake</code> and <code>openssl</code> are required. In order to run the build process succesfully using Cargo you might need install additional build tools on your system. </p>
 <h3><a class="header" href="#windows" id="windows">Windows</a></h3>
 <p><code>cmake</code> can be downloaded on the <a href="https://cmake.org/download/">official website</a> and <code>openssl</code> can be installed with <a href="https://github.com/microsoft/vcpkg">vcpkg</a> or <a href="https://chocolatey.org/">chocolatey</a>.</p>
@@ -243,34 +267,9 @@ $ set OPENSSL_DIR=&quot;C:\Program Files\OpenSSL-Win64&quot;
 </code></pre>
 <h3><a class="header" href="#linux" id="linux">Linux</a></h3>
 <p>Install <code>cmake</code> and <code>openssl</code> with your distro's package manager or download from their websites. On Debian and Ubuntu you will also need <code>build-essential</code>.</p>
-<h2><a class="header" href="#using-the-library" id="using-the-library">Using the library</a></h2>
-<p>Using the library is easy, just add it as dependancy in <code>Cargo.toml</code>:</p>
-<pre><code class="language-bash">[dependencies]
-iota-core = { git = &quot;https://github.com/iotaledger/iota.rs&quot;, branch = &quot;dev&quot; }
-</code></pre>
-<p>And then you can use the library in your code with <code>iota</code>.</p>
-<h3><a class="header" href="#initialisation" id="initialisation">Initialisation</a></h3>
-<p>This example fetches node information with  the</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>    let iota = Client::builder() // Crate a client instance builder
-    .node(&quot;https://api.lb-0.testnet.chrysalis2.com&quot;) // Insert the node here
-        .unwrap()
-        .build()
-        .unwrap();
-
-    let node_info = iota.get_info().await.unwrap();
-    println!(&quot;{:#?}&quot;, node_info);
-<span class="boring">}
-</span></code></pre></pre>
 <h1><a class="header" href="#examples" id="examples">Examples</a></h1>
-<p>You can see the examples in the <a href="libraries/rust/examples/">examples</a> directory and try them with:</p>
-<pre><code>cargo run --example # lists the available examples
-cargo run --example address # execute the `address` example
-</code></pre>
 <h1><a class="header" href="#api-reference" id="api-reference">API Reference</a></h1>
-<p>PI reference</p>
+<p>API reference</p>
 <p>You can read the <a href="https://docs.rs/iota-core">API reference</a> here, or generate it yourself.</p>
 <p>If you'd like to explore the implementation in more depth, the following command generates docs for the whole crate, including private modules:</p>
 <pre><code class="language-bash">cargo doc --document-private-items --no-deps --open
@@ -280,7 +279,7 @@ cargo run --example address # execute the `address` example
 <blockquote>
 <p><a href="https://iota.stackexchange.com/">https://iota.stackexchange.com</a></p>
 </blockquote>
-<p>The IOTA StackExchange a a nice Tool for developers to find  Answers for a problem. Just search your problem and find your answer! If there is no one, submit your question and share it in the discussion channel below.</p>
+<p>The IOTA StackExchange a a nice tool for developers to find answers for a problem. Just search your problem and find your answer! If there is no one, submit your question and share it in the discussion channel below.</p>
 <h2><a class="header" href="#joining-the-discussion-2" id="joining-the-discussion-2">Joining the discussion</a></h2>
 <p>If you want to get involved in discussions about this library, or you're looking for support, go to the #clients-discussion channel on <a href="https://discord.iota.org">Discord</a>.</p>
 <h1><a class="header" href="#iota-clinet-nodejs-library" id="iota-clinet-nodejs-library">IOTA Clinet Node.js Library</a></h1>
@@ -308,9 +307,6 @@ cargo run --example address # execute the `address` example
 <pre><code class="language-javascript">
 </code></pre>
 <h1><a class="header" href="#examples-1" id="examples-1">Examples</a></h1>
-<blockquote>
-<p>TODO</p>
-</blockquote>
 <h1><a class="header" href="#api-reference-1" id="api-reference-1">API Reference</a></h1>
 <blockquote>
 <p>TODO</p>
@@ -320,7 +316,7 @@ cargo run --example address # execute the `address` example
 <blockquote>
 <p><a href="https://iota.stackexchange.com/">https://iota.stackexchange.com</a></p>
 </blockquote>
-<p>The IOTA StackExchange a a nice Tool for developers to find  Answers for a problem. Just search your problem and find your answer! If there is no one, submit your question and share it in the discussion channel below.</p>
+<p>The IOTA StackExchange a a nice tool for developers to find answers for a problem. Just search your problem and find your answer! If there is no one, submit your question and share it in the discussion channel below.</p>
 <h2><a class="header" href="#joining-the-discussion-4" id="joining-the-discussion-4">Joining the discussion</a></h2>
 <p>If you want to get involved in discussions about this library, or you're looking for support, go to the #clients-discussion channel on <a href="https://discord.iota.org">Discord</a>.</p>
 <h1><a class="header" href="#high-level-api-specification" id="high-level-api-specification">High Level API Specification</a></h1>
