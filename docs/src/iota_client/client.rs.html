@@ -859,6 +859,10 @@
 <span id="856">856</span>
 <span id="857">857</span>
 <span id="858">858</span>
+<span id="859">859</span>
+<span id="860">860</span>
+<span id="861">861</span>
+<span id="862">862</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -1647,7 +1651,11 @@
     }
 
     <span class="doccomment">/// Find all messages by provided message IDs and/or indexation_keys.</span>
-    <span class="kw">pub</span> <span class="ident">async</span> <span class="kw">fn</span> <span class="ident">find_messages</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">indexation_keys</span>: <span class="kw-2">&amp;</span>[<span class="ident">String</span>], <span class="ident">message_ids</span>: <span class="kw-2">&amp;</span>[<span class="ident">MessageId</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Message</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="ident">async</span> <span class="kw">fn</span> <span class="ident">find_messages</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">AsRef</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span><span class="op">&gt;</span>(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        <span class="ident">indexation_keys</span>: <span class="kw-2">&amp;</span>[<span class="ident">I</span>],
+        <span class="ident">message_ids</span>: <span class="kw-2">&amp;</span>[<span class="ident">MessageId</span>],
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Message</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">messages</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
 
         <span class="comment">// Use a `HashSet` to prevent duplicate message_ids.</span>
@@ -1661,7 +1669,7 @@
         <span class="comment">// Use `get_message().index()` API to get the message ID first,</span>
         <span class="comment">// then collect the `MessageId` in the HashSet.</span>
         <span class="kw">for</span> <span class="ident">index</span> <span class="kw">in</span> <span class="ident">indexation_keys</span> {
-            <span class="kw">let</span> <span class="ident">message_ids</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_message</span>().<span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="ident">index</span>).<span class="ident">await</span><span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">message_ids</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_message</span>().<span class="ident">index</span>(<span class="ident">index</span>).<span class="ident">await</span><span class="question-mark">?</span>;
             <span class="kw">for</span> <span class="ident">message_id</span> <span class="kw">in</span> <span class="ident">message_ids</span>.<span class="ident">iter</span>() {
                 <span class="ident">message_ids_to_query</span>.<span class="ident">insert</span>(<span class="ident">message_id</span>.<span class="ident">to_owned</span>());
             }

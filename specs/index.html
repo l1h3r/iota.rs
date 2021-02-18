@@ -273,7 +273,7 @@ for node in node_pool_urls{
 <tr><td><strong>input_range</strong></td><td>✘</td><td>0..100</td><td>Range</td><td>Custom range to search for the input addresses if custom inputs are provided.</td></tr>
 <tr><td><strong>output</strong></td><td>✘</td><td>None</td><td>address: &amp;<a href="#Bech32Address">Bech32Address</a>,<br />amount: u64</td><td>Address to send to and amount to send. Address needs to be Bech32 encoded.</td></tr>
 <tr><td><strong>output_hex</strong></td><td>✘</td><td>None</td><td>address: &amp;str,<br />amount: u64</td><td>Address to send to and amount to send. Address needs to be hex encoded.</td></tr>
-<tr><td><strong>index</strong></td><td>✘</td><td>None</td><td>&amp;str</td><td>An optional indexation key for an indexation payload. 1-64 bytes long.</td></tr>
+<tr><td><strong>index</strong></td><td>✘</td><td>None</td><td>&amp;[u8]</td><td>An optional indexation key for an indexation payload. 1-64 bytes long.</td></tr>
 <tr><td><strong>data</strong></td><td>✘</td><td>None</td><td>Vec<u8></td><td>Optional data for the indexation payload.</td></tr>
 <tr><td><strong>parents</strong></td><td>✘</td><td>None</td><td><a href="#MessageId">MessageId</a></td><td>1-8 optional parents <a href="#MessageId">MessageId</a> to be used.</td></tr>
 </tbody></table>
