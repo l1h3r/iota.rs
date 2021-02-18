@@ -859,7 +859,6 @@
 <span id="856">856</span>
 <span id="857">857</span>
 <span id="858">858</span>
-<span id="859">859</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -992,7 +991,7 @@
         <span class="self">self</span>
     }
 
-    <span class="doccomment">/// Decid if websockets or tcp will be used for the connection</span>
+    <span class="doccomment">/// Decide if websockets or tcp will be used for the connection</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">use_websockets</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">use_ws</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">use_ws</span> <span class="op">=</span> <span class="ident">use_ws</span>;
         <span class="self">self</span>
@@ -1186,7 +1185,7 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">synced_nodes</span> <span class="op">=</span> <span class="ident">HashSet</span>::<span class="ident">new</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">network_nodes</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">NodeInfo</span>, <span class="ident">Url</span>)<span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="ident">new</span>();
         <span class="kw">for</span> <span class="ident">node_url</span> <span class="kw">in</span> <span class="ident">nodes</span> {
-            <span class="comment">// Put the healty node url into the network_nodes</span>
+            <span class="comment">// Put the healthy node url into the network_nodes</span>
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">info</span>) <span class="op">=</span> <span class="ident">Client</span>::<span class="ident">get_node_info</span>(<span class="ident">node_url</span>.<span class="ident">clone</span>()).<span class="ident">await</span> {
                 <span class="kw">if</span> <span class="ident">info</span>.<span class="ident">is_healthy</span> {
                     <span class="kw">match</span> <span class="ident">network_nodes</span>.<span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="ident">info</span>.<span class="ident">network_id</span>) {
@@ -1483,7 +1482,7 @@
     }
 
     <span class="doccomment">/// Find all outputs based on the requests criteria. This method will try to query multiple nodes if</span>
-    <span class="doccomment">/// the request amount exceed individual node limit.</span>
+    <span class="doccomment">/// the request amount exceeds individual node limit.</span>
     <span class="kw">pub</span> <span class="ident">async</span> <span class="kw">fn</span> <span class="ident">find_outputs</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">outputs</span>: <span class="kw-2">&amp;</span>[<span class="ident">UTXOInput</span>],
@@ -1673,7 +1672,6 @@
             <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_message</span>().<span class="ident">data</span>(<span class="kw-2">&amp;</span><span class="ident">message_id</span>).<span class="ident">await</span>.<span class="ident">unwrap</span>();
             <span class="ident">messages</span>.<span class="ident">push</span>(<span class="ident">message</span>);
         }
-
         <span class="prelude-val">Ok</span>(<span class="ident">messages</span>)
     }
 
