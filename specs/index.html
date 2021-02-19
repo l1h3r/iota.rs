@@ -273,7 +273,7 @@ for node in node_pool_urls{
 <tr><td><strong>input_range</strong></td><td>✘</td><td>0..100</td><td>Range</td><td>Custom range to search for the input addresses if custom inputs are provided.</td></tr>
 <tr><td><strong>output</strong></td><td>✘</td><td>None</td><td>address: &amp;<a href="#Bech32Address">Bech32Address</a>,<br />amount: u64</td><td>Address to send to and amount to send. Address needs to be Bech32 encoded.</td></tr>
 <tr><td><strong>output_hex</strong></td><td>✘</td><td>None</td><td>address: &amp;str,<br />amount: u64</td><td>Address to send to and amount to send. Address needs to be hex encoded.</td></tr>
-<tr><td><strong>index</strong></td><td>✘</td><td>None</td><td>&amp;[u8]</td><td>An optional indexation key for an indexation payload. 1-64 bytes long.</td></tr>
+<tr><td><strong>index</strong></td><td>✘</td><td>None</td><td>&amp;[u8] / &amp;str</td><td>An optional indexation key for an indexation payload. 1-64 bytes long.</td></tr>
 <tr><td><strong>data</strong></td><td>✘</td><td>None</td><td>Vec<u8></td><td>Optional data for the indexation payload.</td></tr>
 <tr><td><strong>parents</strong></td><td>✘</td><td>None</td><td><a href="#MessageId">MessageId</a></td><td>1-8 optional parents <a href="#MessageId">MessageId</a> to be used.</td></tr>
 </tbody></table>
@@ -301,7 +301,7 @@ for node in node_pool_urls{
 <h3><a class="header" href="#parameters-2" id="parameters-2">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
 <tr><td><strong>message_id</strong></td><td>✔</td><td><a href="#MessageId">MessageId</a></td><td>The identifier of message.</td></tr>
-<tr><td><strong>index</strong></td><td>✔</td><td>str</td><td>An indexation key.</td></tr>
+<tr><td><strong>index</strong></td><td>✔</td><td>&amp;[u8] / &amp;str</td><td>An indexation key.</td></tr>
 </tbody></table>
 <h3><a class="header" href="#returns" id="returns">Returns</a></h3>
 <p>Depend on the final calling method, users could get different results they need:</p>
@@ -310,13 +310,13 @@ for node in node_pool_urls{
 <li><code>data(&amp;MessageId)</code>: Return a <a href="#Message">Message</a> object.</li>
 <li><code>raw(&amp;MessageId)</code>: Return the raw data of given message.</li>
 <li><code>children(&amp;MessageId)</code>: Return the list of <a href="#MessageId">MessageId</a>s that reference a message by its identifier.</li>
-<li><code>index(&amp;str)</code> : Return the list of <a href="#MessageId">MessageId</a>s that have this str as indexation key</li>
+<li><code>index(&amp;[u8] | &amp;str)</code> : Return the list of <a href="#MessageId">MessageId</a>s that have this str as indexation key</li>
 </ul>
 <h2><a class="header" href="#find_messages" id="find_messages"><code>find_messages()</code></a></h2>
 <p>Find all messages by provided message IDs.</p>
 <h3><a class="header" href="#parameters-3" id="parameters-3">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
-<tr><td><strong>indexation_keys</strong></td><td>✘</td><td>[String]</td><td>The index key of the indexation payload.</td></tr>
+<tr><td><strong>indexation_keys</strong></td><td>✘</td><td>[&amp;[u8] / &amp;str]</td><td>The index key of the indexation payload.</td></tr>
 <tr><td><strong>message_ids</strong></td><td>✘</td><td>[<a href="#MessageId">MessageId</a>]</td><td>The identifier of message.</td></tr>
 </tbody></table>
 <h3><a class="header" href="#returns-1" id="returns-1">Returns</a></h3>
