@@ -675,6 +675,8 @@
 };
 
 <span class="kw">const</span> <span class="ident">HARDEND</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">31</span>;
+<span class="kw">const</span> <span class="ident">MAX_ALLOWED_DUST_OUTPUTS</span>: <span class="ident">i64</span> <span class="op">=</span> <span class="number">100</span>;
+<span class="kw">const</span> <span class="ident">ADDRESS_GAP_LIMIT</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">20</span>;
 
 <span class="doccomment">/// Structure for sorting of UnlockBlocks</span>
 <span class="comment">// TODO: move the sorting process to the `Message` crate</span>
@@ -936,7 +938,7 @@
                         .<span class="ident">client</span>
                         .<span class="ident">find_addresses</span>(<span class="self">self</span>.<span class="ident">seed</span>.<span class="ident">expect</span>(<span class="string">&quot;No seed&quot;</span>))
                         .<span class="ident">with_account_index</span>(<span class="ident">account_index</span>)
-                        .<span class="ident">with_range</span>(<span class="ident">index</span>..<span class="ident">index</span> <span class="op">+</span> <span class="number">20</span>)
+                        .<span class="ident">with_range</span>(<span class="ident">index</span>..<span class="ident">index</span> <span class="op">+</span> <span class="ident">ADDRESS_GAP_LIMIT</span>)
                         .<span class="ident">get_all</span>()
                         .<span class="ident">await</span><span class="question-mark">?</span>;
                     <span class="comment">// For each address, get the address outputs</span>
@@ -952,8 +954,8 @@
                         }
                         <span class="comment">// If there are more than 20 (gap limit) consecutive empty addresses, then we stop looking</span>
                         <span class="comment">// up the addresses belonging to the seed. Note that we don&#39;t really count the exact 20</span>
-                        <span class="comment">// consecutive empty addresses, which is uncessary. We just need to check the address range,</span>
-                        <span class="comment">// [k*20, k*20 + 20), where k is natural number, and to see if the outpus are all empty.</span>
+                        <span class="comment">// consecutive empty addresses, which is unnecessary. We just need to check the address range,</span>
+                        <span class="comment">// [k*20, k*20 + 20), where k is natural number, and to see if the outputs are all empty.</span>
                         <span class="kw">if</span> <span class="ident">outputs</span>.<span class="ident">is_empty</span>() {
                             <span class="comment">// Accumulate the empty_address_count for each run of output address searching</span>
                             <span class="ident">empty_address_count</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
@@ -1037,7 +1039,7 @@
                             <span class="ident">address_index</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
                         }
                     }
-                    <span class="ident">index</span> <span class="op">+</span><span class="op">=</span> <span class="number">20</span>;
+                    <span class="ident">index</span> <span class="op">+</span><span class="op">=</span> <span class="ident">ADDRESS_GAP_LIMIT</span>;
                     <span class="comment">// The gap limit is 20 and use reference 40 here because there&#39;s public and internal addresses</span>
                     <span class="kw">if</span> <span class="ident">empty_address_count</span> <span class="op">=</span><span class="op">=</span> <span class="number">40</span> {
                         <span class="kw">break</span>;
@@ -1088,7 +1090,6 @@
         <span class="kw">for</span> (<span class="ident">current_block_index</span>, <span class="ident">recorder</span>) <span class="kw">in</span> <span class="ident">address_index_recorders</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
             <span class="comment">// Check if current path is same as previous path</span>
             <span class="comment">// If so, add a reference unlock block</span>
-
             <span class="comment">// Format to differentiate between public and private addresses</span>
             <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}{}&quot;</span>, <span class="ident">recorder</span>.<span class="ident">address_index</span>, <span class="ident">recorder</span>.<span class="ident">internal</span>);
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">block_index</span>) <span class="op">=</span> <span class="ident">signature_indexes</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">index</span>) {
@@ -1115,7 +1116,6 @@
         }
 
         <span class="kw">let</span> <span class="ident">payload</span> <span class="op">=</span> <span class="ident">payload_builder</span>.<span class="ident">finish</span>().<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">Error</span>::<span class="ident">TransactionError</span>)<span class="question-mark">?</span>;
-
         <span class="comment">// building message</span>
         <span class="kw">let</span> <span class="ident">payload</span> <span class="op">=</span> <span class="ident">Payload</span>::<span class="ident">Transaction</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">payload</span>));
 
@@ -1176,7 +1176,7 @@
 }
 
 <span class="comment">// Calculate the outputs on this address after this transaction gets confirmed so we know if we can send dust or</span>
-<span class="comment">// dust allowance outputs (as input). the bool in the outputs defines if we consume this output (false) or create a new</span>
+<span class="comment">// dust allowance outputs (as input), the bool in the outputs defines if we consume this output (false) or create a new</span>
 <span class="comment">// one (true)</span>
 <span class="ident">async</span> <span class="kw">fn</span> <span class="ident">is_dust_allowed</span>(<span class="ident">client</span>: <span class="kw-2">&amp;</span><span class="ident">Client</span>, <span class="ident">address</span>: <span class="ident">Bech32Address</span>, <span class="ident">outputs</span>: <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">u64</span>, <span class="ident">Address</span>, <span class="ident">bool</span>)<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="comment">// balance of all dust allowance outputs</span>
@@ -1224,7 +1224,7 @@
 
     <span class="comment">// Here dust_allowance_balance and dust_outputs_amount should be as if this transaction gets confirmed</span>
     <span class="comment">// Max allowed dust outputs is 100</span>
-    <span class="kw">let</span> <span class="ident">allowed_dust_amount</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">cmp</span>::<span class="ident">min</span>(<span class="ident">dust_allowance_balance</span> <span class="op">/</span> <span class="number">100_000</span>, <span class="number">100</span>);
+    <span class="kw">let</span> <span class="ident">allowed_dust_amount</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">cmp</span>::<span class="ident">min</span>(<span class="ident">dust_allowance_balance</span> <span class="op">/</span> <span class="number">100_000</span>, <span class="ident">MAX_ALLOWED_DUST_OUTPUTS</span>);
     <span class="kw">if</span> <span class="ident">dust_outputs_amount</span> <span class="op">&gt;</span> <span class="ident">allowed_dust_amount</span> {
         <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">DustError</span>(<span class="macro">format</span><span class="macro">!</span>(
             <span class="string">&quot;No dust output allowed on address {}&quot;</span>,
