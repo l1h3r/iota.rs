@@ -141,8 +141,8 @@
     <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Error when building transaction message&quot;</span>)]</span>
     <span class="ident">TransactionError</span>,
     <span class="doccomment">/// The wallet account doesn&#39;t have enough balance</span>
-    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;The wallet account doesn&#39;t have enough balance. It only has {0}&quot;</span>)]</span>
-    <span class="ident">NotEnoughBalance</span>(<span class="ident">u64</span>),
+    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;The wallet account doesn&#39;t have enough balance. It only has {0}, required is {1}&quot;</span>)]</span>
+    <span class="ident">NotEnoughBalance</span>(<span class="ident">u64</span>, <span class="ident">u64</span>),
     <span class="doccomment">/// Dust error, for example not enough balance on an address</span>
     <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Dust error: {0}&quot;</span>)]</span>
     <span class="ident">DustError</span>(<span class="ident">String</span>),

@@ -1047,7 +1047,7 @@
         }
 
         <span class="kw">if</span> <span class="ident">total_already_spent</span> <span class="op">&lt;</span> <span class="ident">total_to_spend</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">NotEnoughBalance</span>(<span class="ident">total_to_spend</span>));
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">NotEnoughBalance</span>(<span class="ident">total_already_spent</span>, <span class="ident">total_to_spend</span>));
         }
 
         <span class="comment">// Check if we would let dust on an address behind or send new dust, which would make the tx unconfirmable</span>
