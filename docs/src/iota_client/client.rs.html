@@ -1684,7 +1684,7 @@
     }
 
     <span class="doccomment">/// Return a list of addresses from the seed regardless of their validity.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">find_addresses</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>, <span class="ident">seed</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Seed</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">GetAddressesBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_addresses</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>, <span class="ident">seed</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Seed</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">GetAddressesBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
         <span class="ident">GetAddressesBuilder</span>::<span class="ident">new</span>(<span class="ident">seed</span>).<span class="ident">with_client</span>(<span class="kw-2">&amp;</span><span class="self">self</span>)
     }
 

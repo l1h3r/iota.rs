@@ -936,7 +936,7 @@
                     <span class="comment">// Get the addresses in the BIP path/index ~ path/index+20</span>
                     <span class="kw">let</span> <span class="ident">addresses</span> <span class="op">=</span> <span class="self">self</span>
                         .<span class="ident">client</span>
-                        .<span class="ident">find_addresses</span>(<span class="self">self</span>.<span class="ident">seed</span>.<span class="ident">expect</span>(<span class="string">&quot;No seed&quot;</span>))
+                        .<span class="ident">get_addresses</span>(<span class="self">self</span>.<span class="ident">seed</span>.<span class="ident">expect</span>(<span class="string">&quot;No seed&quot;</span>))
                         .<span class="ident">with_account_index</span>(<span class="ident">account_index</span>)
                         .<span class="ident">with_range</span>(<span class="ident">index</span>..<span class="ident">index</span> <span class="op">+</span> <span class="ident">ADDRESS_GAP_LIMIT</span>)
                         .<span class="ident">get_all</span>()
