@@ -863,6 +863,25 @@
 <span id="860">860</span>
 <span id="861">861</span>
 <span id="862">862</span>
+<span id="863">863</span>
+<span id="864">864</span>
+<span id="865">865</span>
+<span id="866">866</span>
+<span id="867">867</span>
+<span id="868">868</span>
+<span id="869">869</span>
+<span id="870">870</span>
+<span id="871">871</span>
+<span id="872">872</span>
+<span id="873">873</span>
+<span id="874">874</span>
+<span id="875">875</span>
+<span id="876">876</span>
+<span id="877">877</span>
+<span id="878">878</span>
+<span id="879">879</span>
+<span id="880">880</span>
+<span id="881">881</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -872,6 +891,7 @@
     <span class="ident">api</span>::<span class="kw-2">*</span>,
     <span class="ident">builder</span>::{<span class="ident">ClientBuilder</span>, <span class="ident">NetworkInfo</span>},
     <span class="ident">error</span>::<span class="kw-2">*</span>,
+    <span class="ident">log_request</span>,
     <span class="ident">node</span>::<span class="kw-2">*</span>,
     <span class="ident">parse_response</span>, <span class="ident">Seed</span>,
 };
@@ -902,6 +922,8 @@
     <span class="ident">sync</span>::<span class="ident">broadcast</span>::{<span class="ident">Receiver</span>, <span class="ident">Sender</span>},
     <span class="ident">time</span>::{<span class="ident">sleep</span>, <span class="ident">Duration</span> <span class="kw">as</span> <span class="ident">TokioDuration</span>},
 };
+
+<span class="kw">use</span> <span class="ident">log</span>::<span class="ident">info</span>;
 
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">collections</span>::{<span class="ident">HashMap</span>, <span class="ident">HashSet</span>},
@@ -1340,12 +1362,14 @@
     <span class="doccomment">/// GET /api/v1/info endpoint</span>
     <span class="kw">pub</span> <span class="ident">async</span> <span class="kw">fn</span> <span class="ident">get_node_info</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">IntoUrl</span><span class="op">&gt;</span>(<span class="ident">url</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NodeInfo</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">url</span> <span class="op">=</span> <span class="ident">url</span>.<span class="ident">into_url</span>()<span class="question-mark">?</span>;
-        <span class="ident">url</span>.<span class="ident">set_path</span>(<span class="string">&quot;api/v1/info&quot;</span>);
+        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;api/v1/info&quot;</span>;
+        <span class="ident">url</span>.<span class="ident">set_path</span>(<span class="ident">path</span>);
         <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">reqwest</span>::<span class="ident">get</span>(<span class="ident">url</span>).<span class="ident">await</span><span class="question-mark">?</span>;
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
         <span class="kw">struct</span> <span class="ident">NodeInfoWrapper</span> {
             <span class="ident">data</span>: <span class="ident">NodeInfo</span>,
         }
+        <span class="macro">log_request</span><span class="macro">!</span>(<span class="string">&quot;GET&quot;</span>, <span class="ident">path</span>, <span class="ident">resp</span>);
         <span class="macro">parse_response</span><span class="macro">!</span>(<span class="ident">resp</span>, <span class="number">200</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="prelude-val">Ok</span>(<span class="ident">resp</span>.<span class="ident">json</span>::<span class="op">&lt;</span><span class="ident">NodeInfoWrapper</span><span class="op">&gt;</span>().<span class="ident">await</span>.<span class="ident">unwrap</span>().<span class="ident">data</span>)
         })
@@ -1354,7 +1378,8 @@
     <span class="doccomment">/// GET /api/v1/info endpoint</span>
     <span class="kw">pub</span> <span class="ident">async</span> <span class="kw">fn</span> <span class="ident">get_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NodeInfo</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">url</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_node</span>()<span class="question-mark">?</span>;
-        <span class="ident">url</span>.<span class="ident">set_path</span>(<span class="string">&quot;api/v1/info&quot;</span>);
+        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;api/v1/info&quot;</span>;
+        <span class="ident">url</span>.<span class="ident">set_path</span>(<span class="ident">path</span>);
         <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="self">self</span>
             .<span class="ident">client</span>
             .<span class="ident">get</span>(<span class="ident">url</span>)
@@ -1366,6 +1391,7 @@
         <span class="kw">struct</span> <span class="ident">NodeInfoWrapper</span> {
             <span class="ident">data</span>: <span class="ident">NodeInfo</span>,
         }
+        <span class="macro">log_request</span><span class="macro">!</span>(<span class="string">&quot;GET&quot;</span>, <span class="ident">path</span>, <span class="ident">resp</span>);
         <span class="macro">parse_response</span><span class="macro">!</span>(<span class="ident">resp</span>, <span class="number">200</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="prelude-val">Ok</span>(<span class="ident">resp</span>.<span class="ident">json</span>::<span class="op">&lt;</span><span class="ident">NodeInfoWrapper</span><span class="op">&gt;</span>().<span class="ident">await</span><span class="question-mark">?</span>.<span class="ident">data</span>)
         })
@@ -1374,7 +1400,8 @@
     <span class="doccomment">/// GET /api/v1/peers endpoint</span>
     <span class="kw">pub</span> <span class="ident">async</span> <span class="kw">fn</span> <span class="ident">get_peers</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PeerDto</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">url</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_node</span>()<span class="question-mark">?</span>;
-        <span class="ident">url</span>.<span class="ident">set_path</span>(<span class="string">&quot;api/v1/peers&quot;</span>);
+        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;api/v1/peers&quot;</span>;
+        <span class="ident">url</span>.<span class="ident">set_path</span>(<span class="ident">path</span>);
         <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="self">self</span>
             .<span class="ident">client</span>
             .<span class="ident">get</span>(<span class="ident">url</span>)
@@ -1386,6 +1413,7 @@
         <span class="kw">struct</span> <span class="ident">PeerWrapper</span> {
             <span class="ident">data</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PeerDto</span><span class="op">&gt;</span>,
         }
+        <span class="macro">log_request</span><span class="macro">!</span>(<span class="string">&quot;GET&quot;</span>, <span class="ident">path</span>, <span class="ident">resp</span>);
         <span class="macro">parse_response</span><span class="macro">!</span>(<span class="ident">resp</span>, <span class="number">200</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="prelude-val">Ok</span>(<span class="ident">resp</span>.<span class="ident">json</span>::<span class="op">&lt;</span><span class="ident">PeerWrapper</span><span class="op">&gt;</span>().<span class="ident">await</span><span class="question-mark">?</span>.<span class="ident">data</span>)
         })
@@ -1394,7 +1422,8 @@
     <span class="doccomment">/// GET /api/v1/tips endpoint</span>
     <span class="kw">pub</span> <span class="ident">async</span> <span class="kw">fn</span> <span class="ident">get_tips</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">MessageId</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">url</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_node</span>()<span class="question-mark">?</span>;
-        <span class="ident">url</span>.<span class="ident">set_path</span>(<span class="string">&quot;api/v1/tips&quot;</span>);
+        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;api/v1/tips&quot;</span>;
+        <span class="ident">url</span>.<span class="ident">set_path</span>(<span class="ident">path</span>);
         <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="self">self</span>
             .<span class="ident">client</span>
             .<span class="ident">get</span>(<span class="ident">url</span>)
@@ -1406,6 +1435,7 @@
         <span class="kw">struct</span> <span class="ident">TipsWrapper</span> {
             <span class="ident">data</span>: <span class="ident">TipsResponse</span>,
         }
+        <span class="macro">log_request</span><span class="macro">!</span>(<span class="string">&quot;GET&quot;</span>, <span class="ident">path</span>, <span class="ident">resp</span>);
         <span class="macro">parse_response</span><span class="macro">!</span>(<span class="ident">resp</span>, <span class="number">200</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="kw">let</span> <span class="ident">tips_response</span> <span class="op">=</span> <span class="ident">resp</span>.<span class="ident">json</span>::<span class="op">&lt;</span><span class="ident">TipsWrapper</span><span class="op">&gt;</span>().<span class="ident">await</span><span class="question-mark">?</span>;
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tips</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
@@ -1421,7 +1451,8 @@
     <span class="doccomment">/// POST /api/v1/messages endpoint</span>
     <span class="kw">pub</span> <span class="ident">async</span> <span class="kw">fn</span> <span class="ident">post_message</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">message</span>: <span class="kw-2">&amp;</span><span class="ident">Message</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MessageId</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">url</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_node</span>()<span class="question-mark">?</span>;
-        <span class="ident">url</span>.<span class="ident">set_path</span>(<span class="string">&quot;api/v1/messages&quot;</span>);
+        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;api/v1/messages&quot;</span>;
+        <span class="ident">url</span>.<span class="ident">set_path</span>(<span class="ident">path</span>);
 
         <span class="kw">let</span> <span class="ident">timeout</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">get_local_pow</span>() {
             <span class="self">self</span>.<span class="ident">get_timeout</span>(<span class="ident">Api</span>::<span class="ident">PostMessage</span>)
@@ -1446,6 +1477,7 @@
             <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;messageId&quot;</span>)]</span>
             <span class="ident">message_id</span>: <span class="ident">String</span>,
         }
+        <span class="macro">log_request</span><span class="macro">!</span>(<span class="string">&quot;POST&quot;</span>, <span class="ident">path</span>, <span class="ident">resp</span>);
         <span class="macro">parse_response</span><span class="macro">!</span>(<span class="ident">resp</span>, <span class="number">201</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="kw">let</span> <span class="ident">message_id</span> <span class="op">=</span> <span class="ident">resp</span>.<span class="ident">json</span>::<span class="op">&lt;</span><span class="ident">MessageIdResponseWrapper</span><span class="op">&gt;</span>().<span class="ident">await</span><span class="question-mark">?</span>;
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">message_id_bytes</span> <span class="op">=</span> [<span class="number">0u8</span>; <span class="number">32</span>];
@@ -1463,11 +1495,12 @@
     <span class="doccomment">/// Find an output by its transaction_id and corresponding output_index.</span>
     <span class="kw">pub</span> <span class="ident">async</span> <span class="kw">fn</span> <span class="ident">get_output</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">output_id</span>: <span class="kw-2">&amp;</span><span class="ident">UTXOInput</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">OutputResponse</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">url</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_node</span>()<span class="question-mark">?</span>;
-        <span class="ident">url</span>.<span class="ident">set_path</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(
+        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(
             <span class="string">&quot;api/v1/outputs/{}{}&quot;</span>,
             <span class="ident">output_id</span>.<span class="ident">output_id</span>().<span class="ident">transaction_id</span>().<span class="ident">to_string</span>(),
             <span class="ident">hex</span>::<span class="ident">encode</span>(<span class="ident">output_id</span>.<span class="ident">output_id</span>().<span class="ident">index</span>().<span class="ident">to_le_bytes</span>())
-        ));
+        );
+        <span class="ident">url</span>.<span class="ident">set_path</span>(<span class="ident">path</span>);
         <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="self">self</span>
             .<span class="ident">client</span>
             .<span class="ident">get</span>(<span class="ident">url</span>)
@@ -1479,6 +1512,7 @@
         <span class="kw">struct</span> <span class="ident">OutputWrapper</span> {
             <span class="ident">data</span>: <span class="ident">OutputResponse</span>,
         }
+        <span class="macro">log_request</span><span class="macro">!</span>(<span class="string">&quot;GET&quot;</span>, <span class="ident">path</span>, <span class="ident">resp</span>);
         <span class="macro">parse_response</span><span class="macro">!</span>(<span class="ident">resp</span>, <span class="number">200</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="kw">let</span> <span class="ident">output_response</span> <span class="op">=</span> <span class="ident">resp</span>.<span class="ident">json</span>::<span class="op">&lt;</span><span class="ident">OutputWrapper</span><span class="op">&gt;</span>().<span class="ident">await</span><span class="question-mark">?</span>;
             <span class="prelude-val">Ok</span>(<span class="ident">output_response</span>.<span class="ident">data</span>)
@@ -1527,7 +1561,8 @@
     <span class="doccomment">/// Get the milestone by the given index.</span>
     <span class="kw">pub</span> <span class="ident">async</span> <span class="kw">fn</span> <span class="ident">get_milestone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MilestoneResponse</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">url</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_node</span>()<span class="question-mark">?</span>;
-        <span class="ident">url</span>.<span class="ident">set_path</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;api/v1/milestones/{}&quot;</span>, <span class="ident">index</span>));
+        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;api/v1/milestones/{}&quot;</span>, <span class="ident">index</span>);
+        <span class="ident">url</span>.<span class="ident">set_path</span>(<span class="ident">path</span>);
         <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="self">self</span>
             .<span class="ident">client</span>
             .<span class="ident">get</span>(<span class="ident">url</span>)
@@ -1538,6 +1573,7 @@
         <span class="kw">struct</span> <span class="ident">MilestoneWrapper</span> {
             <span class="ident">data</span>: <span class="ident">MilestoneResponseDto</span>,
         }
+        <span class="macro">log_request</span><span class="macro">!</span>(<span class="string">&quot;GET&quot;</span>, <span class="ident">path</span>, <span class="ident">resp</span>);
         <span class="macro">parse_response</span><span class="macro">!</span>(<span class="ident">resp</span>, <span class="number">200</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="kw">let</span> <span class="ident">milestone</span> <span class="op">=</span> <span class="ident">resp</span>.<span class="ident">json</span>::<span class="op">&lt;</span><span class="ident">MilestoneWrapper</span><span class="op">&gt;</span>().<span class="ident">await</span><span class="question-mark">?</span>.<span class="ident">data</span>;
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">message_id</span> <span class="op">=</span> [<span class="number">0u8</span>; <span class="number">32</span>];
@@ -1554,7 +1590,8 @@
     <span class="doccomment">/// Get the milestone by the given index.</span>
     <span class="kw">pub</span> <span class="ident">async</span> <span class="kw">fn</span> <span class="ident">get_milestone_utxo_changes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MilestoneUTXOChanges</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">url</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_node</span>()<span class="question-mark">?</span>;
-        <span class="ident">url</span>.<span class="ident">set_path</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;api/v1/milestones/{}/utxo-changes&quot;</span>, <span class="ident">index</span>));
+        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;api/v1/milestones/{}/utxo-changes&quot;</span>, <span class="ident">index</span>);
+        <span class="ident">url</span>.<span class="ident">set_path</span>(<span class="ident">path</span>);
         <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="self">self</span>
             .<span class="ident">client</span>
             .<span class="ident">get</span>(<span class="ident">url</span>)
@@ -1565,6 +1602,7 @@
         <span class="kw">struct</span> <span class="ident">MilestoneUTXOChangesWrapper</span> {
             <span class="ident">data</span>: <span class="ident">MilestoneUTXOChanges</span>,
         }
+        <span class="macro">log_request</span><span class="macro">!</span>(<span class="string">&quot;GET&quot;</span>, <span class="ident">path</span>, <span class="ident">resp</span>);
         <span class="macro">parse_response</span><span class="macro">!</span>(<span class="ident">resp</span>, <span class="number">200</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="kw">let</span> <span class="ident">milestone</span> <span class="op">=</span> <span class="ident">resp</span>.<span class="ident">json</span>::<span class="op">&lt;</span><span class="ident">MilestoneUTXOChangesWrapper</span><span class="op">&gt;</span>().<span class="ident">await</span><span class="question-mark">?</span>.<span class="ident">data</span>;
             <span class="prelude-val">Ok</span>(<span class="ident">milestone</span>)
