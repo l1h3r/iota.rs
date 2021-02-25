@@ -877,6 +877,43 @@
 <span id="874">874</span>
 <span id="875">875</span>
 <span id="876">876</span>
+<span id="877">877</span>
+<span id="878">878</span>
+<span id="879">879</span>
+<span id="880">880</span>
+<span id="881">881</span>
+<span id="882">882</span>
+<span id="883">883</span>
+<span id="884">884</span>
+<span id="885">885</span>
+<span id="886">886</span>
+<span id="887">887</span>
+<span id="888">888</span>
+<span id="889">889</span>
+<span id="890">890</span>
+<span id="891">891</span>
+<span id="892">892</span>
+<span id="893">893</span>
+<span id="894">894</span>
+<span id="895">895</span>
+<span id="896">896</span>
+<span id="897">897</span>
+<span id="898">898</span>
+<span id="899">899</span>
+<span id="900">900</span>
+<span id="901">901</span>
+<span id="902">902</span>
+<span id="903">903</span>
+<span id="904">904</span>
+<span id="905">905</span>
+<span id="906">906</span>
+<span id="907">907</span>
+<span id="908">908</span>
+<span id="909">909</span>
+<span id="910">910</span>
+<span id="911">911</span>
+<span id="912">912</span>
+<span id="913">913</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -891,6 +928,7 @@
     <span class="ident">parse_response</span>, <span class="ident">Seed</span>,
 };
 
+<span class="kw">use</span> <span class="ident">bee_common</span>::<span class="ident">packable</span>::<span class="ident">Packable</span>;
 <span class="kw">use</span> <span class="ident">bee_message</span>::<span class="ident">prelude</span>::{<span class="ident">Bech32Address</span>, <span class="ident">Message</span>, <span class="ident">MessageBuilder</span>, <span class="ident">MessageId</span>, <span class="ident">UTXOInput</span>};
 <span class="kw">use</span> <span class="ident">bee_pow</span>::<span class="ident">providers</span>::{<span class="ident">MinerBuilder</span>, <span class="ident">Provider</span> <span class="kw">as</span> <span class="ident">PowProvider</span>, <span class="ident">ProviderBuilder</span> <span class="kw">as</span> <span class="ident">PowProviderBuilder</span>};
 <span class="kw">use</span> <span class="ident">bee_rest_api</span>::{
@@ -1442,6 +1480,42 @@
 
     <span class="doccomment">/// POST /api/v1/messages endpoint</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">post_message</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">message</span>: <span class="kw-2">&amp;</span><span class="ident">Message</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MessageId</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">url</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_node</span>()<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;api/v1/messages&quot;</span>;
+        <span class="ident">url</span>.<span class="ident">set_path</span>(<span class="ident">path</span>);
+
+        <span class="kw">let</span> <span class="ident">timeout</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">get_local_pow</span>() {
+            <span class="self">self</span>.<span class="ident">get_timeout</span>(<span class="ident">Api</span>::<span class="ident">PostMessage</span>)
+        } <span class="kw">else</span> {
+            <span class="self">self</span>.<span class="ident">get_timeout</span>(<span class="ident">Api</span>::<span class="ident">PostMessageWithRemotePow</span>)
+        };
+        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="self">self</span>
+            .<span class="ident">client</span>
+            .<span class="ident">post</span>(<span class="ident">url</span>)
+            .<span class="ident">timeout</span>(<span class="ident">timeout</span>)
+            .<span class="ident">body</span>(<span class="ident">message</span>.<span class="ident">pack_new</span>())
+            .<span class="ident">send</span>()
+            .<span class="kw">await</span><span class="question-mark">?</span>;
+        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+        <span class="kw">struct</span> <span class="ident">MessageIdResponseWrapper</span> {
+            <span class="ident">data</span>: <span class="ident">MessageIdWrapper</span>,
+        }
+        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+        <span class="kw">struct</span> <span class="ident">MessageIdWrapper</span> {
+            <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;messageId&quot;</span>)]</span>
+            <span class="ident">message_id</span>: <span class="ident">String</span>,
+        }
+        <span class="macro">log_request</span><span class="macro">!</span>(<span class="string">&quot;POST&quot;</span>, <span class="ident">path</span>, <span class="ident">resp</span>);
+        <span class="macro">parse_response</span><span class="macro">!</span>(<span class="ident">resp</span>, <span class="number">201</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="kw">let</span> <span class="ident">message_id</span> <span class="op">=</span> <span class="ident">resp</span>.<span class="ident">json</span>::<span class="op">&lt;</span><span class="ident">MessageIdResponseWrapper</span><span class="op">&gt;</span>().<span class="kw">await</span><span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">message_id_bytes</span> <span class="op">=</span> [<span class="number">0u8</span>; <span class="number">32</span>];
+            <span class="ident">hex</span>::<span class="ident">decode_to_slice</span>(<span class="ident">message_id</span>.<span class="ident">data</span>.<span class="ident">message_id</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">message_id_bytes</span>)<span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(<span class="ident">MessageId</span>::<span class="ident">from</span>(<span class="ident">message_id_bytes</span>))
+        })
+    }
+
+    <span class="doccomment">/// POST JSON to /api/v1/messages endpoint</span>
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">post_message_json</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">message</span>: <span class="kw-2">&amp;</span><span class="ident">Message</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MessageId</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">url</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_node</span>()<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;api/v1/messages&quot;</span>;
         <span class="ident">url</span>.<span class="ident">set_path</span>(<span class="ident">path</span>);
