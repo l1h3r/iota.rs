@@ -914,6 +914,9 @@
 <span id="911">911</span>
 <span id="912">912</span>
 <span id="913">913</span>
+<span id="914">914</span>
+<span id="915">915</span>
+<span id="916">916</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -925,7 +928,7 @@
     <span class="ident">error</span>::<span class="kw-2">*</span>,
     <span class="ident">log_request</span>,
     <span class="ident">node</span>::<span class="kw-2">*</span>,
-    <span class="ident">parse_response</span>, <span class="ident">Seed</span>,
+    <span class="ident">parse_response</span>,
 };
 
 <span class="kw">use</span> <span class="ident">bee_common</span>::<span class="ident">packable</span>::<span class="ident">Packable</span>;
@@ -940,7 +943,10 @@
     },
     <span class="ident">types</span>::{<span class="ident">MessageDto</span>, <span class="ident">PeerDto</span>},
 };
-<span class="kw">use</span> <span class="ident">crypto</span>::<span class="ident">hashes</span>::{<span class="ident">blake2b</span>::<span class="ident">Blake2b256</span>, <span class="ident">Digest</span>};
+<span class="kw">use</span> <span class="ident">crypto</span>::{
+    <span class="ident">hashes</span>::{<span class="ident">blake2b</span>::<span class="ident">Blake2b256</span>, <span class="ident">Digest</span>},
+    <span class="ident">slip10</span>::<span class="ident">Seed</span>,
+};
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;mqtt&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">paho_mqtt</span>::<span class="ident">Client</span> <span class="kw">as</span> <span class="ident">MqttClient</span>;

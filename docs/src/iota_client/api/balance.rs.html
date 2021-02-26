@@ -77,11 +77,13 @@
 <span id="74">74</span>
 <span id="75">75</span>
 <span id="76">76</span>
+<span id="77">77</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Client</span>, <span class="prelude-ty">Result</span>, <span class="ident">Seed</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Client</span>, <span class="prelude-ty">Result</span>};
+<span class="kw">use</span> <span class="ident">crypto</span>::<span class="ident">slip10</span>::<span class="ident">Seed</span>;
 
 <span class="doccomment">/// Builder of get_balance API</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetBalanceBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
