@@ -935,7 +935,7 @@
 <span class="kw">use</span> <span class="ident">bee_message</span>::<span class="ident">prelude</span>::{<span class="ident">Bech32Address</span>, <span class="ident">Message</span>, <span class="ident">MessageBuilder</span>, <span class="ident">MessageId</span>, <span class="ident">UTXOInput</span>};
 <span class="kw">use</span> <span class="ident">bee_pow</span>::<span class="ident">providers</span>::{<span class="ident">MinerBuilder</span>, <span class="ident">Provider</span> <span class="kw">as</span> <span class="ident">PowProvider</span>, <span class="ident">ProviderBuilder</span> <span class="kw">as</span> <span class="ident">PowProviderBuilder</span>};
 <span class="kw">use</span> <span class="ident">bee_rest_api</span>::{
-    <span class="ident">handlers</span>::{
+    <span class="ident">handlers</span>::<span class="ident">api</span>::<span class="ident">v1</span>::{
         <span class="ident">balance_ed25519</span>::<span class="ident">BalanceForAddressResponse</span>, <span class="ident">info</span>::<span class="ident">InfoResponse</span> <span class="kw">as</span> <span class="ident">NodeInfo</span>,
         <span class="ident">milestone</span>::<span class="ident">MilestoneResponse</span> <span class="kw">as</span> <span class="ident">MilestoneResponseDto</span>,
         <span class="ident">milestone_utxo_changes</span>::<span class="ident">MilestoneUtxoChanges</span> <span class="kw">as</span> <span class="ident">MilestoneUTXOChanges</span>, <span class="ident">output</span>::<span class="ident">OutputResponse</span>,

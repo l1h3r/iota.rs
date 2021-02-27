@@ -1,1 +1,1 @@
-initSidebarItems({});
+initSidebarItems({"fn":[["is_healthy",""]]});
