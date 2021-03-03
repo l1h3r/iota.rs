@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["GetAddressBuilder","Builder of GET /api/v1/address/{address} endpoint"]]});
+initSidebarItems({"enum":[["OutputType","Output type filter."]],"struct":[["GetAddressBuilder","Builder of GET /api/v1/address/{address} endpoint"],["OutputsOptions","The outputs query options."]]});

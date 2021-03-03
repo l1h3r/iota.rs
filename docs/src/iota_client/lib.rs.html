@@ -76,6 +76,7 @@
 <span id="73">73</span>
 <span id="74">74</span>
 <span id="75">75</span>
+<span id="76">76</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -110,6 +111,7 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">error</span>::<span class="kw-2">*</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;mqtt&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">node</span>::<span class="ident">Topic</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">node</span>::{<span class="ident">OutputType</span>, <span class="ident">OutputsOptions</span> <span class="kw">as</span> <span class="ident">AddressOutputsOptions</span>};
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;storage&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">storage</span>::<span class="kw-2">*</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">url</span>::<span class="ident">Url</span>;
