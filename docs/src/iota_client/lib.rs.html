@@ -76,17 +76,6 @@
 <span id="73">73</span>
 <span id="74">74</span>
 <span id="75">75</span>
-<span id="76">76</span>
-<span id="77">77</span>
-<span id="78">78</span>
-<span id="79">79</span>
-<span id="80">80</span>
-<span id="81">81</span>
-<span id="82">82</span>
-<span id="83">83</span>
-<span id="84">84</span>
-<span id="85">85</span>
-<span id="86">86</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -121,9 +110,9 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">error</span>::<span class="kw-2">*</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;mqtt&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">node</span>::<span class="ident">Topic</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">reqwest</span>::<span class="ident">Url</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;storage&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">storage</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">url</span>::<span class="ident">Url</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;mqtt&quot;</span>)]</span>
 <span class="kw">mod</span> <span class="ident">async_runtime</span> {
@@ -149,28 +138,17 @@
     }
 }
 
-<span class="doccomment">/// match a response with an expected status code or return the default error variant.</span>
-<span class="attribute">#[<span class="ident">macro_export</span>]</span>
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">parse_response</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">response</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">expected_status</span>:<span class="ident">pat</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ok</span>:<span class="ident">block</span>) <span class="op">=</span><span class="op">&gt;</span> {{
-        <span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">response</span>.<span class="ident">status</span>().<span class="ident">as_u16</span>() {
-            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">expected_status</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ok</span>,
-            <span class="ident">status</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">ResponseError</span>(<span class="ident">status</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">response</span>.<span class="ident">text</span>().<span class="kw">await</span><span class="question-mark">?</span>)),
-        }
-    }};
-}
-
 <span class="doccomment">/// Log info about the request and response.</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">log_request</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">method</span>: <span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">url</span>: <span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">response</span>:<span class="ident">ident</span>) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="macro">info</span><span class="macro">!</span>(
             <span class="string">&quot;Request method: {}
-            Request URL: {}
-            Response status: {}&quot;</span>,
+            Request URL: {}&quot;</span>,
+            <span class="comment">// Response status: {}&quot;,</span>
             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">method</span>,
             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">url</span>,
-            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">response</span>.<span class="ident">status</span>().<span class="ident">as_u16</span>()
+            <span class="comment">// $response.status().as_u16()</span>
         );
     };
 }

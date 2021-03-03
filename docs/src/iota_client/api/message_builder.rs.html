@@ -656,7 +656,6 @@
 <span id="653">653</span>
 <span id="654">654</span>
 <span id="655">655</span>
-<span id="656">656</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -837,7 +836,6 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">index</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">initial_address_index</span>.<span class="ident">unwrap_or</span>(<span class="number">0</span>);
 
         <span class="kw">let</span> <span class="ident">bech32_hrp</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">client</span>.<span class="ident">get_bech32_hrp</span>().<span class="kw">await</span><span class="question-mark">?</span>;
-
         <span class="comment">// store (amount, address, new_created) to check later if dust is allowed</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dust_and_allowance_recorders</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
 

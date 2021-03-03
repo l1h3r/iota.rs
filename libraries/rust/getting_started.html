@@ -184,7 +184,7 @@ iota-core = { git = &quot;https://github.com/iotaledger/iota.rs&quot;, branch = 
 #[tokio::main]
 async fn main() {
     let iota = Client::builder() // Crate a client instance builder
-        .with_node(&quot;http://api.lb-0.testnet.chrysalis2.com&quot;)
+        .with_node(&quot;https://api.lb-0.testnet.chrysalis2.com&quot;)
         .unwrap()
         .finish()
         .await
