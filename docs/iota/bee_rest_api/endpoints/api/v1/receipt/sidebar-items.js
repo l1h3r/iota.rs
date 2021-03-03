@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ReceiptsResponse","Response of GET /api/v1/receipts/{milestone_index} and /api/v1/receipts"]]});

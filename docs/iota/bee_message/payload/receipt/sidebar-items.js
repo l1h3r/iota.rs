@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["MigratedFundsEntry",""],["ReceiptPayload",""]]});
+initSidebarItems({"constant":[["MIGRATED_FUNDS_ENTRY_AMOUNT",""]],"struct":[["MigratedFundsEntry",""],["ReceiptPayload",""]]});

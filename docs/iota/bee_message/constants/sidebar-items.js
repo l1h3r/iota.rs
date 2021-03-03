@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["INPUT_OUTPUT_COUNT_MAX",""],["INPUT_OUTPUT_COUNT_RANGE",""],["INPUT_OUTPUT_INDEX_RANGE",""],["IOTA_SUPPLY",""]]});
+initSidebarItems({"constant":[["INPUT_OUTPUT_COUNT_MAX",""],["INPUT_OUTPUT_COUNT_RANGE",""],["INPUT_OUTPUT_INDEX_RANGE",""],["IOTA_SUPPLY",""],["UNLOCK_BLOCK_COUNT_RANGE",""]]});

@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["OUTPUT_ID_LENGTH",""]],"enum":[["Output",""]],"struct":[["ConsumedOutput",""],["CreatedOutput",""],["OutputId",""],["SignatureLockedDustAllowanceOutput",""],["SignatureLockedSingleOutput",""],["TreasuryOutput",""]]});
+initSidebarItems({"constant":[["OUTPUT_ID_LENGTH",""],["TREASURY_OUTPUT_AMOUNT",""]],"enum":[["Output",""]],"struct":[["ConsumedOutput",""],["CreatedOutput",""],["OutputId",""],["SignatureLockedDustAllowanceOutput",""],["SignatureLockedSingleOutput",""],["TreasuryOutput",""]]});

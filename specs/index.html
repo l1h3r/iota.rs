@@ -480,7 +480,7 @@ for node in node_pool_urls{
     pub network_id: String,
     pub latest_milestone_index: usize,
     pub min_pow_score: f64,
-    pub solid_milestone_index: usize,
+    pub confirmed_milestone_index: usize,
     pub pruning_index: usize,
     pub features: Vec&lt;String&gt;,
 }
@@ -758,7 +758,7 @@ struct ReferenceUnlock(u16);
 <h2 id="topic"><a class="header" href="#topic"><code>Topic</code></a></h2>
 <p>A string with the exact MQTT topic to monitor, can have one of the following variations:</p>
 <pre><code>milestones/latest
-milestones/solid
+milestones/confirmed
 
 messages
 messages/referenced

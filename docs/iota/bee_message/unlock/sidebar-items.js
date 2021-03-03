@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["SignatureUnlock",""],["UnlockBlock",""]],"struct":[["Ed25519Signature",""],["ReferenceUnlock",""]]});
+initSidebarItems({"enum":[["SignatureUnlock",""],["UnlockBlock",""]],"struct":[["Ed25519Signature",""],["ReferenceUnlock",""],["UnlockBlocks",""]]});
