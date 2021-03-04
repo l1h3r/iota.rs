@@ -199,6 +199,9 @@
 <li><a href="#find_outputs"><code>find_outputs</code></a></li>
 <li><a href="#get_milestone"><code>get_milestone</code></a></li>
 <li><a href="#get_milestone_utxo_changes"><code>get_milestone_utxo_changes</code></a></li>
+<li><a href="#get_receipts"><code>get_receipts</code></a></li>
+<li><a href="#get_receipts_migrated_at"><code>get_receipts_migrated_at</code></a></li>
+<li><a href="#get_treasury"><code>get_treasury</code></a></li>
 </ul>
 </li>
 <li><a href="#Objects">Objects</a>
@@ -559,6 +562,28 @@ for node in node_pool_urls{
     index: 1,
     created_outputs: [],
     consumed_outputs: [],
+}
+</code></pre>
+<h2 id="get_receipts"><a class="header" href="#get_receipts"><code>get_receipts()</code></a></h2>
+<p>(<code>GET /receipts</code>)</p>
+<p>Get all receipts.</p>
+<h3 id="returns-16"><a class="header" href="#returns-16">Returns</a></h3>
+<pre><code class="language-Rust">Vec&lt;ReceiptDto&gt;
+</code></pre>
+<h2 id="get_receipts_migrated_at"><a class="header" href="#get_receipts_migrated_at"><code>get_receipts_migrated_at()</code></a></h2>
+<p>(<code>GET /receipts/{migratedAt}</code>)</p>
+<p>Get all receipts for a given milestone index.</p>
+<h3 id="returns-17"><a class="header" href="#returns-17">Returns</a></h3>
+<pre><code class="language-Rust">Vec&lt;ReceiptDto&gt;
+</code></pre>
+<h2 id="get_treasury"><a class="header" href="#get_treasury"><code>get_treasury()</code></a></h2>
+<p>(<code>GET /treasury</code>)</p>
+<p>Get the treasury amount.</p>
+<h3 id="returns-18"><a class="header" href="#returns-18">Returns</a></h3>
+<pre><code class="language-Rust">pub struct TreasuryResponse {
+    #[serde(rename = &quot;milestoneId&quot;)]
+    milestone_id: String,
+    amount: u64,
 }
 </code></pre>
 <h1 id="objects"><a class="header" href="#objects">Objects</a></h1>

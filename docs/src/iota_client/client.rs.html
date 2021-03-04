@@ -877,6 +877,68 @@
 <span id="874">874</span>
 <span id="875">875</span>
 <span id="876">876</span>
+<span id="877">877</span>
+<span id="878">878</span>
+<span id="879">879</span>
+<span id="880">880</span>
+<span id="881">881</span>
+<span id="882">882</span>
+<span id="883">883</span>
+<span id="884">884</span>
+<span id="885">885</span>
+<span id="886">886</span>
+<span id="887">887</span>
+<span id="888">888</span>
+<span id="889">889</span>
+<span id="890">890</span>
+<span id="891">891</span>
+<span id="892">892</span>
+<span id="893">893</span>
+<span id="894">894</span>
+<span id="895">895</span>
+<span id="896">896</span>
+<span id="897">897</span>
+<span id="898">898</span>
+<span id="899">899</span>
+<span id="900">900</span>
+<span id="901">901</span>
+<span id="902">902</span>
+<span id="903">903</span>
+<span id="904">904</span>
+<span id="905">905</span>
+<span id="906">906</span>
+<span id="907">907</span>
+<span id="908">908</span>
+<span id="909">909</span>
+<span id="910">910</span>
+<span id="911">911</span>
+<span id="912">912</span>
+<span id="913">913</span>
+<span id="914">914</span>
+<span id="915">915</span>
+<span id="916">916</span>
+<span id="917">917</span>
+<span id="918">918</span>
+<span id="919">919</span>
+<span id="920">920</span>
+<span id="921">921</span>
+<span id="922">922</span>
+<span id="923">923</span>
+<span id="924">924</span>
+<span id="925">925</span>
+<span id="926">926</span>
+<span id="927">927</span>
+<span id="928">928</span>
+<span id="929">929</span>
+<span id="930">930</span>
+<span id="931">931</span>
+<span id="932">932</span>
+<span id="933">933</span>
+<span id="934">934</span>
+<span id="935">935</span>
+<span id="936">936</span>
+<span id="937">937</span>
+<span id="938">938</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -897,9 +959,9 @@
         <span class="ident">balance_ed25519</span>::<span class="ident">BalanceForAddressResponse</span>, <span class="ident">info</span>::<span class="ident">InfoResponse</span> <span class="kw">as</span> <span class="ident">NodeInfo</span>,
         <span class="ident">milestone</span>::<span class="ident">MilestoneResponse</span> <span class="kw">as</span> <span class="ident">MilestoneResponseDto</span>,
         <span class="ident">milestone_utxo_changes</span>::<span class="ident">MilestoneUtxoChanges</span> <span class="kw">as</span> <span class="ident">MilestoneUTXOChanges</span>, <span class="ident">output</span>::<span class="ident">OutputResponse</span>,
-        <span class="ident">tips</span>::<span class="ident">TipsResponse</span>,
+        <span class="ident">receipt</span>::<span class="ident">ReceiptsResponse</span>, <span class="ident">tips</span>::<span class="ident">TipsResponse</span>, <span class="ident">treasury</span>::<span class="ident">TreasuryResponse</span>,
     },
-    <span class="ident">types</span>::{<span class="ident">MessageDto</span>, <span class="ident">PeerDto</span>},
+    <span class="ident">types</span>::{<span class="ident">MessageDto</span>, <span class="ident">PeerDto</span>, <span class="ident">ReceiptDto</span>},
 };
 <span class="kw">use</span> <span class="ident">crypto</span>::{
     <span class="ident">hashes</span>::{<span class="ident">blake2b</span>::<span class="ident">Blake2b256</span>, <span class="ident">Digest</span>},
@@ -1589,6 +1651,68 @@
             <span class="ident">data</span>: <span class="ident">MilestoneUTXOChanges</span>,
         }
         <span class="kw">let</span> <span class="ident">resp</span>: <span class="ident">ResponseWrapper</span> <span class="op">=</span> <span class="ident">get_ureq_agent</span>(<span class="self">self</span>.<span class="ident">get_timeout</span>(<span class="ident">Api</span>::<span class="ident">GetMilestone</span>))
+            .<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">url</span>.<span class="ident">to_string</span>())
+            .<span class="ident">call</span>()<span class="question-mark">?</span>
+            .<span class="ident">into_json</span>()<span class="question-mark">?</span>;
+
+        <span class="prelude-val">Ok</span>(<span class="ident">resp</span>.<span class="ident">data</span>)
+    }
+
+    <span class="doccomment">/// GET /api/v1/receipts endpoint</span>
+    <span class="doccomment">/// Get all receipts.</span>
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_receipts</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ReceiptDto</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">url</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_node</span>()<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="string">&quot;api/v1/receipts&quot;</span>;
+        <span class="ident">url</span>.<span class="ident">set_path</span>(<span class="ident">path</span>);
+        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+        <span class="kw">struct</span> <span class="ident">ResponseWrapper</span> {
+            <span class="ident">data</span>: <span class="ident">ReceiptsResponseWrapper</span>,
+        }
+        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+        <span class="kw">struct</span> <span class="ident">ReceiptsResponseWrapper</span> {
+            <span class="ident">receipts</span>: <span class="ident">ReceiptsResponse</span>,
+        }
+        <span class="kw">let</span> <span class="ident">resp</span>: <span class="ident">ResponseWrapper</span> <span class="op">=</span> <span class="ident">get_ureq_agent</span>(<span class="ident">GET_API_TIMEOUT</span>)
+            .<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">url</span>.<span class="ident">to_string</span>())
+            .<span class="ident">call</span>()<span class="question-mark">?</span>
+            .<span class="ident">into_json</span>()<span class="question-mark">?</span>;
+
+        <span class="prelude-val">Ok</span>(<span class="ident">resp</span>.<span class="ident">data</span>.<span class="ident">receipts</span>.<span class="number">0</span>)
+    }
+
+    <span class="doccomment">/// GET /api/v1/receipts/{migratedAt} endpoint</span>
+    <span class="doccomment">/// Get the receipts by the given milestone index.</span>
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_receipts_migrated_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">milestone_index</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ReceiptDto</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">url</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_node</span>()<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;api/v1/receipts/{}&quot;</span>, <span class="ident">milestone_index</span>);
+        <span class="ident">url</span>.<span class="ident">set_path</span>(<span class="ident">path</span>);
+        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+        <span class="kw">struct</span> <span class="ident">ResponseWrapper</span> {
+            <span class="ident">data</span>: <span class="ident">ReceiptsResponseWrapper</span>,
+        }
+        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+        <span class="kw">struct</span> <span class="ident">ReceiptsResponseWrapper</span> {
+            <span class="ident">receipts</span>: <span class="ident">ReceiptsResponse</span>,
+        }
+        <span class="kw">let</span> <span class="ident">resp</span>: <span class="ident">ResponseWrapper</span> <span class="op">=</span> <span class="ident">get_ureq_agent</span>(<span class="ident">GET_API_TIMEOUT</span>)
+            .<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">url</span>.<span class="ident">to_string</span>())
+            .<span class="ident">call</span>()<span class="question-mark">?</span>
+            .<span class="ident">into_json</span>()<span class="question-mark">?</span>;
+
+        <span class="prelude-val">Ok</span>(<span class="ident">resp</span>.<span class="ident">data</span>.<span class="ident">receipts</span>.<span class="number">0</span>)
+    }
+
+    <span class="doccomment">/// GET /api/v1/treasury endpoint</span>
+    <span class="doccomment">/// Get the treasury output.</span>
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_treasury</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TreasuryResponse</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">url</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_node</span>()<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;api/v1/treasury&quot;</span>;
+        <span class="ident">url</span>.<span class="ident">set_path</span>(<span class="ident">path</span>);
+        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+        <span class="kw">struct</span> <span class="ident">ResponseWrapper</span> {
+            <span class="ident">data</span>: <span class="ident">TreasuryResponse</span>,
+        }
+        <span class="kw">let</span> <span class="ident">resp</span>: <span class="ident">ResponseWrapper</span> <span class="op">=</span> <span class="ident">get_ureq_agent</span>(<span class="ident">GET_API_TIMEOUT</span>)
             .<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">url</span>.<span class="ident">to_string</span>())
             .<span class="ident">call</span>()<span class="question-mark">?</span>
             .<span class="ident">into_json</span>()<span class="question-mark">?</span>;
