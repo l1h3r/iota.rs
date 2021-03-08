@@ -185,6 +185,7 @@
 <li><a href="#is_address_valid"><code>is_address_valid</code></a></li>
 <li><a href="#subscriber"><code>subscriber</code></a></li>
 <li><a href="#retry"><code>retry</code></a></li>
+<li><a href="#retry_until_included"><code>retry_until_included</code></a></li>
 <li><a href="#reattach"><code>reattach</code></a></li>
 <li><a href="#promote"><code>promote</code></a></li>
 </ul>
@@ -441,39 +442,49 @@ for node in node_pool_urls{
 <li>The method should also validate if a retry is necessary. This can be done by leveraging the <code>/messages/{messageId}/metadata</code> endpoint (already available through <a href="#get_message">get_message</a>). See <a href="https://github.com/iotaledger/trinity-wallet/blob/develop/src/shared/libs/iota/transfers.js#L105-L131">this</a> implementation for reference;</li>
 <li>Use <a href="#reattach">reattach</a> or <a href="#promote">promote</a> accordingly.</li>
 </ul>
+<h2 id="retry_until_included"><a class="header" href="#retry_until_included"><code>retry_until_included()</code></a></h2>
+<p>Retries (promotes or reattaches) a message for provided <a href="#MessageId">MessageId</a> until it's included (referenced by a milestone). Default interval is 5 seconds and max attempts is 10. The need to use this function should be low, because the confirmation throughput of the node is expected to be quite high.</p>
+<h3 id="parameters-11"><a class="header" href="#parameters-11">Parameters</a></h3>
+<table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
+<tr><td><strong>message_id</strong></td><td>✔</td><td>[&amp;MessageId]</td><td>The identifier of message.</td></tr>
+<tr><td><strong>interval</strong></td><td>✘</td><td>Option<u64></td><td>The interval in which we retry the message.</td></tr>
+<tr><td><strong>max_attempts</strong></td><td>✘</td><td>Option<u64></td><td>The maximum of attempts we retry the message.</td></tr>
+</tbody></table>
+<h3 id="returns-4"><a class="header" href="#returns-4">Returns:</a></h3>
+<p>An array of tuples with the newly reattached <code>(MessageId,  Message)</code>.</p>
 <h2 id="reattach"><a class="header" href="#reattach"><code>reattach()</code></a></h2>
 <p>Depends on <a href="#find_messages">find_messages</a>, <a href="#get_message">get_message</a> and <a href="#post_message">post_message</a>.</p>
 <p>Reattaches a message. The method should validate if a reattachment is necessary through <a href="#get_message">get_message</a>. If not, the method should error out and should not allow unnecessary reattachments.</p>
-<h3 id="parameters-11"><a class="header" href="#parameters-11">Parameters</a></h3>
-<table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
-<tr><td><strong>message_id</strong></td><td>✔</td><td><a href="#MessageId">MessageId</a></td><td>The identifier of message.</td></tr>
-</tbody></table>
-<h3 id="returns-4"><a class="header" href="#returns-4">Returns</a></h3>
-<p>A tuple with the newly reattached <code>(MessageId,  Message)</code>.</p>
-<h2 id="promote"><a class="header" href="#promote"><code>promote()</code></a></h2>
-<p>Depends on <a href="#find_messages">find_messages</a>, <a href="#get_message">get_message</a> and <a href="#post_message">post_message</a>.</p>
-<p>Promotes a message. The method should validate if a promotion is necessary through <a href="#get_message">get_message</a>. If not, the method should error out and should not allow unnecessary promotions.</p>
 <h3 id="parameters-12"><a class="header" href="#parameters-12">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
 <tr><td><strong>message_id</strong></td><td>✔</td><td><a href="#MessageId">MessageId</a></td><td>The identifier of message.</td></tr>
 </tbody></table>
 <h3 id="returns-5"><a class="header" href="#returns-5">Returns</a></h3>
+<p>A tuple with the newly reattached <code>(MessageId,  Message)</code>.</p>
+<h2 id="promote"><a class="header" href="#promote"><code>promote()</code></a></h2>
+<p>Depends on <a href="#find_messages">find_messages</a>, <a href="#get_message">get_message</a> and <a href="#post_message">post_message</a>.</p>
+<p>Promotes a message. The method should validate if a promotion is necessary through <a href="#get_message">get_message</a>. If not, the method should error out and should not allow unnecessary promotions.</p>
+<h3 id="parameters-13"><a class="header" href="#parameters-13">Parameters</a></h3>
+<table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
+<tr><td><strong>message_id</strong></td><td>✔</td><td><a href="#MessageId">MessageId</a></td><td>The identifier of message.</td></tr>
+</tbody></table>
+<h3 id="returns-6"><a class="header" href="#returns-6">Returns</a></h3>
 <p>A tuple with the newly promoted <code>(MessageId,  Message)</code>.</p>
 <h1 id="full-node-api"><a class="header" href="#full-node-api">Full node API</a></h1>
 <p>Full node API of Bee and HORNET will still be public. Users who know these relative low level Restful API can still call them directly if they are confident and think it’s good for them. Note that both Bee and HORNET haven't finalized their APIs either. Following items and signatures might change later.</p>
 <h2 id="get_health"><a class="header" href="#get_health"><code>get_health()</code></a></h2>
 <p>(<code>GET /health</code>)</p>
 <p>Returns the health of the node, which can be used for load-balancing or uptime monitoring.</p>
-<h3 id="parameters-13"><a class="header" href="#parameters-13">Parameters</a></h3>
+<h3 id="parameters-14"><a class="header" href="#parameters-14">Parameters</a></h3>
 <p>None</p>
-<h3 id="returns-6"><a class="header" href="#returns-6">Returns</a></h3>
+<h3 id="returns-7"><a class="header" href="#returns-7">Returns</a></h3>
 <p>Boolean to indicate if node is healthy.</p>
 <h2 id="get_peers"><a class="header" href="#get_peers"><code>get_peers()</code></a></h2>
 <p>(<code>GET /peers</code>)</p>
 <p>Get information about the peers of the node.</p>
-<h3 id="parameters-14"><a class="header" href="#parameters-14">Parameters</a></h3>
+<h3 id="parameters-15"><a class="header" href="#parameters-15">Parameters</a></h3>
 <p>None</p>
-<h3 id="returns-7"><a class="header" href="#returns-7">Returns</a></h3>
+<h3 id="returns-8"><a class="header" href="#returns-8">Returns</a></h3>
 <pre><code class="language-Rust">pub struct PeerDto {
     pub id: String,
     #[serde(rename = &quot;multiAddresses&quot;)]
@@ -487,9 +498,9 @@ for node in node_pool_urls{
 <h2 id="get_info"><a class="header" href="#get_info"><code>get_info()</code></a></h2>
 <p>(<code>GET /api/v1/info</code>)</p>
 <p>Returns information about the node.</p>
-<h3 id="parameters-15"><a class="header" href="#parameters-15">Parameters</a></h3>
+<h3 id="parameters-16"><a class="header" href="#parameters-16">Parameters</a></h3>
 <p>None</p>
-<h3 id="returns-8"><a class="header" href="#returns-8">Returns</a></h3>
+<h3 id="returns-9"><a class="header" href="#returns-9">Returns</a></h3>
 <p>A Response Object similar to this:</p>
 <pre><pre class="playground"><code class="language-rust">
 <span class="boring">#![allow(unused)]
@@ -510,9 +521,9 @@ for node in node_pool_urls{
 <h2 id="get_tips"><a class="header" href="#get_tips"><code>get_tips()</code></a></h2>
 <p>(<code>GET /tips</code>)</p>
 <p>Returns two non-lazy tips. In case the node can only provide one tip, tip1 and tip2 are identical.</p>
-<h3 id="parameters-16"><a class="header" href="#parameters-16">Parameters</a></h3>
+<h3 id="parameters-17"><a class="header" href="#parameters-17">Parameters</a></h3>
 <p>None</p>
-<h3 id="returns-9"><a class="header" href="#returns-9">Returns</a></h3>
+<h3 id="returns-10"><a class="header" href="#returns-10">Returns</a></h3>
 <p>A tuple with two <a href="#MessageId">MessageId</a>:</p>
 <pre><pre class="playground"><code class="language-rust">
 <span class="boring">#![allow(unused)]
@@ -523,28 +534,28 @@ for node in node_pool_urls{
 <h2 id="post_message"><a class="header" href="#post_message"><code>post_message()</code></a></h2>
 <p>(<code>POST /message</code>)</p>
 <p>Submit a message. The node takes care of missing fields and tries to build the message. On success, the message will be stored in the Tangle. This endpoint will return the identifier of the message.</p>
-<h3 id="parameters-17"><a class="header" href="#parameters-17">Parameters</a></h3>
+<h3 id="parameters-18"><a class="header" href="#parameters-18">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
 <tr><td><strong>message</strong></td><td>✔</td><td><a href="#Message">Message</a></td><td>The message object.</td></tr>
 </tbody></table>
-<h3 id="returns-10"><a class="header" href="#returns-10">Returns</a></h3>
+<h3 id="returns-11"><a class="header" href="#returns-11">Returns</a></h3>
 <p>The <a href="#MessageId">MessageId</a> of the message object.</p>
 <h2 id="get_output"><a class="header" href="#get_output"><code>get_output()</code></a></h2>
 <p>(<code>GET /outputs</code>)</p>
 <p>Get the producer of the output, the corresponding address, amount and spend status of an output. This information can only be retrieved for outputs which are part of a confirmed transaction.</p>
-<h3 id="parameters-18"><a class="header" href="#parameters-18">Parameters</a></h3>
+<h3 id="parameters-19"><a class="header" href="#parameters-19">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
 <tr><td><strong>output_id</strong></td><td>✔</td><td>UTXOInput</td><td>Identifier of the output.</td></tr>
 </tbody></table>
-<h3 id="returns-11"><a class="header" href="#returns-11">Returns</a></h3>
+<h3 id="returns-12"><a class="header" href="#returns-12">Returns</a></h3>
 <p>An <a href="#OutputMetadata">OutputMetadata</a> that contains various information about the output.</p>
 <h2 id="get_address"><a class="header" href="#get_address"><code>get_address()</code></a></h2>
 <p>(<code>GET /addresses</code>)</p>
-<h3 id="parameters-19"><a class="header" href="#parameters-19">Parameters</a></h3>
+<h3 id="parameters-20"><a class="header" href="#parameters-20">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
 <tr><td><strong>address</strong></td><td>✔</td><td><a href="#Bech32Address">Bech32Address</a></td><td>The address to search for.</td></tr>
 </tbody></table>
-<h3 id="returns-12"><a class="header" href="#returns-12">Returns</a></h3>
+<h3 id="returns-13"><a class="header" href="#returns-13">Returns</a></h3>
 <p>Depend on the final calling method, users could get different outputs they need:</p>
 <ul>
 <li><code>balance()</code>: Return confirmed balance of the address.</li>
@@ -552,30 +563,30 @@ for node in node_pool_urls{
 </ul>
 <h2 id="find_outputs"><a class="header" href="#find_outputs"><code>find_outputs()</code></a></h2>
 <p>Find all outputs based on the requests criteria.</p>
-<h3 id="parameters-20"><a class="header" href="#parameters-20">Parameters</a></h3>
+<h3 id="parameters-21"><a class="header" href="#parameters-21">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
 <tr><td><strong>output_id</strong></td><td>✘</td><td>[UTXOInput]</td><td>The identifier of output.</td></tr>
 <tr><td><strong>addresses</strong></td><td>✘</td><td>[<a href="#Bech32Address">Bech32Address</a>]</td><td>The Bech32 encoded address.</td></tr>
 </tbody></table>
-<h3 id="returns-13"><a class="header" href="#returns-13">Returns</a></h3>
+<h3 id="returns-14"><a class="header" href="#returns-14">Returns</a></h3>
 <p>A vector of <a href="#OutputMetadata">OutputMetadata</a>.</p>
 <h2 id="get_milestone"><a class="header" href="#get_milestone"><code>get_milestone()</code></a></h2>
 <p>(<code>GET /milestones</code>)</p>
 <p>Get the milestone by the given index.</p>
-<h3 id="parameters-21"><a class="header" href="#parameters-21">Parameters</a></h3>
-<table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
-<tr><td><strong>index</strong></td><td>✔</td><td>u32</td><td>Index of the milestone.</td></tr>
-</tbody></table>
-<h3 id="returns-14"><a class="header" href="#returns-14">Returns</a></h3>
-<p>An <a href="#Milestone">Milestone</a> object.</p>
-<h2 id="get_milestone_utxo_changes"><a class="header" href="#get_milestone_utxo_changes"><code>get_milestone_utxo_changes()</code></a></h2>
-<p>(<code>GET /milestones/{}/utxo-changes</code>)</p>
-<p>Get all UTXO changes of a given milestone.</p>
 <h3 id="parameters-22"><a class="header" href="#parameters-22">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
 <tr><td><strong>index</strong></td><td>✔</td><td>u32</td><td>Index of the milestone.</td></tr>
 </tbody></table>
 <h3 id="returns-15"><a class="header" href="#returns-15">Returns</a></h3>
+<p>An <a href="#Milestone">Milestone</a> object.</p>
+<h2 id="get_milestone_utxo_changes"><a class="header" href="#get_milestone_utxo_changes"><code>get_milestone_utxo_changes()</code></a></h2>
+<p>(<code>GET /milestones/{}/utxo-changes</code>)</p>
+<p>Get all UTXO changes of a given milestone.</p>
+<h3 id="parameters-23"><a class="header" href="#parameters-23">Parameters</a></h3>
+<table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
+<tr><td><strong>index</strong></td><td>✔</td><td>u32</td><td>Index of the milestone.</td></tr>
+</tbody></table>
+<h3 id="returns-16"><a class="header" href="#returns-16">Returns</a></h3>
 <pre><code class="language-Rust">MilestoneUTXOChanges {
     index: 1,
     created_outputs: [],
@@ -585,19 +596,19 @@ for node in node_pool_urls{
 <h2 id="get_receipts"><a class="header" href="#get_receipts"><code>get_receipts()</code></a></h2>
 <p>(<code>GET /receipts</code>)</p>
 <p>Get all receipts.</p>
-<h3 id="returns-16"><a class="header" href="#returns-16">Returns</a></h3>
+<h3 id="returns-17"><a class="header" href="#returns-17">Returns</a></h3>
 <pre><code class="language-Rust">Vec&lt;ReceiptDto&gt;
 </code></pre>
 <h2 id="get_receipts_migrated_at"><a class="header" href="#get_receipts_migrated_at"><code>get_receipts_migrated_at()</code></a></h2>
 <p>(<code>GET /receipts/{migratedAt}</code>)</p>
 <p>Get all receipts for a given milestone index.</p>
-<h3 id="returns-17"><a class="header" href="#returns-17">Returns</a></h3>
+<h3 id="returns-18"><a class="header" href="#returns-18">Returns</a></h3>
 <pre><code class="language-Rust">Vec&lt;ReceiptDto&gt;
 </code></pre>
 <h2 id="get_treasury"><a class="header" href="#get_treasury"><code>get_treasury()</code></a></h2>
 <p>(<code>GET /treasury</code>)</p>
 <p>Get the treasury amount.</p>
-<h3 id="returns-18"><a class="header" href="#returns-18">Returns</a></h3>
+<h3 id="returns-19"><a class="header" href="#returns-19">Returns</a></h3>
 <pre><code class="language-Rust">pub struct TreasuryResponse {
     #[serde(rename = &quot;milestoneId&quot;)]
     milestone_id: String,
