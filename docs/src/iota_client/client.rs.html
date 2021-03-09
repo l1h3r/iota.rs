@@ -1126,6 +1126,14 @@
 <span id="1123">1123</span>
 <span id="1124">1124</span>
 <span id="1125">1125</span>
+<span id="1126">1126</span>
+<span id="1127">1127</span>
+<span id="1128">1128</span>
+<span id="1129">1129</span>
+<span id="1130">1130</span>
+<span id="1131">1131</span>
+<span id="1132">1132</span>
+<span id="1133">1133</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -1486,6 +1494,8 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Client</span> {
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">runtime</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Node pool.</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">nodes</span>: <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">Url</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Node pool of synced IOTA nodes</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">sync</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">RwLock</span><span class="op">&lt;</span><span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">Url</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Flag to stop the node syncing</span>
@@ -1675,6 +1685,12 @@
     <span class="doccomment">/// returns the local pow</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_local_pow</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">network_info</span>.<span class="ident">read</span>().<span class="kw">await</span>.<span class="ident">local_pow</span>
+    }
+
+    <span class="doccomment">/// returns the unsynced nodes.</span>
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">unsynced_nodes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HashSet</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Url</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">synced</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">sync</span>.<span class="ident">read</span>().<span class="kw">await</span>;
+        <span class="self">self</span>.<span class="ident">nodes</span>.<span class="ident">iter</span>().<span class="ident">filter</span>(<span class="op">|</span><span class="ident">node</span><span class="op">|</span> <span class="op">!</span><span class="ident">synced</span>.<span class="ident">contains</span>(<span class="ident">node</span>)).<span class="ident">collect</span>()
     }
 
     <span class="comment">///////////////////////////////////////////////////////////////////////</span>
