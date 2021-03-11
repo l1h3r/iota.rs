@@ -164,7 +164,7 @@
 <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">convert</span>::<span class="ident">TryInto</span>;
 <span class="kw">use</span> <span class="ident">crypto</span>::{
     <span class="ident">hashes</span>::{<span class="ident">blake2b</span>::<span class="ident">Blake2b256</span>, <span class="ident">Digest</span>},
-    <span class="ident">slip10</span>::{<span class="ident">Chain</span>, <span class="ident">Curve</span>, <span class="ident">Seed</span>},
+    <span class="ident">keys</span>::<span class="ident">slip10</span>::{<span class="ident">Chain</span>, <span class="ident">Curve</span>, <span class="ident">Seed</span>},
 };
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">Range</span>;
 
@@ -240,7 +240,7 @@
             <span class="prelude-val">Some</span>(<span class="ident">bech32_hrp</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bech32_hrp</span>,
             <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="self">self</span>.<span class="ident">client</span>
-                    .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Error</span>::<span class="ident">MissingParameter</span>(<span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;Client or bech32_hrp&quot;</span>)))<span class="question-mark">?</span>
+                    .<span class="ident">ok_or</span>(<span class="ident">Error</span>::<span class="ident">MissingParameter</span>(<span class="string">&quot;Client or bech32_hrp&quot;</span>))<span class="question-mark">?</span>
                     .<span class="ident">get_bech32_hrp</span>()
                     .<span class="kw">await</span><span class="question-mark">?</span>
             }
