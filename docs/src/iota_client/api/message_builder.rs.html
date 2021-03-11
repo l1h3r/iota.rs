@@ -668,6 +668,7 @@
 <span id="665">665</span>
 <span id="666">666</span>
 <span id="667">667</span>
+<span id="668">668</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -912,6 +913,7 @@
                                 <span class="kw-2">&amp;</span><span class="ident">bech32_address</span>.<span class="ident">into</span>(),
                             )
                             .<span class="kw">await</span><span class="question-mark">?</span>;
+                            <span class="comment">// 44 is for BIP 44 (HD wallets) and 4218 is the registered index for IOTA https://github.com/satoshilabs/slips/blob/master/slip-0044.md</span>
                             <span class="kw">let</span> <span class="ident">chain</span> <span class="op">=</span> <span class="ident">Chain</span>::<span class="ident">from_u32_hardened</span>(<span class="macro">vec</span><span class="macro">!</span>[
                                 <span class="number">44</span>,
                                 <span class="number">4218</span>,
