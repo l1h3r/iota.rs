@@ -194,32 +194,6 @@ async fn main() {
     println!(&quot;Nodeinfo: {:?}&quot;, info);
 }
 </code></pre></pre>
-<h3 id="required-dependencies-when-using-the-mqtt-feature"><a class="header" href="#required-dependencies-when-using-the-mqtt-feature">Required dependencies when using the mqtt feature</a></h3>
-<p><code>iota-core = { git = &quot;https://github.com/iotaledger/iota.rs&quot;, branch = &quot;dev&quot;, features = [&quot;mqtt&quot;] }</code></p>
-<p><code>cmake</code> and <code>openssl</code> are required. In order to run the build process succesfully using Cargo you might need install additional build tools on your system. </p>
-<h3 id="windows"><a class="header" href="#windows">Windows</a></h3>
-<p><code>cmake</code> can be downloaded on the <a href="https://cmake.org/download/">official website</a> and <code>openssl</code> can be installed with <a href="https://github.com/microsoft/vcpkg">vcpkg</a> or <a href="https://chocolatey.org/">chocolatey</a>.</p>
-<ul>
-<li>Installing <code>openssl</code> with <code>vcpkg</code>:</li>
-</ul>
-<pre><code class="language-bash">$ ./vcpkg.exe install openssl:x64-windows
-$ ./vcpkg.exe integrate install
-# you may want to add this to the system environment variables since you'll need it to compile the crate
-$ set VCPKGRS_DYNAMIC=1
-</code></pre>
-<ul>
-<li>Installing <code>openssl</code> with <code>chocolatey</code>:</li>
-</ul>
-<pre><code class="language-bash">$ choco install openssl
-# you may need to set the OPENSSL_DIR environment variable
-$ set OPENSSL_DIR=&quot;C:\Program Files\OpenSSL-Win64&quot;
-</code></pre>
-<h3 id="macos"><a class="header" href="#macos">macOS</a></h3>
-<p><code>cmake</code> and <code>openssl</code> can be installed with <code>Homebrew</code>:</p>
-<pre><code class="language-bash">$ brew install cmake openssl@1.1
-</code></pre>
-<h3 id="linux"><a class="header" href="#linux">Linux</a></h3>
-<p>Install <code>cmake</code> and <code>openssl</code> with your distro's package manager or download from their websites. On Debian and Ubuntu you will also need <code>build-essential</code>.</p>
 
                     </main>
 

@@ -242,32 +242,6 @@ async fn main() {
     println!(&quot;Nodeinfo: {:?}&quot;, info);
 }
 </code></pre></pre>
-<h3 id="required-dependencies-when-using-the-mqtt-feature"><a class="header" href="#required-dependencies-when-using-the-mqtt-feature">Required dependencies when using the mqtt feature</a></h3>
-<p><code>iota-core = { git = &quot;https://github.com/iotaledger/iota.rs&quot;, branch = &quot;dev&quot;, features = [&quot;mqtt&quot;] }</code></p>
-<p><code>cmake</code> and <code>openssl</code> are required. In order to run the build process succesfully using Cargo you might need install additional build tools on your system. </p>
-<h3 id="windows"><a class="header" href="#windows">Windows</a></h3>
-<p><code>cmake</code> can be downloaded on the <a href="https://cmake.org/download/">official website</a> and <code>openssl</code> can be installed with <a href="https://github.com/microsoft/vcpkg">vcpkg</a> or <a href="https://chocolatey.org/">chocolatey</a>.</p>
-<ul>
-<li>Installing <code>openssl</code> with <code>vcpkg</code>:</li>
-</ul>
-<pre><code class="language-bash">$ ./vcpkg.exe install openssl:x64-windows
-$ ./vcpkg.exe integrate install
-# you may want to add this to the system environment variables since you'll need it to compile the crate
-$ set VCPKGRS_DYNAMIC=1
-</code></pre>
-<ul>
-<li>Installing <code>openssl</code> with <code>chocolatey</code>:</li>
-</ul>
-<pre><code class="language-bash">$ choco install openssl
-# you may need to set the OPENSSL_DIR environment variable
-$ set OPENSSL_DIR=&quot;C:\Program Files\OpenSSL-Win64&quot;
-</code></pre>
-<h3 id="macos"><a class="header" href="#macos">macOS</a></h3>
-<p><code>cmake</code> and <code>openssl</code> can be installed with <code>Homebrew</code>:</p>
-<pre><code class="language-bash">$ brew install cmake openssl@1.1
-</code></pre>
-<h3 id="linux"><a class="header" href="#linux">Linux</a></h3>
-<p>Install <code>cmake</code> and <code>openssl</code> with your distro's package manager or download from their websites. On Debian and Ubuntu you will also need <code>build-essential</code>.</p>
 <h1 id="examples"><a class="header" href="#examples">Examples</a></h1>
 <p>You can see the examples in the <a href="https://github.com/iotaledger/iota.rs/tree/dev/examples">examples</a> directory and try them with:</p>
 <pre><code class="language-bash">cargo run --example # lists the available examples
@@ -403,7 +377,7 @@ cargo run --example address # execute the `address` example
 <tr><td><strong>api_timeout</strong></td><td>✘</td><td>Api::GetInfo: Duration::from_secs(2)),<br /> Api::GetHealth: Duration::from_secs(2),<br />Api::GetPeers: Duration::from_secs(2),<br />Api::GetMilestone: Duration::from_secs(2),<br />Api::GetTips: Duration::from_secs(2),<br />Api::PostMessage: Duration::from_secs(2),<br />Api::PostMessageWithRemotePow: Duration::from_secs(30),<br />Api::GetOutput: Duration::from_secs(2)</td><td>HashMap&lt;<a href="specs/index.html#Api">Api</a>,<br /> std::time::Duration&gt;</td><td>The amount of milliseconds a request to a specific Api endpoint can be outstanding to a node before it's considered timed out.</td></tr>
 <tr><td><strong>local_pow</strong></td><td>✘</td><td>True</td><td>bool</td><td>If not defined it defaults to local PoW to offload node load times</td></tr>
 <tr><td><strong>tips_interval</strong></td><td>✘</td><td>15</td><td>u64</td><td>Time interval during PoW when new tips get requested.</td></tr>
-<tr><td><strong>mqtt_broker_options</strong></td><td>✘</td><td>True,<br />Duration::from_secs(30),<br />True</td><td><a href="specs/index.html#BrokerOptions">BrokerOptions</a></td><td>If not defined the default values will be used, use_ws: false will try to connect over tcp</td></tr>
+<tr><td><strong>mqtt_broker_options</strong></td><td>✘</td><td>True,<br />Duration::from_secs(30),<br />True</td><td><a href="specs/index.html#BrokerOptions">BrokerOptions</a></td><td>If not defined the default values will be used</td></tr>
 </tbody></table>
 <ul>
 <li>Note that there must be at least one node to build the instance successfully.</li>
@@ -968,8 +942,6 @@ struct ReferenceUnlock(u16);
     pub(crate) automatic_disconnect: bool,
     #[serde(default = &quot;default_broker_timeout&quot;)]
     pub(crate) timeout: std::time::Duration,
-    #[serde(default = &quot;default_use_ws&quot;)]
-    pub(crate) use_ws: bool,
 }
 </code></pre>
 <h2 id="topic"><a class="header" href="#topic"><code>Topic</code></a></h2>
