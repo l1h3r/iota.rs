@@ -515,7 +515,7 @@
             <span class="kw">let</span> (<span class="ident">sync_kill_sender</span>, <span class="ident">sync_kill_receiver</span>) <span class="op">=</span> <span class="ident">channel</span>(<span class="number">1</span>);
             <span class="kw">let</span> <span class="ident">nodes</span> <span class="op">=</span> <span class="ident">nodes</span>.<span class="ident">clone</span>();
             <span class="kw">let</span> <span class="ident">runtime</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
-                <span class="kw">let</span> <span class="ident">runtime</span> <span class="op">=</span> <span class="ident">Runtime</span>::<span class="ident">new</span>().<span class="ident">unwrap</span>();
+                <span class="kw">let</span> <span class="ident">runtime</span> <span class="op">=</span> <span class="ident">Runtime</span>::<span class="ident">new</span>().<span class="ident">expect</span>(<span class="string">&quot;Failed to create Tokio runtime&quot;</span>);
                 <span class="ident">runtime</span>.<span class="ident">block_on</span>(<span class="ident">Client</span>::<span class="ident">sync_nodes</span>(<span class="kw-2">&amp;</span><span class="ident">sync_</span>, <span class="kw-2">&amp;</span><span class="ident">nodes</span>, <span class="kw-2">&amp;</span><span class="ident">network_info_</span>));
                 <span class="ident">Client</span>::<span class="ident">start_sync_process</span>(
                     <span class="kw-2">&amp;</span><span class="ident">runtime</span>,

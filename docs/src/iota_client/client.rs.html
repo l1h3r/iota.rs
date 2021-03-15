@@ -1128,6 +1128,13 @@
 <span id="1125">1125</span>
 <span id="1126">1126</span>
 <span id="1127">1127</span>
+<span id="1128">1128</span>
+<span id="1129">1129</span>
+<span id="1130">1130</span>
+<span id="1131">1131</span>
+<span id="1132">1132</span>
+<span id="1133">1133</span>
+<span id="1134">1134</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -1543,7 +1550,12 @@
         <span class="ident">network_info</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">RwLock</span><span class="op">&lt;</span><span class="ident">NetworkInfo</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="kw-2">mut</span> <span class="ident">kill</span>: <span class="ident">Receiver</span><span class="op">&lt;</span>()<span class="op">&gt;</span>,
     ) {
-        <span class="kw">let</span> <span class="ident">node_sync_interval</span> <span class="op">=</span> <span class="ident">TokioDuration</span>::<span class="ident">from_nanos</span>(<span class="ident">node_sync_interval</span>.<span class="ident">as_nanos</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>());
+        <span class="kw">let</span> <span class="ident">node_sync_interval</span> <span class="op">=</span> <span class="ident">TokioDuration</span>::<span class="ident">from_nanos</span>(
+            <span class="ident">node_sync_interval</span>
+                .<span class="ident">as_nanos</span>()
+                .<span class="ident">try_into</span>()
+                .<span class="ident">expect</span>(<span class="string">&quot;Node sync interval parsing failed.&quot;</span>),
+        );
 
         <span class="ident">runtime</span>.<span class="ident">spawn</span>(<span class="kw">async</span> <span class="kw">move</span> {
             <span class="kw">loop</span> {
@@ -1600,7 +1612,7 @@
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">nodes</span>) <span class="op">=</span> <span class="ident">network_nodes</span>.<span class="ident">get</span>(<span class="ident">most_nodes</span>.<span class="number">0</span>) {
             <span class="kw">for</span> (<span class="ident">info</span>, <span class="ident">node_url</span>) <span class="kw">in</span> <span class="ident">nodes</span>.<span class="ident">iter</span>() {
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">client_network_info</span> <span class="op">=</span> <span class="ident">network_info</span>.<span class="ident">write</span>().<span class="kw">await</span>;
-                <span class="ident">client_network_info</span>.<span class="ident">network_id</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">hash_network</span>(<span class="kw-2">&amp;</span><span class="ident">info</span>.<span class="ident">network_id</span>));
+                <span class="ident">client_network_info</span>.<span class="ident">network_id</span> <span class="op">=</span> <span class="ident">hash_network</span>(<span class="kw-2">&amp;</span><span class="ident">info</span>.<span class="ident">network_id</span>).<span class="ident">ok</span>();
                 <span class="ident">client_network_info</span>.<span class="ident">min_pow_score</span> <span class="op">=</span> <span class="ident">info</span>.<span class="ident">min_pow_score</span>;
                 <span class="ident">client_network_info</span>.<span class="ident">bech32_hrp</span> <span class="op">=</span> <span class="ident">info</span>.<span class="ident">bech32_hrp</span>.<span class="ident">clone</span>();
                 <span class="kw">if</span> <span class="op">!</span><span class="ident">client_network_info</span>.<span class="ident">local_pow</span> {
@@ -1626,7 +1638,9 @@
     <span class="doccomment">/// Gets the network id of the node we&#39;re connecting to.</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_network_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">network_info</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_network_info</span>().<span class="kw">await</span><span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="ident">network_info</span>.<span class="ident">network_id</span>.<span class="ident">unwrap</span>())
+        <span class="ident">network_info</span>
+            .<span class="ident">network_id</span>
+            .<span class="ident">ok_or</span>(<span class="ident">Error</span>::<span class="ident">MissingParameter</span>(<span class="string">&quot;Missing network id.&quot;</span>))
     }
 
     <span class="doccomment">/// Gets the miner to use based on the PoW setting</span>
@@ -1642,9 +1656,9 @@
         <span class="kw">let</span> <span class="ident">not_synced</span> <span class="op">=</span> { <span class="self">self</span>.<span class="ident">network_info</span>.<span class="ident">read</span>().<span class="kw">await</span>.<span class="ident">network_id</span>.<span class="ident">is_none</span>() };
         <span class="kw">if</span> <span class="ident">not_synced</span> {
             <span class="kw">let</span> <span class="ident">info</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_info</span>().<span class="kw">await</span><span class="question-mark">?</span>;
-            <span class="kw">let</span> <span class="ident">network_id</span> <span class="op">=</span> <span class="ident">hash_network</span>(<span class="kw-2">&amp;</span><span class="ident">info</span>.<span class="ident">network_id</span>);
+            <span class="kw">let</span> <span class="ident">network_id</span> <span class="op">=</span> <span class="ident">hash_network</span>(<span class="kw-2">&amp;</span><span class="ident">info</span>.<span class="ident">network_id</span>).<span class="ident">ok</span>();
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">client_network_info</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">network_info</span>.<span class="ident">write</span>().<span class="kw">await</span>;
-            <span class="ident">client_network_info</span>.<span class="ident">network_id</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">network_id</span>);
+            <span class="ident">client_network_info</span>.<span class="ident">network_id</span> <span class="op">=</span> <span class="ident">network_id</span>;
             <span class="ident">client_network_info</span>.<span class="ident">min_pow_score</span> <span class="op">=</span> <span class="ident">info</span>.<span class="ident">min_pow_score</span>;
             <span class="ident">client_network_info</span>.<span class="ident">bech32_hrp</span> <span class="op">=</span> <span class="ident">info</span>.<span class="ident">bech32_hrp</span>;
         }
@@ -2065,7 +2079,7 @@
         <span class="comment">// Get the Message object by the MessageID.</span>
         <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_message</span>().<span class="ident">data</span>(<span class="ident">message_id</span>).<span class="kw">await</span><span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="ident">reattach_message</span> <span class="op">=</span> <span class="ident">finish_pow</span>(<span class="self">self</span>, <span class="prelude-val">Some</span>(<span class="ident">message</span>.<span class="ident">payload</span>().<span class="ident">to_owned</span>().<span class="ident">unwrap</span>())).<span class="kw">await</span><span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">reattach_message</span> <span class="op">=</span> <span class="ident">finish_pow</span>(<span class="self">self</span>, <span class="ident">message</span>.<span class="ident">payload</span>().<span class="ident">to_owned</span>()).<span class="kw">await</span><span class="question-mark">?</span>;
 
         <span class="comment">// Post the modified</span>
         <span class="kw">let</span> <span class="ident">message_id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">post_message</span>(<span class="kw-2">&amp;</span><span class="ident">reattach_message</span>).<span class="kw">await</span><span class="question-mark">?</span>;
@@ -2161,7 +2175,7 @@
 
         <span class="comment">// Use `get_message().data()` API to get the `Message`.</span>
         <span class="kw">for</span> <span class="ident">message_id</span> <span class="kw">in</span> <span class="ident">message_ids_to_query</span> {
-            <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_message</span>().<span class="ident">data</span>(<span class="kw-2">&amp;</span><span class="ident">message_id</span>).<span class="kw">await</span>.<span class="ident">unwrap</span>();
+            <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_message</span>().<span class="ident">data</span>(<span class="kw-2">&amp;</span><span class="ident">message_id</span>).<span class="kw">await</span><span class="question-mark">?</span>;
             <span class="ident">messages</span>.<span class="ident">push</span>(<span class="ident">message</span>);
         }
         <span class="prelude-val">Ok</span>(<span class="ident">messages</span>)
@@ -2249,12 +2263,12 @@
 }
 
 <span class="doccomment">/// Hash the network id str from the nodeinfo to an u64 for the messageBuilder</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">hash_network</span>(<span class="ident">network_id_string</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
-    <span class="ident">u64</span>::<span class="ident">from_le_bytes</span>(
-        <span class="ident">Blake2b256</span>::<span class="ident">digest</span>(<span class="ident">network_id_string</span>.<span class="ident">as_bytes</span>())[<span class="number">0</span>..<span class="number">8</span>]
-            .<span class="ident">try_into</span>()
-            .<span class="ident">unwrap</span>(),
-    )
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">hash_network</span>(<span class="ident">network_id_string</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">Blake2b256</span>::<span class="ident">digest</span>(<span class="ident">network_id_string</span>.<span class="ident">as_bytes</span>())[<span class="number">0</span>..<span class="number">8</span>]
+        .<span class="ident">try_into</span>()
+        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">_e</span><span class="op">|</span> <span class="ident">Error</span>::<span class="ident">Blake2b256Error</span>(<span class="string">&quot;Hashing the network id failed.&quot;</span>))<span class="question-mark">?</span>;
+
+    <span class="prelude-val">Ok</span>(<span class="ident">u64</span>::<span class="ident">from_le_bytes</span>(<span class="ident">bytes</span>))
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "iota_client";</script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>

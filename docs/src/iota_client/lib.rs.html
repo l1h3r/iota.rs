@@ -111,8 +111,8 @@
     <span class="kw">static</span> <span class="ident">RUNTIME</span>: <span class="ident">OnceCell</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">OnceCell</span>::<span class="ident">new</span>();
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">block_on</span><span class="op">&lt;</span><span class="ident">C</span>: <span class="ident">futures</span>::<span class="ident">Future</span><span class="op">&gt;</span>(<span class="ident">cb</span>: <span class="ident">C</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">C</span>::<span class="ident">Output</span> {
-        <span class="kw">let</span> <span class="ident">runtime</span> <span class="op">=</span> <span class="ident">RUNTIME</span>.<span class="ident">get_or_init</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="ident">Runtime</span>::<span class="ident">new</span>().<span class="ident">unwrap</span>()));
-        <span class="ident">runtime</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">block_on</span>(<span class="ident">cb</span>)
+        <span class="kw">let</span> <span class="ident">runtime</span> <span class="op">=</span> <span class="ident">RUNTIME</span>.<span class="ident">get_or_init</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="ident">Runtime</span>::<span class="ident">new</span>().<span class="ident">expect</span>(<span class="string">&quot;Failed to create Tokio runtim&quot;</span>)));
+        <span class="ident">runtime</span>.<span class="ident">lock</span>().<span class="ident">expect</span>(<span class="string">&quot;Failed to lock the runtime.&quot;</span>).<span class="ident">block_on</span>(<span class="ident">cb</span>)
     }
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">spawn</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">future</span>: <span class="ident">F</span>)
@@ -120,8 +120,8 @@
         <span class="ident">F</span>: <span class="ident">futures</span>::<span class="ident">Future</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">F</span>::<span class="ident">Output</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     {
-        <span class="kw">let</span> <span class="ident">runtime</span> <span class="op">=</span> <span class="ident">RUNTIME</span>.<span class="ident">get_or_init</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="ident">Runtime</span>::<span class="ident">new</span>().<span class="ident">unwrap</span>()));
-        <span class="ident">runtime</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">spawn</span>(<span class="ident">future</span>);
+        <span class="kw">let</span> <span class="ident">runtime</span> <span class="op">=</span> <span class="ident">RUNTIME</span>.<span class="ident">get_or_init</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="ident">Runtime</span>::<span class="ident">new</span>().<span class="ident">expect</span>(<span class="string">&quot;Failed to create Tokio runtim&quot;</span>)));
+        <span class="ident">runtime</span>.<span class="ident">lock</span>().<span class="ident">expect</span>(<span class="string">&quot;Failed to lock the runtime.&quot;</span>).<span class="ident">spawn</span>(<span class="ident">future</span>);
     }
 }
 </pre></div>
