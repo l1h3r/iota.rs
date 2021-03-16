@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["AddPeerResponse","Response of POST /api/v1/peers"]]});

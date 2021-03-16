@@ -142,21 +142,15 @@
 <span id="139">139</span>
 <span id="140">140</span>
 <span id="141">141</span>
-<span id="142">142</span>
-<span id="143">143</span>
-<span id="144">144</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Api</span>, <span class="ident">Client</span>, <span class="prelude-ty">Result</span>};
 <span class="kw">use</span> <span class="ident">bee_message</span>::{<span class="ident">Message</span>, <span class="ident">MessageId</span>};
-<span class="kw">use</span> <span class="ident">bee_rest_api</span>::{
-    <span class="ident">endpoints</span>::<span class="ident">api</span>::<span class="ident">v1</span>::{
-        <span class="ident">message_children</span>::<span class="ident">MessageChildrenResponse</span>, <span class="ident">message_metadata</span>::<span class="ident">MessageMetadataResponse</span> <span class="kw">as</span> <span class="ident">MessageMetadata</span>,
-        <span class="ident">messages_find</span>::<span class="ident">MessagesForIndexResponse</span>,
-    },
-    <span class="ident">types</span>::<span class="ident">MessageDto</span>,
+<span class="kw">use</span> <span class="ident">bee_rest_api</span>::<span class="ident">types</span>::{
+    <span class="ident">dtos</span>::<span class="ident">MessageDto</span>,
+    <span class="ident">responses</span>::{<span class="ident">MessageChildrenResponse</span>, <span class="ident">MessageMetadataResponse</span> <span class="kw">as</span> <span class="ident">MessageMetadata</span>, <span class="ident">MessagesForIndexResponse</span>},
 };
 
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">TryFrom</span>;

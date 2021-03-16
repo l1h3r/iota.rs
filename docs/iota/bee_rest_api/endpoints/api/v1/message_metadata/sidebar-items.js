@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["LedgerInclusionStateDto",""]],"struct":[["MessageMetadataResponse","Response of GET /api/v1/messages/{message_id}/metadata"]]});

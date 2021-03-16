@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["has_permission",""]]});

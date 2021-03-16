@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["PeersResponse","Response of GET /api/v1/info"]]});

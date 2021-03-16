@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["RestApiConfig","REST API configuration."],["RestApiConfigBuilder","REST API configuration builder."]]});

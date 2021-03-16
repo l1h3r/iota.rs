@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["init",""]],"mod":[["body",""],["config",""],["endpoints",""],["path_params",""],["permission",""],["rejection",""],["storage",""],["types",""]],"struct":[["ApiWorker",""]]});
+initSidebarItems({"mod":[["types",""]]});
