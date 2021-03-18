@@ -365,6 +365,7 @@ for node in node_pool_urls{
 <tr><td><strong>seed</strong></td><td>✔</td><td>-</td><td><a href="#Seed">Seed</a></td><td>The seed we want to search for.</td></tr>
 <tr><td><strong>account_index</strong></td><td>✘</td><td>0</td><td>usize</td><td>The account index, responsible for the value <code>✘</code> in the Bip32Path <code>m/44'/4218'/✘'/0'/0'</code>.</td></tr>
 <tr><td><strong>initial_address_index</strong></td><td>✘</td><td>0</td><td>usize</td><td>Start index from which to generate addresses. Default is 0. Responsible for the value <code>✘</code> in the Bip32Path <code>m/44'/4218'/0'/0'/✘'</code>.</td></tr>
+<tr><td><strong>gap_limit</strong></td><td>✘</td><td>20</td><td>usize</td><td>The gap limit specifies how many addresses will be checked each round. If gap_limit amount of addresses in a row have no balance the function will return.</td></tr>
 </tbody></table>
 <h3 id="return-4"><a class="header" href="#return-4">Return</a></h3>
 <p>Total account balance.</p>

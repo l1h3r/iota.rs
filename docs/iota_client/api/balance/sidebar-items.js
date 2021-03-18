@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["GetBalanceBuilder","Builder of get_balance API"]]});
+initSidebarItems({"constant":[["DEFAULT_GAP_LIMIT",""]],"struct":[["GetBalanceBuilder","Builder of get_balance API"]]});

@@ -78,6 +78,14 @@
 <span id="75">75</span>
 <span id="76">76</span>
 <span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -85,12 +93,14 @@
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Client</span>, <span class="prelude-ty">Result</span>};
 <span class="kw">use</span> <span class="ident">crypto</span>::<span class="ident">keys</span>::<span class="ident">slip10</span>::<span class="ident">Seed</span>;
 
+<span class="kw">const</span> <span class="ident">DEFAULT_GAP_LIMIT</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">20</span>;
 <span class="doccomment">/// Builder of get_balance API</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetBalanceBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="ident">client</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Client</span>,
     <span class="ident">seed</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Seed</span>,
-    <span class="ident">account_index</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
-    <span class="ident">initial_address_index</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
+    <span class="ident">account_index</span>: <span class="ident">usize</span>,
+    <span class="ident">initial_address_index</span>: <span class="ident">usize</span>,
+    <span class="ident">gap_limit</span>: <span class="ident">usize</span>,
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">GetBalanceBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
@@ -99,28 +109,34 @@
         <span class="self">Self</span> {
             <span class="ident">client</span>,
             <span class="ident">seed</span>,
-            <span class="ident">account_index</span>: <span class="prelude-val">None</span>,
-            <span class="ident">initial_address_index</span>: <span class="prelude-val">None</span>,
+            <span class="ident">account_index</span>: <span class="number">0</span>,
+            <span class="ident">initial_address_index</span>: <span class="number">0</span>,
+            <span class="ident">gap_limit</span>: <span class="ident">DEFAULT_GAP_LIMIT</span>,
         }
     }
 
     <span class="doccomment">/// Sets the account index.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_account_index</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">account_index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">account_index</span>.<span class="ident">replace</span>(<span class="ident">account_index</span>);
+        <span class="self">self</span>.<span class="ident">account_index</span> <span class="op">=</span> <span class="ident">account_index</span>;
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Sets the index of the address to start looking for balance.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_initial_address_index</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">initial_address_index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">initial_address_index</span>.<span class="ident">replace</span>(<span class="ident">initial_address_index</span>);
+        <span class="self">self</span>.<span class="ident">initial_address_index</span> <span class="op">=</span> <span class="ident">initial_address_index</span>;
+        <span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Sets the gap limit to specify how many addresses will be checked each round.</span>
+    <span class="doccomment">/// If gap_limit amount of addresses in a row have no balance the function will return.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_gap_limit</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">gap_limit</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">gap_limit</span> <span class="op">=</span> <span class="ident">gap_limit</span>;
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Consume the builder and get the API result</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">finish</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">account_index</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">account_index</span>.<span class="ident">unwrap_or</span>(<span class="number">0</span>);
-
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">index</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">initial_address_index</span>.<span class="ident">unwrap_or</span>(<span class="number">0</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">index</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">initial_address_index</span>;
 
         <span class="comment">// get account balance and check with value</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">balance</span> <span class="op">=</span> <span class="number">0</span>;
@@ -130,8 +146,8 @@
             <span class="kw">let</span> <span class="ident">addresses</span> <span class="op">=</span> <span class="self">self</span>
                 .<span class="ident">client</span>
                 .<span class="ident">get_addresses</span>(<span class="self">self</span>.<span class="ident">seed</span>)
-                .<span class="ident">with_account_index</span>(<span class="ident">account_index</span>)
-                .<span class="ident">with_range</span>(<span class="ident">index</span>..<span class="ident">index</span> <span class="op">+</span> <span class="number">20</span>)
+                .<span class="ident">with_account_index</span>(<span class="self">self</span>.<span class="ident">account_index</span>)
+                .<span class="ident">with_range</span>(<span class="ident">index</span>..<span class="ident">index</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">gap_limit</span>)
                 .<span class="ident">get_all</span>()
                 .<span class="kw">await</span><span class="question-mark">?</span>;
 
@@ -147,10 +163,10 @@
                 }
             }
 
-            <span class="kw">if</span> <span class="ident">found_zero_balance</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">20</span> {
+            <span class="kw">if</span> <span class="ident">found_zero_balance</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">gap_limit</span> {
                 <span class="kw">break</span>;
             }
-            <span class="ident">index</span> <span class="op">+</span><span class="op">=</span> <span class="number">20</span>;
+            <span class="ident">index</span> <span class="op">+</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">gap_limit</span>;
         }
 
         <span class="prelude-val">Ok</span>(<span class="ident">balance</span>)
