@@ -342,6 +342,7 @@ cargo run --example address # execute the `address` example
 <li><a href="specs/index.html#get_receipts"><code>get_receipts</code></a></li>
 <li><a href="specs/index.html#get_receipts_migrated_at"><code>get_receipts_migrated_at</code></a></li>
 <li><a href="specs/index.html#get_treasury"><code>get_treasury</code></a></li>
+<li><a href="specs/index.html#get_included_message"><code>get_included_message</code></a></li>
 </ul>
 </li>
 <li><a href="specs/index.html#Objects">Objects</a>
@@ -752,6 +753,20 @@ for node in node_pool_urls{
     amount: u64,
 }
 </code></pre>
+<h2 id="get_included_message"><a class="header" href="#get_included_message"><code>get_included_message()</code></a></h2>
+<p>(<code>GET /transactions/{transactionId}/included-message</code>)</p>
+<p>Get the included message of the transaction.</p>
+<h3 id="parameters-24"><a class="header" href="#parameters-24">Parameters</a></h3>
+<table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
+<tr><td><strong>transaction_id</strong></td><td>✔</td><td>[TransactionId]</td><td>The id of the transaction.</td></tr>
+</tbody></table>
+<h3 id="returns-20"><a class="header" href="#returns-20">Returns</a></h3>
+<pre><code class="language-Rust">struct Message {
+    parents: Vec&lt;MessageId&gt;,
+    payload: Option&lt;Payload&gt;,
+    nonce: u64,
+}
+</code></pre>
 <h1 id="objects"><a class="header" href="#objects">Objects</a></h1>
 <p>Here are the objects used in the API above. They aim to provide a secure way to handle certain data structures specified in the Iota stack.</p>
 <h2 id="messageid"><a class="header" href="#messageid"><code>MessageId</code></a></h2>
@@ -953,6 +968,7 @@ messages
 messages/referenced
 messages/indexation/{index}
 messages/{messageId}/metadata
+transactions/{transactionId}/included-message
 
 outputs/{outputId}
 

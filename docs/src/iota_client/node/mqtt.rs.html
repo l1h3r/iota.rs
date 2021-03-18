@@ -315,6 +315,10 @@
 <span id="312">312</span>
 <span id="313">313</span>
 <span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -370,7 +374,8 @@
             <span class="ident">Regex</span>::<span class="ident">new</span>(<span class="string">&quot;addresses/(iota|atoi|iot|toi)1[A-Za-z0-9]+/outputs&quot;</span>).<span class="ident">expect</span>(<span class="string">&quot;regex failed&quot;</span>),
             <span class="comment">// ED25519 address hex</span>
             <span class="ident">Regex</span>::<span class="ident">new</span>(<span class="string">&quot;addresses/ed25519/([A-Fa-f0-9]{64})/outputs&quot;</span>).<span class="ident">expect</span>(<span class="string">&quot;regex failed&quot;</span>),
-            <span class="ident">Regex</span>::<span class="ident">new</span>(<span class="string">r&quot;messages/indexation/([a-f0-9]{2,128})&quot;</span>).<span class="ident">expect</span>(<span class="string">&quot;regex failed&quot;</span>)
+            <span class="ident">Regex</span>::<span class="ident">new</span>(<span class="string">r&quot;messages/indexation/([a-f0-9]{2,128})&quot;</span>).<span class="ident">expect</span>(<span class="string">&quot;regex failed&quot;</span>),
+            <span class="ident">Regex</span>::<span class="ident">new</span>(<span class="string">r&quot;transactions/([A-Fa-f0-9]{64})/included-message&quot;</span>).<span class="ident">expect</span>(<span class="string">&quot;regex failed&quot;</span>),
           ].<span class="ident">to_vec</span>() <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Regex</span><span class="op">&gt;</span>
         );
 
@@ -455,7 +460,10 @@
                             <span class="kw">let</span> <span class="ident">mqtt_topic_handlers</span> <span class="op">=</span> <span class="ident">mqtt_topic_handlers_guard</span>.<span class="ident">read</span>().<span class="kw">await</span>;
                             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">handlers</span>) <span class="op">=</span> <span class="ident">mqtt_topic_handlers</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">Topic</span>(<span class="ident">topic</span>.<span class="ident">clone</span>())) {
                                 <span class="kw">let</span> <span class="ident">event</span> <span class="op">=</span> {
-                                    <span class="kw">if</span> <span class="ident">topic</span>.<span class="ident">as_str</span>() <span class="op">=</span><span class="op">=</span> <span class="string">&quot;messages&quot;</span> <span class="op">|</span><span class="op">|</span> <span class="ident">topic</span>.<span class="ident">contains</span>(<span class="string">&quot;messages/indexation/&quot;</span>) {
+                                    <span class="kw">if</span> <span class="ident">topic</span>.<span class="ident">as_str</span>() <span class="op">=</span><span class="op">=</span> <span class="string">&quot;messages&quot;</span>
+                                        <span class="op">|</span><span class="op">|</span> <span class="ident">topic</span>.<span class="ident">contains</span>(<span class="string">&quot;messages/indexation/&quot;</span>)
+                                        <span class="op">|</span><span class="op">|</span> <span class="ident">topic</span>.<span class="ident">contains</span>(<span class="string">&quot;transactions/&quot;</span>)
+                                    {
                                         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">payload</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">p</span>.<span class="ident">payload</span>;
                                         <span class="kw">match</span> <span class="ident">Message</span>::<span class="ident">unpack</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">payload</span>) {
                                             <span class="prelude-val">Ok</span>(<span class="ident">iota_message</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="ident">serde_json</span>::<span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="ident">iota_message</span>) {
