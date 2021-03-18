@@ -106,13 +106,13 @@
 
     <span class="doccomment">/// Sets the account index.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_account_index</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">account_index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">account_index</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">account_index</span>);
+        <span class="self">self</span>.<span class="ident">account_index</span>.<span class="ident">replace</span>(<span class="ident">account_index</span>);
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Sets the index of the address to start looking for balance.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_initial_address_index</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">initial_address_index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">initial_address_index</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">initial_address_index</span>);
+        <span class="self">self</span>.<span class="ident">initial_address_index</span>.<span class="ident">replace</span>(<span class="ident">initial_address_index</span>);
         <span class="self">self</span>
     }
 

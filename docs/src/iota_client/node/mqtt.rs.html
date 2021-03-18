@@ -315,8 +315,6 @@
 <span id="312">312</span>
 <span id="313">313</span>
 <span id="314">314</span>
-<span id="315">315</span>
-<span id="316">316</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -409,7 +407,7 @@
                 <span class="comment">// if we found a valid mqtt connection, loop it on a separate thread</span>
                 <span class="kw">if</span> <span class="ident">got_ack</span> {
                     <span class="kw">let</span> (<span class="ident">mqtt_client</span>, <span class="ident">connection</span>) <span class="op">=</span> <span class="ident">MqttClient</span>::<span class="ident">new</span>(<span class="ident">mqttoptions</span>, <span class="number">10</span>);
-                    <span class="ident">client</span>.<span class="ident">mqtt_client</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">mqtt_client</span>);
+                    <span class="ident">client</span>.<span class="ident">mqtt_client</span>.<span class="ident">replace</span>(<span class="ident">mqtt_client</span>);
                     <span class="ident">poll_mqtt</span>(<span class="ident">client</span>.<span class="ident">mqtt_topic_handlers</span>.<span class="ident">clone</span>(), <span class="ident">connection</span>);
                 }
             }
@@ -533,11 +531,9 @@
             <span class="ident">client</span>.<span class="ident">disconnect</span>().<span class="kw">await</span><span class="question-mark">?</span>;
             <span class="self">self</span>.<span class="ident">client</span>.<span class="ident">mqtt_client</span> <span class="op">=</span> <span class="prelude-val">None</span>;
 
-            {
-                <span class="kw">let</span> <span class="ident">mqtt_topic_handlers</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">client</span>.<span class="ident">mqtt_topic_handlers</span>;
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">mqtt_topic_handlers</span> <span class="op">=</span> <span class="ident">mqtt_topic_handlers</span>.<span class="ident">write</span>().<span class="kw">await</span>;
-                <span class="ident">mqtt_topic_handlers</span>.<span class="ident">clear</span>()
-            }
+            <span class="kw">let</span> <span class="ident">mqtt_topic_handlers</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">client</span>.<span class="ident">mqtt_topic_handlers</span>;
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">mqtt_topic_handlers</span> <span class="op">=</span> <span class="ident">mqtt_topic_handlers</span>.<span class="ident">write</span>().<span class="kw">await</span>;
+            <span class="ident">mqtt_topic_handlers</span>.<span class="ident">clear</span>()
         }
 
         <span class="prelude-val">Ok</span>(())

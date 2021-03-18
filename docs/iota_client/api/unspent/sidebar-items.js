@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["GetUnspentAddressBuilder","Builder of get_unspent_address API"]]});
+initSidebarItems({"constant":[["ADDRESS_GAP_LIMIT",""]],"struct":[["GetUnspentAddressBuilder","Builder of get_unspent_address API"]]});

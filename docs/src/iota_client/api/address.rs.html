@@ -202,7 +202,7 @@
 
     <span class="doccomment">/// Provide a client to get the bech32_hrp from the node</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_client</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">client</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Client</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">client</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">client</span>);
+        <span class="self">self</span>.<span class="ident">client</span>.<span class="ident">replace</span>(<span class="ident">client</span>);
         <span class="self">self</span>
     }
 
@@ -220,7 +220,7 @@
 
     <span class="doccomment">/// Set bech32 human readable part (hrp)</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_bech32_hrp</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">bech32_hrp</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">bech32_hrp</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">bech32_hrp</span>);
+        <span class="self">self</span>.<span class="ident">bech32_hrp</span>.<span class="ident">replace</span>(<span class="ident">bech32_hrp</span>);
         <span class="self">self</span>
     }
 

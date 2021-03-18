@@ -312,6 +312,8 @@
 <span id="309">309</span>
 <span id="310">310</span>
 <span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -336,6 +338,8 @@
 <span class="kw">const</span> <span class="ident">NODE_SYNC_INTERVAL</span>: <span class="ident">Duration</span> <span class="op">=</span> <span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="number">60</span>);
 <span class="comment">// Interval in seconds when new tips will be requested during PoW</span>
 <span class="kw">const</span> <span class="ident">TIPS_INTERVAL</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">15</span>;
+<span class="kw">const</span> <span class="ident">DEFAULT_MIN_POW</span>: <span class="ident">f64</span> <span class="op">=</span> <span class="number">4000f64</span>;
+<span class="kw">const</span> <span class="ident">DEFAULT_BECH32_HRP</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;iota&quot;</span>;
 
 <span class="doccomment">/// Struct containing network and PoW related information</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>)]</span>
@@ -382,9 +386,9 @@
             <span class="ident">network_info</span>: <span class="ident">NetworkInfo</span> {
                 <span class="ident">network</span>: <span class="prelude-val">None</span>,
                 <span class="ident">network_id</span>: <span class="prelude-val">None</span>,
-                <span class="ident">min_pow_score</span>: <span class="number">4000f64</span>,
+                <span class="ident">min_pow_score</span>: <span class="ident">DEFAULT_MIN_POW</span>,
                 <span class="ident">local_pow</span>: <span class="bool-val">true</span>,
-                <span class="ident">bech32_hrp</span>: <span class="string">&quot;iota&quot;</span>.<span class="ident">into</span>(),
+                <span class="ident">bech32_hrp</span>: <span class="ident">DEFAULT_BECH32_HRP</span>.<span class="ident">into</span>(),
                 <span class="ident">tips_interval</span>: <span class="ident">TIPS_INTERVAL</span>,
             },
             <span class="ident">request_timeout</span>: <span class="ident">DEFAULT_REQUEST_TIMEOUT</span>,
@@ -459,7 +463,7 @@
     <span class="doccomment">/// Nodes that don&#39;t belong to this network are ignored. Default nodes are only used when no other nodes are</span>
     <span class="doccomment">/// provided.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_network</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">network</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">network_info</span>.<span class="ident">network</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">network</span>.<span class="ident">into</span>());
+        <span class="self">self</span>.<span class="ident">network_info</span>.<span class="ident">network</span>.<span class="ident">replace</span>(<span class="ident">network</span>.<span class="ident">into</span>());
         <span class="self">self</span>
     }
 
