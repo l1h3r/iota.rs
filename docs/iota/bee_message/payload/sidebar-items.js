@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Payload",""]],"mod":[["indexation",""],["milestone",""],["receipt",""],["transaction",""],["treasury",""]]});
+initSidebarItems({"enum":[["Payload",""]],"fn":[["pack_option_payload",""],["unpack_option_payload",""]],"mod":[["indexation",""],["milestone",""],["receipt",""],["transaction",""],["treasury",""]]});
