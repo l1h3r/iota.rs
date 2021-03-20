@@ -958,6 +958,8 @@ struct ReferenceUnlock(u16);
     pub(crate) automatic_disconnect: bool,
     #[serde(default = &quot;default_broker_timeout&quot;)]
     pub(crate) timeout: std::time::Duration,
+    #[serde(rename = &quot;maxReconnectionAttempts&quot;, default)]
+    pub(crate) max_reconnection_attempts: usize,
 }
 </code></pre>
 <h2 id="topic"><a class="header" href="#topic"><code>Topic</code></a></h2>

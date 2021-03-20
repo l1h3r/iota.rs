@@ -319,12 +319,39 @@
 <span id="316">316</span>
 <span id="317">317</span>
 <span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">client</span>::{<span class="ident">Client</span>, <span class="ident">TopicEvent</span>, <span class="ident">TopicHandlerMap</span>},
+    <span class="ident">client</span>::{<span class="ident">BrokerOptions</span>, <span class="ident">Client</span>, <span class="ident">MqttEvent</span>, <span class="ident">TopicEvent</span>, <span class="ident">TopicHandlerMap</span>},
     <span class="prelude-ty">Result</span>,
 };
 <span class="kw">use</span> <span class="ident">bee_common</span>::<span class="ident">packable</span>::<span class="ident">Packable</span>;
@@ -334,9 +361,9 @@
 <span class="kw">use</span> <span class="ident">rumqttc</span>::{
     <span class="ident">AsyncClient</span> <span class="kw">as</span> <span class="ident">MqttClient</span>, <span class="ident">Event</span>, <span class="ident">EventLoop</span>, <span class="ident">Incoming</span>, <span class="ident">MqttOptions</span>, <span class="ident">QoS</span>, <span class="ident">Request</span>, <span class="ident">Subscribe</span>, <span class="ident">SubscribeFilter</span>,
 };
-<span class="kw">use</span> <span class="ident">tokio</span>::<span class="ident">sync</span>::<span class="ident">RwLock</span>;
+<span class="kw">use</span> <span class="ident">tokio</span>::<span class="ident">sync</span>::{<span class="ident">watch</span>::<span class="ident">Sender</span>, <span class="ident">RwLock</span>};
 
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">convert</span>::<span class="ident">TryFrom</span>, <span class="ident">sync</span>::<span class="ident">Arc</span>};
+<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">convert</span>::<span class="ident">TryFrom</span>, <span class="ident">sync</span>::<span class="ident">Arc</span>, <span class="ident">time</span>::<span class="ident">Instant</span>};
 
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">lazy_static</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">init</span>:<span class="ident">expr</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="kw">type</span>:<span class="macro-nonterminal">ty</span>) <span class="op">=</span><span class="op">&gt;</span> {{
@@ -390,6 +417,10 @@
 }
 
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_mqtt_client</span>(<span class="ident">client</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Client</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MqttClient</span><span class="op">&gt;</span> {
+    <span class="comment">// if the client was disconnected, we clear it so we can start over</span>
+    <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">client</span>.<span class="ident">mqtt_event_receiver</span>().<span class="ident">borrow</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">MqttEvent</span>::<span class="ident">Disconnected</span> {
+        <span class="ident">client</span>.<span class="ident">mqtt_client</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+    }
     <span class="kw">match</span> <span class="ident">client</span>.<span class="ident">mqtt_client</span> {
         <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">c</span>),
         <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
@@ -413,7 +444,12 @@
                 <span class="kw">if</span> <span class="ident">got_ack</span> {
                     <span class="kw">let</span> (<span class="ident">mqtt_client</span>, <span class="ident">connection</span>) <span class="op">=</span> <span class="ident">MqttClient</span>::<span class="ident">new</span>(<span class="ident">mqttoptions</span>, <span class="number">10</span>);
                     <span class="ident">client</span>.<span class="ident">mqtt_client</span>.<span class="ident">replace</span>(<span class="ident">mqtt_client</span>);
-                    <span class="ident">poll_mqtt</span>(<span class="ident">client</span>.<span class="ident">mqtt_topic_handlers</span>.<span class="ident">clone</span>(), <span class="ident">connection</span>);
+                    <span class="ident">poll_mqtt</span>(
+                        <span class="ident">client</span>.<span class="ident">mqtt_topic_handlers</span>.<span class="ident">clone</span>(),
+                        <span class="ident">client</span>.<span class="ident">broker_options</span>.<span class="ident">clone</span>(),
+                        <span class="ident">client</span>.<span class="ident">mqtt_event_channel</span>.<span class="number">0</span>.<span class="ident">clone</span>(),
+                        <span class="ident">connection</span>,
+                    );
                 }
             }
             <span class="ident">client</span>.<span class="ident">mqtt_client</span>.<span class="ident">as_mut</span>().<span class="ident">ok_or</span>(<span class="kw">crate</span>::<span class="ident">Error</span>::<span class="ident">MqttConnectionNotFound</span>)
@@ -421,7 +457,12 @@
     }
 }
 
-<span class="kw">fn</span> <span class="ident">poll_mqtt</span>(<span class="ident">mqtt_topic_handlers_guard</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">RwLock</span><span class="op">&lt;</span><span class="ident">TopicHandlerMap</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="kw-2">mut</span> <span class="ident">event_loop</span>: <span class="ident">EventLoop</span>) {
+<span class="kw">fn</span> <span class="ident">poll_mqtt</span>(
+    <span class="ident">mqtt_topic_handlers_guard</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">RwLock</span><span class="op">&lt;</span><span class="ident">TopicHandlerMap</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">options</span>: <span class="ident">BrokerOptions</span>,
+    <span class="ident">event_sender</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Sender</span><span class="op">&lt;</span><span class="ident">MqttEvent</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="kw-2">mut</span> <span class="ident">event_loop</span>: <span class="ident">EventLoop</span>,
+) {
     <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
         <span class="kw">let</span> <span class="ident">runtime</span> <span class="op">=</span> <span class="ident">tokio</span>::<span class="ident">runtime</span>::<span class="ident">Builder</span>::<span class="ident">new_current_thread</span>()
             .<span class="ident">enable_all</span>()
@@ -434,12 +475,15 @@
             <span class="comment">// can perform the resubscriptions and reset `is_subscribed` to true.</span>
             <span class="comment">// we need the flag since the first ConnAck must be ignored.</span>
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">is_subscribed</span> <span class="op">=</span> <span class="bool-val">true</span>;
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error_instant</span> <span class="op">=</span> <span class="ident">Instant</span>::<span class="ident">now</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">connection_failure_count</span> <span class="op">=</span> <span class="number">0</span>;
             <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="ident">event_loop</span>.<span class="ident">handle</span>();
             <span class="kw">loop</span> {
                 <span class="kw">let</span> <span class="ident">event</span> <span class="op">=</span> <span class="ident">event_loop</span>.<span class="ident">poll</span>().<span class="kw">await</span>;
                 <span class="kw">let</span> <span class="ident">mqtt_topic_handlers_guard</span> <span class="op">=</span> <span class="ident">mqtt_topic_handlers_guard</span>.<span class="ident">clone</span>();
                 <span class="kw">match</span> <span class="ident">event</span> {
                     <span class="prelude-val">Ok</span>(<span class="ident">Event</span>::<span class="ident">Incoming</span>(<span class="ident">Incoming</span>::<span class="ident">ConnAck</span>(<span class="kw">_</span>))) <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">event_sender</span>.<span class="ident">send</span>(<span class="ident">MqttEvent</span>::<span class="ident">Connected</span>);
                         <span class="kw">if</span> <span class="op">!</span><span class="ident">is_subscribed</span> {
                             <span class="ident">is_subscribed</span> <span class="op">=</span> <span class="bool-val">true</span>;
                             <span class="comment">// resubscribe topics</span>
@@ -497,6 +541,16 @@
                         });
                     }
                     <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="kw">if</span> <span class="ident">error_instant</span>.<span class="ident">elapsed</span>().<span class="ident">as_secs</span>() <span class="op">&lt;</span> <span class="number">5</span> {
+                            <span class="ident">connection_failure_count</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+                        } <span class="kw">else</span> {
+                            <span class="ident">connection_failure_count</span> <span class="op">=</span> <span class="number">1</span>;
+                        }
+                        <span class="kw">if</span> <span class="ident">connection_failure_count</span> <span class="op">=</span><span class="op">=</span> <span class="ident">options</span>.<span class="ident">max_reconnection_attempts</span> {
+                            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">event_sender</span>.<span class="ident">send</span>(<span class="ident">MqttEvent</span>::<span class="ident">Disconnected</span>);
+                            <span class="kw">break</span>;
+                        }
+                        <span class="ident">error_instant</span> <span class="op">=</span> <span class="ident">Instant</span>::<span class="ident">now</span>();
                         <span class="ident">is_subscribed</span> <span class="op">=</span> <span class="bool-val">false</span>;
                     }
                     <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {}

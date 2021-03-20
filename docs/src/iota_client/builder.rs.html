@@ -314,6 +314,11 @@
 <span id="311">311</span>
 <span id="312">312</span>
 <span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -589,6 +594,9 @@
             <span class="self">self</span>.<span class="ident">api_timeout</span>.<span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="ident">Api</span>::<span class="ident">GetOutput</span>).<span class="ident">unwrap_or</span>(<span class="ident">GET_API_TIMEOUT</span>),
         );
 
+        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;mqtt&quot;</span>)]</span>
+        <span class="kw">let</span> (<span class="ident">mqtt_event_tx</span>, <span class="ident">mqtt_event_rx</span>) <span class="op">=</span> <span class="ident">tokio</span>::<span class="ident">sync</span>::<span class="ident">watch</span>::<span class="ident">channel</span>(<span class="ident">MqttEvent</span>::<span class="ident">Connected</span>);
+
         <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">Client</span> {
             <span class="ident">runtime</span>,
             <span class="ident">nodes</span>,
@@ -600,6 +608,8 @@
             <span class="ident">mqtt_topic_handlers</span>: <span class="ident">Default</span>::<span class="ident">default</span>(),
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;mqtt&quot;</span>)]</span>
             <span class="ident">broker_options</span>: <span class="self">self</span>.<span class="ident">broker_options</span>,
+            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;mqtt&quot;</span>)]</span>
+            <span class="ident">mqtt_event_channel</span>: (<span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">mqtt_event_tx</span>), <span class="ident">mqtt_event_rx</span>),
             <span class="ident">network_info</span>,
             <span class="ident">request_timeout</span>: <span class="self">self</span>.<span class="ident">request_timeout</span>,
             <span class="ident">api_timeout</span>,
