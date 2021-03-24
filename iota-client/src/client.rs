@@ -16,6 +16,7 @@ use bee_transaction::bundled::{
 };
 use bee_transaction::Vertex;
 
+#[cfg(feature = "ureq")]
 macro_rules! response {
     ($self:ident, $body:ident) => {
         ureq::post(&$self.get_node()?)
@@ -30,6 +31,28 @@ macro_rules! response {
             .set("X-IOTA-API-Version", "1")
             .send_json($body)
             .into_json_deserialize()?
+    };
+}
+
+#[cfg(feature = "surf")]
+macro_rules! response {
+    ($self:ident, $body:ident) => {
+        surf::post(&$self.get_node()?)
+            .content_type(surf::http::mime::JSON)
+            .header("X-IOTA-API-Version", "1")
+            .body($body)
+            .await?
+            .body_json()
+            .await?
+    };
+    ($self:ident, $body:ident, $node:ident) => {
+        surf::post($node)
+            .content_type(surf::http::mime::JSON)
+            .header("X-IOTA-API-Version", "1")
+            .body($body)
+            .await?
+            .body_json()
+            .await?
     };
 }
 
@@ -478,7 +501,7 @@ impl Client {
                 tail = false;
             }
 
-            hash = res.trunk().clone();
+            hash = *res.trunk();
             if res.index() == res.last_index() {
                 bundle.push(res);
                 break Ok(bundle);
