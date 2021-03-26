@@ -156,13 +156,24 @@
 <span id="153">153</span>
 <span id="154">154</span>
 <span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Client</span>, <span class="ident">Error</span>, <span class="prelude-ty">Result</span>};
 
-<span class="kw">use</span> <span class="ident">bee_message</span>::<span class="ident">prelude</span>::{<span class="ident">Address</span>, <span class="ident">Bech32Address</span>, <span class="ident">Ed25519Address</span>};
+<span class="kw">use</span> <span class="ident">bee_message</span>::<span class="ident">prelude</span>::{<span class="ident">Address</span>, <span class="ident">Ed25519Address</span>};
 <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">convert</span>::<span class="ident">TryInto</span>;
 <span class="kw">use</span> <span class="ident">crypto</span>::{
     <span class="ident">hashes</span>::{<span class="ident">blake2b</span>::<span class="ident">Blake2b256</span>, <span class="ident">Digest</span>},
@@ -224,21 +235,20 @@
         <span class="self">self</span>
     }
 
-    <span class="doccomment">/// Consume the builder and get a vector of public Bech32Addresses</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">finish</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Bech32Address</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// Consume the builder and get a vector of public addresses bech32 encoded</span>
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">finish</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="prelude-val">Ok</span>(<span class="self">self</span>
             .<span class="ident">get_all</span>()
             .<span class="kw">await</span><span class="question-mark">?</span>
             .<span class="ident">into_iter</span>()
             .<span class="ident">filter</span>(<span class="op">|</span>(<span class="kw">_</span>, <span class="ident">internal</span>)<span class="op">|</span> <span class="op">!</span><span class="ident">internal</span>)
             .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">a</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">a</span>)
-            .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Bech32Address</span><span class="op">&gt;</span><span class="op">&gt;</span>())
+            .<span class="ident">collect</span>())
     }
 
-    <span class="doccomment">/// Consume the builder and get the vector of Bech32Addresses</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_all</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">Bech32Address</span>, <span class="ident">bool</span>)<span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">addresses</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">bech32_hrp</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">bech32_hrp</span> {
+    <span class="doccomment">/// Consume the builder and get the vector of public and internal addresses bech32 encoded</span>
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_all</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">String</span>, <span class="ident">bool</span>)<span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">bech32_hrp</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">bech32_hrp</span>.<span class="ident">clone</span>() {
             <span class="prelude-val">Some</span>(<span class="ident">bech32_hrp</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bech32_hrp</span>,
             <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="self">self</span>.<span class="ident">client</span>
@@ -247,6 +257,18 @@
                     .<span class="kw">await</span><span class="question-mark">?</span>
             }
         };
+        <span class="kw">let</span> <span class="ident">addresses</span> <span class="op">=</span> <span class="self">self</span>
+            .<span class="ident">get_all_raw</span>()
+            .<span class="kw">await</span><span class="question-mark">?</span>
+            .<span class="ident">into_iter</span>()
+            .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">a</span>, <span class="ident">b</span>)<span class="op">|</span> (<span class="ident">a</span>.<span class="ident">to_bech32</span>(<span class="kw-2">&amp;</span><span class="ident">bech32_hrp</span>), <span class="ident">b</span>))
+            .<span class="ident">collect</span>();
+
+        <span class="prelude-val">Ok</span>(<span class="ident">addresses</span>)
+    }
+    <span class="doccomment">/// Consume the builder and get the vector of public and internal addresses</span>
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_all_raw</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">Address</span>, <span class="ident">bool</span>)<span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">addresses</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
         <span class="kw">for</span> <span class="ident">address_index</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">range</span> {
             <span class="kw">let</span> <span class="ident">address</span> <span class="op">=</span> <span class="ident">generate_address</span>(
                 <span class="self">self</span>.<span class="ident">seed</span>.<span class="ident">ok_or</span>(<span class="ident">Error</span>::<span class="ident">MissingParameter</span>(<span class="string">&quot;Seed&quot;</span>))<span class="question-mark">?</span>,
@@ -260,8 +282,8 @@
                 <span class="ident">address_index</span> <span class="kw">as</span> <span class="ident">u32</span>,
                 <span class="bool-val">true</span>,
             )<span class="question-mark">?</span>;
-            <span class="ident">addresses</span>.<span class="ident">push</span>((<span class="ident">Bech32Address</span>(<span class="ident">address</span>.<span class="ident">to_bech32</span>(<span class="kw-2">&amp;</span><span class="ident">bech32_hrp</span>)), <span class="bool-val">false</span>));
-            <span class="ident">addresses</span>.<span class="ident">push</span>((<span class="ident">Bech32Address</span>(<span class="ident">internal_address</span>.<span class="ident">to_bech32</span>(<span class="kw-2">&amp;</span><span class="ident">bech32_hrp</span>)), <span class="bool-val">true</span>));
+            <span class="ident">addresses</span>.<span class="ident">push</span>((<span class="ident">address</span>, <span class="bool-val">false</span>));
+            <span class="ident">addresses</span>.<span class="ident">push</span>((<span class="ident">internal_address</span>, <span class="bool-val">true</span>));
         }
 
         <span class="prelude-val">Ok</span>(<span class="ident">addresses</span>)
@@ -290,17 +312,17 @@
     <span class="ident">bech32_hrp</span>: <span class="ident">String</span>,
     <span class="ident">account_index</span>: <span class="ident">usize</span>,
     <span class="ident">range</span>: <span class="ident">Range</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
-    <span class="ident">address</span>: <span class="kw-2">&amp;</span><span class="ident">Bech32Address</span>,
+    <span class="ident">address</span>: <span class="kw-2">&amp;</span><span class="ident">Address</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">bool</span>)<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">addresses</span> <span class="op">=</span> <span class="ident">GetAddressesBuilder</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">seed</span>)
-        .<span class="ident">with_bech32_hrp</span>(<span class="ident">bech32_hrp</span>)
+        .<span class="ident">with_bech32_hrp</span>(<span class="ident">bech32_hrp</span>.<span class="ident">clone</span>())
         .<span class="ident">with_account_index</span>(<span class="ident">account_index</span>)
         .<span class="ident">with_range</span>(<span class="ident">range</span>.<span class="ident">clone</span>())
         .<span class="ident">get_all</span>()
         .<span class="kw">await</span><span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">index_counter</span> <span class="op">=</span> <span class="ident">range</span>.<span class="ident">start</span>;
     <span class="kw">for</span> <span class="ident">address_internal</span> <span class="kw">in</span> <span class="ident">addresses</span> {
-        <span class="kw">if</span> <span class="ident">address_internal</span>.<span class="number">0</span> <span class="op">=</span><span class="op">=</span> <span class="kw-2">*</span><span class="ident">address</span> {
+        <span class="kw">if</span> <span class="ident">address_internal</span>.<span class="number">0</span> <span class="op">=</span><span class="op">=</span> <span class="kw-2">*</span><span class="ident">address</span>.<span class="ident">to_bech32</span>(<span class="kw-2">&amp;</span><span class="ident">bech32_hrp</span>) {
             <span class="kw">return</span> <span class="prelude-val">Ok</span>((<span class="ident">index_counter</span>, <span class="ident">address_internal</span>.<span class="number">1</span>));
         }
         <span class="kw">if</span> <span class="op">!</span><span class="ident">address_internal</span>.<span class="number">1</span> {
@@ -308,7 +330,7 @@
         }
     }
     <span class="prelude-val">Err</span>(<span class="kw">crate</span>::<span class="ident">error</span>::<span class="ident">Error</span>::<span class="ident">InputAddressNotFound</span>(
-        <span class="ident">address</span>.<span class="ident">to_string</span>(),
+        <span class="ident">address</span>.<span class="ident">to_bech32</span>(<span class="kw-2">&amp;</span><span class="ident">bech32_hrp</span>),
         <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">range</span>),
     ))
 }

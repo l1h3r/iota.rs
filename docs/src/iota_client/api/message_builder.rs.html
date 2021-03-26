@@ -667,13 +667,6 @@
 <span id="664">664</span>
 <span id="665">665</span>
 <span id="666">666</span>
-<span id="667">667</span>
-<span id="668">668</span>
-<span id="669">669</span>
-<span id="670">670</span>
-<span id="671">671</span>
-<span id="672">672</span>
-<span id="673">673</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -776,23 +769,21 @@
         <span class="self">self</span>
     }
 
-    <span class="doccomment">/// Set a transfer to the builder, address needs to be Bech32 encoded</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_output</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">address</span>: <span class="kw-2">&amp;</span><span class="ident">Bech32Address</span>, <span class="ident">amount</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">address</span> <span class="op">=</span> <span class="ident">Address</span>::<span class="ident">try_from_bech32</span>(<span class="kw-2">&amp;</span><span class="ident">address</span>.<span class="ident">to_string</span>())<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">SignatureLockedSingleOutput</span>::<span class="ident">new</span>(<span class="ident">address</span>, <span class="ident">amount</span>)<span class="question-mark">?</span>.<span class="ident">into</span>();
+    <span class="doccomment">/// Set a transfer to the builder</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_output</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">address</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">amount</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">SignatureLockedSingleOutput</span>::<span class="ident">new</span>(<span class="ident">Address</span>::<span class="ident">from_str</span>(<span class="ident">address</span>)<span class="question-mark">?</span>, <span class="ident">amount</span>)<span class="question-mark">?</span>.<span class="ident">into</span>();
         <span class="self">self</span>.<span class="ident">outputs</span>.<span class="ident">push</span>(<span class="ident">output</span>);
         <span class="prelude-val">Ok</span>(<span class="self">self</span>)
     }
 
     <span class="doccomment">/// Set a dust allowance transfer to the builder, address needs to be Bech32 encoded</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_dust_allowance_output</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">address</span>: <span class="kw-2">&amp;</span><span class="ident">Bech32Address</span>, <span class="ident">amount</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_dust_allowance_output</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">address</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">amount</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="ident">amount</span> <span class="op">&lt;</span> <span class="ident">DUST_THRESHOLD</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">DustError</span>(
                 <span class="string">&quot;Amount for SignatureLockedDustAllowanceOutput needs to be &gt;= 1_000_000&quot;</span>.<span class="ident">into</span>(),
             ));
         }
-        <span class="kw">let</span> <span class="ident">address</span> <span class="op">=</span> <span class="ident">Address</span>::<span class="ident">try_from_bech32</span>(<span class="kw-2">&amp;</span><span class="ident">address</span>.<span class="ident">to_string</span>())<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">SignatureLockedDustAllowanceOutput</span>::<span class="ident">new</span>(<span class="ident">address</span>, <span class="ident">amount</span>)<span class="question-mark">?</span>.<span class="ident">into</span>();
+        <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">SignatureLockedDustAllowanceOutput</span>::<span class="ident">new</span>(<span class="ident">Address</span>::<span class="ident">from_str</span>(<span class="ident">address</span>)<span class="question-mark">?</span>, <span class="ident">amount</span>)<span class="question-mark">?</span>.<span class="ident">into</span>();
         <span class="self">self</span>.<span class="ident">outputs</span>.<span class="ident">push</span>(<span class="ident">output</span>);
         <span class="prelude-val">Ok</span>(<span class="self">self</span>)
     }
@@ -912,13 +903,12 @@
                             <span class="ident">total_already_spent</span> <span class="op">+</span><span class="op">=</span> <span class="ident">output_amount</span>;
                             <span class="comment">// Note that we need to sign the original address, i.e., `path/index`,</span>
                             <span class="comment">// instead of `path/index/_offset` or `path/_offset`.</span>
-                            <span class="kw">let</span> <span class="ident">bech32_address</span> <span class="op">=</span> <span class="ident">output_address</span>.<span class="ident">to_bech32</span>(<span class="kw-2">&amp;</span><span class="ident">bech32_hrp</span>);
                             <span class="kw">let</span> (<span class="ident">address_index</span>, <span class="ident">internal</span>) <span class="op">=</span> <span class="ident">search_address</span>(
                                 <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">seed</span>.<span class="ident">expect</span>(<span class="string">&quot;No seed&quot;</span>),
                                 <span class="ident">bech32_hrp</span>.<span class="ident">clone</span>(),
                                 <span class="ident">account_index</span>,
                                 <span class="self">self</span>.<span class="ident">input_range</span>.<span class="ident">clone</span>(),
-                                <span class="kw-2">&amp;</span><span class="ident">bech32_address</span>.<span class="ident">into</span>(),
+                                <span class="kw-2">&amp;</span><span class="ident">output_address</span>,
                             )
                             .<span class="kw">await</span><span class="question-mark">?</span>;
                             <span class="comment">// 44 is for BIP 44 (HD wallets) and 4218 is the registered index for IOTA https://github.com/satoshilabs/slips/blob/master/slip-0044.md</span>
@@ -1092,12 +1082,7 @@
                 .<span class="ident">cloned</span>()
                 .<span class="ident">filter</span>(<span class="op">|</span><span class="ident">d</span><span class="op">|</span> <span class="ident">d</span>.<span class="number">1</span> <span class="op">=</span><span class="op">=</span> <span class="ident">address</span>)
                 .<span class="ident">collect</span>();
-            <span class="ident">is_dust_allowed</span>(
-                <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">client</span>,
-                <span class="ident">address</span>.<span class="ident">to_bech32</span>(<span class="kw-2">&amp;</span><span class="ident">bech32_hrp</span>).<span class="ident">into</span>(),
-                <span class="ident">created_or_consumed_outputs</span>,
-            )
-            .<span class="kw">await</span><span class="question-mark">?</span>;
+            <span class="ident">is_dust_allowed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">client</span>, <span class="ident">address</span>, <span class="ident">created_or_consumed_outputs</span>).<span class="kw">await</span><span class="question-mark">?</span>;
         }
 
         <span class="comment">// Build signed transaction payload</span>
@@ -1220,7 +1205,7 @@
 <span class="comment">// Calculate the outputs on this address after this transaction gets confirmed so we know if we can send dust or</span>
 <span class="comment">// dust allowance outputs (as input), the bool in the outputs defines if we consume this output (false) or create a new</span>
 <span class="comment">// one (true)</span>
-<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">is_dust_allowed</span>(<span class="ident">client</span>: <span class="kw-2">&amp;</span><span class="ident">Client</span>, <span class="ident">address</span>: <span class="ident">Bech32Address</span>, <span class="ident">outputs</span>: <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">u64</span>, <span class="ident">Address</span>, <span class="ident">bool</span>)<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">is_dust_allowed</span>(<span class="ident">client</span>: <span class="kw-2">&amp;</span><span class="ident">Client</span>, <span class="ident">address</span>: <span class="ident">Address</span>, <span class="ident">outputs</span>: <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">u64</span>, <span class="ident">Address</span>, <span class="ident">bool</span>)<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="comment">// balance of all dust allowance outputs</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dust_allowance_balance</span>: <span class="ident">i64</span> <span class="op">=</span> <span class="number">0</span>;
     <span class="comment">// Amount of dust outputs</span>
@@ -1248,8 +1233,9 @@
         }
     }
 
+    <span class="kw">let</span> <span class="ident">bech32_hrp</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">get_bech32_hrp</span>().<span class="kw">await</span><span class="question-mark">?</span>;
     <span class="comment">// Get outputs from address and apply values</span>
-    <span class="kw">let</span> <span class="ident">address_outputs_metadata</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">find_outputs</span>(<span class="kw-2">&amp;</span>[], <span class="kw-2">&amp;</span>[<span class="ident">address</span>.<span class="ident">clone</span>()]).<span class="kw">await</span><span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">address_outputs_metadata</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">find_outputs</span>(<span class="kw-2">&amp;</span>[], <span class="kw-2">&amp;</span>[<span class="ident">address</span>.<span class="ident">to_bech32</span>(<span class="kw-2">&amp;</span><span class="ident">bech32_hrp</span>)]).<span class="kw">await</span><span class="question-mark">?</span>;
     <span class="kw">for</span> <span class="ident">output_metadata</span> <span class="kw">in</span> <span class="ident">address_outputs_metadata</span> {
         <span class="kw">match</span> <span class="ident">output_metadata</span>.<span class="ident">output</span> {
             <span class="ident">OutputDto</span>::<span class="ident">Treasury</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {}
@@ -1270,7 +1256,7 @@
     <span class="kw">if</span> <span class="ident">dust_outputs_amount</span> <span class="op">&gt;</span> <span class="ident">allowed_dust_amount</span> {
         <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">DustError</span>(<span class="macro">format</span><span class="macro">!</span>(
             <span class="string">&quot;No dust output allowed on address {}&quot;</span>,
-            <span class="ident">address</span>
+            <span class="ident">address</span>.<span class="ident">to_bech32</span>(<span class="kw-2">&amp;</span><span class="ident">bech32_hrp</span>)
         )));
     }
     <span class="prelude-val">Ok</span>(())

@@ -279,7 +279,7 @@ for node in node_pool_urls{
 <tr><td><strong>initial_address_index</strong></td><td>✘</td><td>0</td><td>usize</td><td>The index from where to start looking for balance. Responsible for the value <code>✘</code> in the Bip32Path <code>m/44'/4218'/0'/0'/✘'</code>.</td></tr>
 <tr><td><strong>input</strong></td><td>✘</td><td>None</td><td>UTXOInput</td><td>Users can manually select their UTXOInputs instead of having automatically selected inputs.</td></tr>
 <tr><td><strong>input_range</strong></td><td>✘</td><td>0..100</td><td>Range</td><td>Custom range to search for the input addresses if custom inputs are provided.</td></tr>
-<tr><td><strong>output</strong></td><td>✘</td><td>None</td><td>address: &amp;<a href="#Bech32Address">Bech32Address</a>,<br />amount: u64</td><td>Address to send to and amount to send. Address needs to be Bech32 encoded.</td></tr>
+<tr><td><strong>output</strong></td><td>✘</td><td>None</td><td>address: &amp;[String],<br />amount: u64</td><td>Address to send to and amount to send. Address needs to be Bech32 encoded.</td></tr>
 <tr><td><strong>output_hex</strong></td><td>✘</td><td>None</td><td>address: &amp;str,<br />amount: u64</td><td>Address to send to and amount to send. Address needs to be hex encoded.</td></tr>
 <tr><td><strong>index</strong></td><td>✘</td><td>None</td><td>&amp;[u8] / &amp;str</td><td>An optional indexation key for an indexation payload. 1-64 bytes long.</td></tr>
 <tr><td><strong>data</strong></td><td>✘</td><td>None</td><td>Vec<u8></td><td>Optional data for the indexation payload.</td></tr>
@@ -338,7 +338,7 @@ for node in node_pool_urls{
 <tr><td><strong>initial_address_index</strong></td><td>✘</td><td>0</td><td>usize</td><td>Start index of the addresses to search. Responsible for the value <code>✘</code> in the Bip32Path <code>m/44'/4218'/0'/0'/✘'</code>.</td></tr>
 </tbody></table>
 <h3 id="return-2"><a class="header" href="#return-2">Return</a></h3>
-<p>Return a tuple with type of <code>(Bech32Address, usize)</code> as the address and corresponding index in the account.</p>
+<p>Return a tuple with type of <code>(String, usize)</code> as the address and corresponding index in the account.</p>
 <h3 id="implementation-details-1"><a class="header" href="#implementation-details-1">Implementation Details</a></h3>
 <p>Following are the steps for implementing this method:</p>
 <ul>
@@ -354,10 +354,10 @@ for node in node_pool_urls{
 <tr><td><strong>seed</strong></td><td>✔</td><td>None</td><td><a href="#Seed">Seed</a></td><td>The seed we want to search for.</td></tr>
 <tr><td><strong>account_index</strong></td><td>✘</td><td>0</td><td>usize</td><td>The account index, responsible for the value <code>✘</code> in the Bip32Path <code>m/44'/4218'/✘'/0'/0'</code>.</td></tr>
 <tr><td><strong>range</strong></td><td>✘</td><td>None</td><td>std::ops::Range</td><td>Range indices of the addresses we want to search for. Default is (0..20)</td></tr>
-<tr><td><strong>get_all</strong></td><td>✘</td><td>✘</td><td>✘</td><td>Get public and <a href="https://bitcoin.stackexchange.com/questions/75033/bip44-and-change-addresses">change addresses</a>. Will return Vec&lt;(<a href="#Bech32Address">Bech32Address</a>, bool)&gt;, where the bool is indicating whether it's a change address</td></tr>
+<tr><td><strong>get_all</strong></td><td>✘</td><td>✘</td><td>✘</td><td>Get public and <a href="https://bitcoin.stackexchange.com/questions/75033/bip44-and-change-addresses">change addresses</a>. Will return Vec&lt;([String], bool)&gt;, where the bool is indicating whether it's a change address</td></tr>
 </tbody></table>
 <h3 id="return-3"><a class="header" href="#return-3">Return</a></h3>
-<p>Vec&lt;<a href="#Bech32Address">Bech32Address</a>&gt;, with the public addresses</p>
+<p>Vec&lt;[String]&gt;, with the public addresses</p>
 <h2 id="get_balance"><a class="header" href="#get_balance"><code>get_balance()</code></a></h2>
 <p>Return the balance for a provided seed and its wallet account index.</p>
 <h3 id="parameters-6"><a class="header" href="#parameters-6">Parameters</a></h3>
@@ -381,7 +381,7 @@ for node in node_pool_urls{
 <p>Return the balance in iota for the given addresses; No seed or security level needed to do this since we are only checking and already know the addresses.</p>
 <h3 id="parameters-7"><a class="header" href="#parameters-7">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
-<tr><td><strong>addresses</strong></td><td>✔</td><td>[<a href="#Bech32Address">Bech32Address</a>]</td><td>List of Bech32 encoded addresses.</td></tr>
+<tr><td><strong>addresses</strong></td><td>✔</td><td>[[String]]</td><td>List of Bech32 encoded addresses.</td></tr>
 </tbody></table>
 <h3 id="return-5"><a class="header" href="#return-5">Return</a></h3>
 <p>A list of tuples with value of <a href="#AddressBalancePair">AddressBalancePair</a>. The usize is the balance of the address accordingly.</p>
@@ -396,14 +396,14 @@ for node in node_pool_urls{
 <p>Returns a valid Address parsed from a String.</p>
 <h3 id="parameters-8"><a class="header" href="#parameters-8">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
-<tr><td><strong>address</strong></td><td>✔</td><td><a href="#Bech32Address">Bech32Address</a></td><td>Bech32 encoded address.</td></tr>
+<tr><td><strong>address</strong></td><td>✔</td><td>[String]</td><td>Bech32 encoded address.</td></tr>
 </tbody></table>
 <h3 id="return-6"><a class="header" href="#return-6">Return</a></h3>
 <p>Parsed <a href="#Address">Address</a>.</p>
 <h2 id="is_address_valid"><a class="header" href="#is_address_valid"><code>is_address_valid()</code></a></h2>
 <h3 id="parameters-9"><a class="header" href="#parameters-9">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
-<tr><td><strong>address</strong></td><td>✔</td><td><a href="#Bech32Address">Bech32Address</a></td><td>Bech32 encoded address.</td></tr>
+<tr><td><strong>address</strong></td><td>✔</td><td>[String]</td><td>Bech32 encoded address.</td></tr>
 </tbody></table>
 <h3 id="return-7"><a class="header" href="#return-7">Return</a></h3>
 <p>A boolean showing if the address is valid.</p>
@@ -555,7 +555,7 @@ for node in node_pool_urls{
 <p>(<code>GET /addresses</code>)</p>
 <h3 id="parameters-20"><a class="header" href="#parameters-20">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
-<tr><td><strong>address</strong></td><td>✔</td><td><a href="#Bech32Address">Bech32Address</a></td><td>The address to search for.</td></tr>
+<tr><td><strong>address</strong></td><td>✔</td><td>[String]</td><td>The address to search for.</td></tr>
 </tbody></table>
 <h3 id="returns-13"><a class="header" href="#returns-13">Returns</a></h3>
 <p>Depend on the final calling method, users could get different outputs they need:</p>
@@ -568,7 +568,7 @@ for node in node_pool_urls{
 <h3 id="parameters-21"><a class="header" href="#parameters-21">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
 <tr><td><strong>output_id</strong></td><td>✘</td><td>[UTXOInput]</td><td>The identifier of output.</td></tr>
-<tr><td><strong>addresses</strong></td><td>✘</td><td>[<a href="#Bech32Address">Bech32Address</a>]</td><td>The Bech32 encoded address.</td></tr>
+<tr><td><strong>addresses</strong></td><td>✘</td><td>[[String]]</td><td>The Bech32 encoded address.</td></tr>
 </tbody></table>
 <h3 id="returns-14"><a class="header" href="#returns-14">Returns</a></h3>
 <p>A vector of <a href="#OutputMetadata">OutputMetadata</a>.</p>
@@ -764,10 +764,6 @@ struct ReferenceUnlock(u16);
 }
 <span class="boring">}
 </span></code></pre></pre>
-<h2 id="bech32address"><a class="header" href="#bech32address"><code>Bech32Address</code></a></h2>
-<p>Wrapper type to be used in most cases where an address is involved.</p>
-<pre><code class="language-Rust">pub struct Bech32Address(pub String);
-</code></pre>
 <h2 id="address"><a class="header" href="#address"><code>Address</code></a></h2>
 <p>An Ed25519 address can be encoded in Bech32 or Hex, with Bech32 being preferred and also used in most functions.</p>
 <pre><code class="language-Rust">pub enum Address {
@@ -776,8 +772,8 @@ struct ReferenceUnlock(u16);
 </code></pre>
 <h2 id="addressbalancepair"><a class="header" href="#addressbalancepair"><code>AddressBalancePair</code></a></h2>
 <pre><code class="language-Rust">pub struct AddressBalancePair {
-    /// Address
-    pub address: Bech32Address,
+    /// Address, bech32 encoded
+    pub address: String,
     /// Balance in the address
     pub balance: u64,
 }
