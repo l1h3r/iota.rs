@@ -716,7 +716,7 @@
     <span class="ident">seed</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Seed</span><span class="op">&gt;</span>,
     <span class="ident">account_index</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
     <span class="ident">initial_address_index</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
-    <span class="ident">inputs</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">UTXOInput</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">inputs</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">UtxoInput</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">input_range</span>: <span class="ident">Range</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
     <span class="ident">outputs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Output</span><span class="op">&gt;</span>,
     <span class="ident">index</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span><span class="op">&gt;</span>,
@@ -760,7 +760,7 @@
     }
 
     <span class="doccomment">/// Set a custom input(transaction output)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_input</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">input</span>: <span class="ident">UTXOInput</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_input</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">input</span>: <span class="ident">UtxoInput</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">inputs</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">inputs</span> {
             <span class="prelude-val">Some</span>(<span class="kw-2">mut</span> <span class="ident">inputs</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">inputs</span>.<span class="ident">push</span>(<span class="ident">input</span>);
@@ -928,8 +928,8 @@
                                 <span class="ident">internal</span> <span class="kw">as</span> <span class="ident">u32</span>,
                                 <span class="ident">address_index</span> <span class="kw">as</span> <span class="ident">u32</span>,
                             ]);
-                            <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="ident">Input</span>::<span class="ident">UTXO</span>(
-                                <span class="ident">UTXOInput</span>::<span class="ident">new</span>(<span class="ident">TransactionId</span>::<span class="ident">from_str</span>(<span class="kw-2">&amp;</span><span class="ident">output</span>.<span class="ident">transaction_id</span>)<span class="question-mark">?</span>, <span class="ident">output</span>.<span class="ident">output_index</span>)
+                            <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="ident">Input</span>::<span class="ident">Utxo</span>(
+                                <span class="ident">UtxoInput</span>::<span class="ident">new</span>(<span class="ident">TransactionId</span>::<span class="ident">from_str</span>(<span class="kw-2">&amp;</span><span class="ident">output</span>.<span class="ident">transaction_id</span>)<span class="question-mark">?</span>, <span class="ident">output</span>.<span class="ident">output_index</span>)
                                     .<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">Error</span>::<span class="ident">TransactionError</span>)<span class="question-mark">?</span>,
                             );
                             <span class="ident">inputs_for_essence</span>.<span class="ident">push</span>(<span class="ident">input</span>.<span class="ident">clone</span>());
@@ -1021,8 +1021,8 @@
                                             <span class="kw-2">*</span><span class="ident">internal</span> <span class="kw">as</span> <span class="ident">u32</span>,
                                             <span class="ident">address_index</span> <span class="kw">as</span> <span class="ident">u32</span>,
                                         ]);
-                                        <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="ident">Input</span>::<span class="ident">UTXO</span>(
-                                            <span class="ident">UTXOInput</span>::<span class="ident">new</span>(
+                                        <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="ident">Input</span>::<span class="ident">Utxo</span>(
+                                            <span class="ident">UtxoInput</span>::<span class="ident">new</span>(
                                                 <span class="ident">TransactionId</span>::<span class="ident">from_str</span>(<span class="kw-2">&amp;</span><span class="ident">output</span>.<span class="ident">transaction_id</span>)<span class="question-mark">?</span>,
                                                 <span class="ident">output</span>.<span class="ident">output_index</span>,
                                             )
@@ -1351,4 +1351,5 @@
     <span class="prelude-val">Ok</span>((<span class="ident">message</span>.<span class="ident">nonce</span>(), <span class="prelude-val">Some</span>(<span class="ident">message</span>)))
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "iota_client";</script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="iota_client"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>

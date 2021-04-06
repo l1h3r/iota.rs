@@ -277,7 +277,7 @@ for node in node_pool_urls{
 <tr><td><strong>seed</strong></td><td>✘</td><td>None</td><td><a href="#Seed">Seed</a></td><td>The seed of the account we are going to spend, only needed for transactions</td></tr>
 <tr><td><strong>account_index</strong></td><td>✘</td><td>0</td><td>usize</td><td>The account index, responsible for the value <code>✘</code> in the Bip32Path <code>m/44'/4218'/✘'/0'/0'</code>.</td></tr>
 <tr><td><strong>initial_address_index</strong></td><td>✘</td><td>0</td><td>usize</td><td>The index from where to start looking for balance. Responsible for the value <code>✘</code> in the Bip32Path <code>m/44'/4218'/0'/0'/✘'</code>.</td></tr>
-<tr><td><strong>input</strong></td><td>✘</td><td>None</td><td>UTXOInput</td><td>Users can manually select their UTXOInputs instead of having automatically selected inputs.</td></tr>
+<tr><td><strong>input</strong></td><td>✘</td><td>None</td><td>UtxoInput</td><td>Users can manually select their UtxoInputs instead of having automatically selected inputs.</td></tr>
 <tr><td><strong>input_range</strong></td><td>✘</td><td>0..100</td><td>Range</td><td>Custom range to search for the input addresses if custom inputs are provided.</td></tr>
 <tr><td><strong>output</strong></td><td>✘</td><td>None</td><td>address: &amp;[String],<br />amount: u64</td><td>Address to send to and amount to send. Address needs to be Bech32 encoded.</td></tr>
 <tr><td><strong>output_hex</strong></td><td>✘</td><td>None</td><td>address: &amp;str,<br />amount: u64</td><td>Address to send to and amount to send. Address needs to be hex encoded.</td></tr>
@@ -547,7 +547,7 @@ for node in node_pool_urls{
 <p>Get the producer of the output, the corresponding address, amount and spend status of an output. This information can only be retrieved for outputs which are part of a confirmed transaction.</p>
 <h3 id="parameters-19"><a class="header" href="#parameters-19">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
-<tr><td><strong>output_id</strong></td><td>✔</td><td>UTXOInput</td><td>Identifier of the output.</td></tr>
+<tr><td><strong>output_id</strong></td><td>✔</td><td>UtxoInput</td><td>Identifier of the output.</td></tr>
 </tbody></table>
 <h3 id="returns-12"><a class="header" href="#returns-12">Returns</a></h3>
 <p>An <a href="#OutputMetadata">OutputMetadata</a> that contains various information about the output.</p>
@@ -561,13 +561,13 @@ for node in node_pool_urls{
 <p>Depend on the final calling method, users could get different outputs they need:</p>
 <ul>
 <li><code>balance()</code>: Return confirmed balance of the address.</li>
-<li><code>outputs([options])</code>: Return UTXOInput array (transaction IDs with corresponding output index).</li>
+<li><code>outputs([options])</code>: Return UtxoInput array (transaction IDs with corresponding output index).</li>
 </ul>
 <h2 id="find_outputs"><a class="header" href="#find_outputs"><code>find_outputs()</code></a></h2>
 <p>Find all outputs based on the requests criteria.</p>
 <h3 id="parameters-21"><a class="header" href="#parameters-21">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
-<tr><td><strong>output_id</strong></td><td>✘</td><td>[UTXOInput]</td><td>The identifier of output.</td></tr>
+<tr><td><strong>output_id</strong></td><td>✘</td><td>[UtxoInput]</td><td>The identifier of output.</td></tr>
 <tr><td><strong>addresses</strong></td><td>✘</td><td>[[String]]</td><td>The Bech32 encoded address.</td></tr>
 </tbody></table>
 <h3 id="returns-14"><a class="header" href="#returns-14">Returns</a></h3>
@@ -687,7 +687,7 @@ struct TransactionPayloadEssence {
 }
 
 enum Input {
-    UTXO(UTXOInput(OutputId)),
+    UTXO(UtxoInput(OutputId)),
 }
 
 struct OutputId {

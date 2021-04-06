@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Input",""]],"struct":[["TreasuryInput",""],["UTXOInput",""]]});
+initSidebarItems({"enum":[["Input",""]],"struct":[["TreasuryInput",""],["UtxoInput",""]]});
