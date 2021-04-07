@@ -924,6 +924,11 @@ If gap_limit amount of addresses in a row have no balance the BalanceGetter will
 <tr><td>isHealthy</td><td><code>boolean</code></td><td>Node health status</td></tr>
 <tr><td>networkId</td><td><code>string</code></td><td>Node network identifier</td></tr>
 <tr><td>bech32HRP</td><td><code>string</code></td><td>Bech32 HRP for this network</td></tr>
+<tr><td>min_pow_score</td><td><code>number</code></td><td>Min PoW score</td></tr>
+<tr><td>messages_per_second</td><td><code>number</code></td><td>Network stats: Messages per second in the network</td></tr>
+<tr><td>referenced_messages_per_second</td><td><code>number</code></td><td>Network stats: Referenced messages per second</td></tr>
+<tr><td>referenced_rate</td><td><code>number</code></td><td>Network stats: referenced rate</td></tr>
+<tr><td>latest_milestone_timestamp</td><td><code>number</code></td><td>Timestamp of the latest milestone</td></tr>
 <tr><td>latestMilestoneIndex</td><td><code>number</code></td><td>Index of the latest milestone</td></tr>
 <tr><td>confirmedMilestoneIndex</td><td><code>number</code></td><td>Index of the confirmed milestone</td></tr>
 <tr><td>pruningIndex</td><td><code>number</code></td><td>Pruning index</td></tr>
@@ -2057,6 +2062,11 @@ Also for all the optional values, the default values are the same as the ones in
     'is_healthy': bool,
     'network_id': str,
     'bech32_hrp': str,
+    'min_pow_score': float,
+    'messages_per_second': float,
+    'referenced_messages_per_second': float,
+    'referenced_rate': float,
+    'latest_milestone_timestamp': u64,
     'latest_milestone_index': int,
     'confirmed_milestone_index': int,
     'pruning_index': int,
@@ -2487,6 +2497,10 @@ for node in node_pool_urls{
     pub network_id: String,
     pub latest_milestone_index: usize,
     pub min_pow_score: f64,
+    pub messages_per_second: f64,
+    pub referenced_messages_per_second: f64,
+    pub referenced_rate: f64,
+    pub latest_milestone_timestamp: u64,
     pub confirmed_milestone_index: usize,
     pub pruning_index: usize,
     pub features: Vec&lt;String&gt;,
