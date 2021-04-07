@@ -173,6 +173,8 @@
 <li><a href="#get_addresses"><code>get_addresses</code></a></li>
 <li><a href="#get_balance"><code>get_balance</code></a></li>
 <li><a href="#get_address_balances"><code>get_address_balances</code></a></li>
+<li><a href="#bech32_to_hex"><code>bech32_to_hex</code></a></li>
+<li><a href="#hex_to_bech32"><code>hex_to_bech32</code></a></li>
 <li><a href="#parse_bech32_address"><code>parse_bech32_address</code></a></li>
 <li><a href="#is_address_valid"><code>is_address_valid</code></a></li>
 <li><a href="#subscriber"><code>subscriber</code></a></li>
@@ -384,20 +386,37 @@ for node in node_pool_urls{
 <li>Get latest balance for the provided address using <a href="#find_outputs"><code>find_outputs()</code></a> with addresses as parameter;</li>
 <li>Return the list of Output which contains corresponding pairs of address and balance.</li>
 </ul>
-<h2 id="parse_bech32_address"><a class="header" href="#parse_bech32_address"><code>parse_bech32_address()</code></a></h2>
-<p>Returns a valid Address parsed from a String.</p>
+<h2 id="bech32_to_hex"><a class="header" href="#bech32_to_hex"><code>bech32_to_hex()</code></a></h2>
+<p>Returns a parsed hex String from bech32.</p>
 <h3 id="parameters-8"><a class="header" href="#parameters-8">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
-<tr><td><strong>address</strong></td><td>✔</td><td>[String]</td><td>Bech32 encoded address.</td></tr>
+<tr><td><strong>bech32</strong></td><td>✔</td><td>[String]</td><td>Bech32 encoded address.</td></tr>
 </tbody></table>
 <h3 id="return-6"><a class="header" href="#return-6">Return</a></h3>
-<p>Parsed <a href="#Address">Address</a>.</p>
-<h2 id="is_address_valid"><a class="header" href="#is_address_valid"><code>is_address_valid()</code></a></h2>
+<p>Parsed [String].</p>
+<h2 id="hex_to_bech32"><a class="header" href="#hex_to_bech32"><code>hex_to_bech32()</code></a></h2>
+<p>Returns a parsed bech32 String from hex.</p>
 <h3 id="parameters-9"><a class="header" href="#parameters-9">Parameters</a></h3>
+<table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
+<tr><td><strong>hex</strong></td><td>✔</td><td>[String]</td><td>Hex encoded address.</td></tr>
+<tr><td><strong>bech32_hrp</strong></td><td>✔</td><td>[Option<String>]</td><td>Optional bech32 hrp.</td></tr>
+</tbody></table>
+<h3 id="return-7"><a class="header" href="#return-7">Return</a></h3>
+<p>Parsed [String].</p>
+<h2 id="parse_bech32_address"><a class="header" href="#parse_bech32_address"><code>parse_bech32_address()</code></a></h2>
+<p>Returns a valid Address parsed from a String.</p>
+<h3 id="parameters-10"><a class="header" href="#parameters-10">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
 <tr><td><strong>address</strong></td><td>✔</td><td>[String]</td><td>Bech32 encoded address.</td></tr>
 </tbody></table>
-<h3 id="return-7"><a class="header" href="#return-7">Return</a></h3>
+<h3 id="return-8"><a class="header" href="#return-8">Return</a></h3>
+<p>Parsed <a href="#Address">Address</a>.</p>
+<h2 id="is_address_valid"><a class="header" href="#is_address_valid"><code>is_address_valid()</code></a></h2>
+<h3 id="parameters-11"><a class="header" href="#parameters-11">Parameters</a></h3>
+<table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
+<tr><td><strong>address</strong></td><td>✔</td><td>[String]</td><td>Bech32 encoded address.</td></tr>
+</tbody></table>
+<h3 id="return-9"><a class="header" href="#return-9">Return</a></h3>
 <p>A boolean showing if the address is valid.</p>
 <h2 id="subscriber"><a class="header" href="#subscriber"><code>subscriber()</code></a></h2>
 <p>Subscribe to a node event <a href="#Topic">Topic</a> (MQTT)</p>
@@ -423,7 +442,7 @@ for node in node_pool_urls{
 <p>Nothing apart from a Ok(()) result if successful</p>
 <h2 id="retry"><a class="header" href="#retry"><code>retry()</code></a></h2>
 <p>Retries (promotes or reattaches) a message for provided <a href="#MessageId">MessageId</a> if the node suggests it. The need to use this function should be low, because the confirmation throughput of the node is expected to be quite high.</p>
-<h3 id="parameters-10"><a class="header" href="#parameters-10">Parameters</a></h3>
+<h3 id="parameters-12"><a class="header" href="#parameters-12">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
 <tr><td><strong>message_id</strong></td><td>✔</td><td><a href="#MessageId">MessageId</a></td><td>The identifier of message.</td></tr>
 </tbody></table>
@@ -438,7 +457,7 @@ for node in node_pool_urls{
 </ul>
 <h2 id="retry_until_included"><a class="header" href="#retry_until_included"><code>retry_until_included()</code></a></h2>
 <p>Retries (promotes or reattaches) a message for provided <a href="#MessageId">MessageId</a> until it's included (referenced by a milestone). Default interval is 5 seconds and max attempts is 10. The need to use this function should be low, because the confirmation throughput of the node is expected to be quite high.</p>
-<h3 id="parameters-11"><a class="header" href="#parameters-11">Parameters</a></h3>
+<h3 id="parameters-13"><a class="header" href="#parameters-13">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
 <tr><td><strong>message_id</strong></td><td>✔</td><td>[&amp;MessageId]</td><td>The identifier of message.</td></tr>
 <tr><td><strong>interval</strong></td><td>✘</td><td>Option<u64></td><td>The interval in which we retry the message.</td></tr>
@@ -449,7 +468,7 @@ for node in node_pool_urls{
 <h2 id="reattach"><a class="header" href="#reattach"><code>reattach()</code></a></h2>
 <p>Depends on <a href="#find_messages">find_messages</a>, <a href="#get_message">get_message</a> and <a href="#post_message">post_message</a>.</p>
 <p>Reattaches a message. The method should validate if a reattachment is necessary through <a href="#get_message">get_message</a>. If not, the method should error out and should not allow unnecessary reattachments.</p>
-<h3 id="parameters-12"><a class="header" href="#parameters-12">Parameters</a></h3>
+<h3 id="parameters-14"><a class="header" href="#parameters-14">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
 <tr><td><strong>message_id</strong></td><td>✔</td><td><a href="#MessageId">MessageId</a></td><td>The identifier of message.</td></tr>
 </tbody></table>
@@ -458,7 +477,7 @@ for node in node_pool_urls{
 <h2 id="promote"><a class="header" href="#promote"><code>promote()</code></a></h2>
 <p>Depends on <a href="#find_messages">find_messages</a>, <a href="#get_message">get_message</a> and <a href="#post_message">post_message</a>.</p>
 <p>Promotes a message. The method should validate if a promotion is necessary through <a href="#get_message">get_message</a>. If not, the method should error out and should not allow unnecessary promotions.</p>
-<h3 id="parameters-13"><a class="header" href="#parameters-13">Parameters</a></h3>
+<h3 id="parameters-15"><a class="header" href="#parameters-15">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
 <tr><td><strong>message_id</strong></td><td>✔</td><td><a href="#MessageId">MessageId</a></td><td>The identifier of message.</td></tr>
 </tbody></table>
@@ -469,14 +488,14 @@ for node in node_pool_urls{
 <h2 id="get_health"><a class="header" href="#get_health"><code>get_health()</code></a></h2>
 <p>(<code>GET /health</code>)</p>
 <p>Returns the health of the node, which can be used for load-balancing or uptime monitoring.</p>
-<h3 id="parameters-14"><a class="header" href="#parameters-14">Parameters</a></h3>
+<h3 id="parameters-16"><a class="header" href="#parameters-16">Parameters</a></h3>
 <p>None</p>
 <h3 id="returns-7"><a class="header" href="#returns-7">Returns</a></h3>
 <p>Boolean to indicate if node is healthy.</p>
 <h2 id="get_peers"><a class="header" href="#get_peers"><code>get_peers()</code></a></h2>
 <p>(<code>GET /peers</code>)</p>
 <p>Get information about the peers of the node.</p>
-<h3 id="parameters-15"><a class="header" href="#parameters-15">Parameters</a></h3>
+<h3 id="parameters-17"><a class="header" href="#parameters-17">Parameters</a></h3>
 <p>None</p>
 <h3 id="returns-8"><a class="header" href="#returns-8">Returns</a></h3>
 <pre><code class="language-Rust">pub struct PeerDto {
@@ -492,7 +511,7 @@ for node in node_pool_urls{
 <h2 id="get_info"><a class="header" href="#get_info"><code>get_info()</code></a></h2>
 <p>(<code>GET /api/v1/info</code>)</p>
 <p>Returns information about the node.</p>
-<h3 id="parameters-16"><a class="header" href="#parameters-16">Parameters</a></h3>
+<h3 id="parameters-18"><a class="header" href="#parameters-18">Parameters</a></h3>
 <p>None</p>
 <h3 id="returns-9"><a class="header" href="#returns-9">Returns</a></h3>
 <p>A Response Object similar to this:</p>
@@ -519,7 +538,7 @@ for node in node_pool_urls{
 <h2 id="get_tips"><a class="header" href="#get_tips"><code>get_tips()</code></a></h2>
 <p>(<code>GET /tips</code>)</p>
 <p>Returns two non-lazy tips. In case the node can only provide one tip, tip1 and tip2 are identical.</p>
-<h3 id="parameters-17"><a class="header" href="#parameters-17">Parameters</a></h3>
+<h3 id="parameters-19"><a class="header" href="#parameters-19">Parameters</a></h3>
 <p>None</p>
 <h3 id="returns-10"><a class="header" href="#returns-10">Returns</a></h3>
 <p>A tuple with two <a href="#MessageId">MessageId</a>:</p>
@@ -532,7 +551,7 @@ for node in node_pool_urls{
 <h2 id="post_message"><a class="header" href="#post_message"><code>post_message()</code></a></h2>
 <p>(<code>POST /message</code>)</p>
 <p>Submit a message. The node takes care of missing fields and tries to build the message. On success, the message will be stored in the Tangle. This endpoint will return the identifier of the message.</p>
-<h3 id="parameters-18"><a class="header" href="#parameters-18">Parameters</a></h3>
+<h3 id="parameters-20"><a class="header" href="#parameters-20">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
 <tr><td><strong>message</strong></td><td>✔</td><td><a href="#Message">Message</a></td><td>The message object.</td></tr>
 </tbody></table>
@@ -541,7 +560,7 @@ for node in node_pool_urls{
 <h2 id="get_output"><a class="header" href="#get_output"><code>get_output()</code></a></h2>
 <p>(<code>GET /outputs</code>)</p>
 <p>Get the producer of the output, the corresponding address, amount and spend status of an output. This information can only be retrieved for outputs which are part of a confirmed transaction.</p>
-<h3 id="parameters-19"><a class="header" href="#parameters-19">Parameters</a></h3>
+<h3 id="parameters-21"><a class="header" href="#parameters-21">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
 <tr><td><strong>output_id</strong></td><td>✔</td><td>UtxoInput</td><td>Identifier of the output.</td></tr>
 </tbody></table>
@@ -549,7 +568,7 @@ for node in node_pool_urls{
 <p>An <a href="#OutputMetadata">OutputMetadata</a> that contains various information about the output.</p>
 <h2 id="get_address"><a class="header" href="#get_address"><code>get_address()</code></a></h2>
 <p>(<code>GET /addresses</code>)</p>
-<h3 id="parameters-20"><a class="header" href="#parameters-20">Parameters</a></h3>
+<h3 id="parameters-22"><a class="header" href="#parameters-22">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
 <tr><td><strong>address</strong></td><td>✔</td><td>[String]</td><td>The address to search for.</td></tr>
 </tbody></table>
@@ -561,7 +580,7 @@ for node in node_pool_urls{
 </ul>
 <h2 id="find_outputs"><a class="header" href="#find_outputs"><code>find_outputs()</code></a></h2>
 <p>Find all outputs based on the requests criteria.</p>
-<h3 id="parameters-21"><a class="header" href="#parameters-21">Parameters</a></h3>
+<h3 id="parameters-23"><a class="header" href="#parameters-23">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
 <tr><td><strong>output_id</strong></td><td>✘</td><td>[UtxoInput]</td><td>The identifier of output.</td></tr>
 <tr><td><strong>addresses</strong></td><td>✘</td><td>[[String]]</td><td>The Bech32 encoded address.</td></tr>
@@ -571,7 +590,7 @@ for node in node_pool_urls{
 <h2 id="get_milestone"><a class="header" href="#get_milestone"><code>get_milestone()</code></a></h2>
 <p>(<code>GET /milestones</code>)</p>
 <p>Get the milestone by the given index.</p>
-<h3 id="parameters-22"><a class="header" href="#parameters-22">Parameters</a></h3>
+<h3 id="parameters-24"><a class="header" href="#parameters-24">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
 <tr><td><strong>index</strong></td><td>✔</td><td>u32</td><td>Index of the milestone.</td></tr>
 </tbody></table>
@@ -580,7 +599,7 @@ for node in node_pool_urls{
 <h2 id="get_milestone_utxo_changes"><a class="header" href="#get_milestone_utxo_changes"><code>get_milestone_utxo_changes()</code></a></h2>
 <p>(<code>GET /milestones/{}/utxo-changes</code>)</p>
 <p>Get all UTXO changes of a given milestone.</p>
-<h3 id="parameters-23"><a class="header" href="#parameters-23">Parameters</a></h3>
+<h3 id="parameters-25"><a class="header" href="#parameters-25">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
 <tr><td><strong>index</strong></td><td>✔</td><td>u32</td><td>Index of the milestone.</td></tr>
 </tbody></table>
@@ -616,7 +635,7 @@ for node in node_pool_urls{
 <h2 id="get_included_message"><a class="header" href="#get_included_message"><code>get_included_message()</code></a></h2>
 <p>(<code>GET /transactions/{transactionId}/included-message</code>)</p>
 <p>Get the included message of the transaction.</p>
-<h3 id="parameters-24"><a class="header" href="#parameters-24">Parameters</a></h3>
+<h3 id="parameters-26"><a class="header" href="#parameters-26">Parameters</a></h3>
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Type</th><th>Definition</th></tr></thead><tbody>
 <tr><td><strong>transaction_id</strong></td><td>✔</td><td>[TransactionId]</td><td>The id of the transaction.</td></tr>
 </tbody></table>

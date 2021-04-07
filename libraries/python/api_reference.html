@@ -344,6 +344,19 @@ Also for all the optional values, the default values are the same as the ones in
 <tr><td>[addresses]</td><td><code>list[str]</code></td><td><code>undefined</code></td><td>The list of addresses to search</td></tr>
 </tbody></table>
 <p><strong>Returns</strong> the list of <a href="#addressbalancepair">AddressBalancePair</a>.</p>
+<h4 id="bech32_to_hexbech32"><a class="header" href="#bech32_to_hexbech32">bech32_to_hex(bech32)</a></h4>
+<p>Returns a parsed hex String from bech32.</p>
+<table><thead><tr><th>Param</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<tr><td>bech32</td><td><code>string</code></td><td><code>undefined</code></td><td>The address Bech32 string</td></tr>
+</tbody></table>
+<p><strong>Returns</strong> A String</p>
+<h4 id="hex_to_bech32hex-bech32_hrp-optional"><a class="header" href="#hex_to_bech32hex-bech32_hrp-optional">hex_to_bech32(hex, bech32_hrp (optional))</a></h4>
+<p>Returns a parsed bech32 String from hex.</p>
+<table><thead><tr><th>Param</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<tr><td>bech32</td><td><code>string</code></td><td><code>undefined</code></td><td>The address Bech32 string</td></tr>
+<tr><td>bech32_hrp</td><td><code>string</code></td><td><code>undefined</code></td><td>The Bech32 hrp string</td></tr>
+</tbody></table>
+<p><strong>Returns</strong> A String</p>
 <h4 id="is_address_validaddress-bool"><a class="header" href="#is_address_validaddress-bool">is_address_valid(address): bool</a></h4>
 <p>Checks if a given address is valid.</p>
 <table><thead><tr><th>Param</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>

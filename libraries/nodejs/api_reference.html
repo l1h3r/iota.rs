@@ -286,6 +286,19 @@ Nodes that don't belong to this network are ignored.</p>
 <tr><td>addresses</td><td><code>string[]</code></td><td>The list of addresses to search</td></tr>
 </tbody></table>
 <p><strong>Returns</strong> A promise resolving to the list of <code>{ address, balance }</code> pairs.</p>
+<h4 id="bech32tohexbech32"><a class="header" href="#bech32tohexbech32">bech32ToHex(bech32)</a></h4>
+<p>Returns a parsed hex String from bech32.</p>
+<table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td>bech32</td><td><code>string</code></td><td>The address Bech32 string</td></tr>
+</tbody></table>
+<p><strong>Returns</strong> A String</p>
+<h4 id="hextobech32hex-bech32_hrp-optional"><a class="header" href="#hextobech32hex-bech32_hrp-optional">hexToBech32(hex, bech32_hrp (optional))</a></h4>
+<p>Returns a parsed bech32 String from hex.</p>
+<table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td>bech32</td><td><code>string</code></td><td>The address Bech32 string</td></tr>
+<tr><td>bech32_hrp</td><td><code>string</code></td><td>The Bech32 hrp string</td></tr>
+</tbody></table>
+<p><strong>Returns</strong> A String</p>
 <h4 id="isaddressvalidaddress-string-boolean"><a class="header" href="#isaddressvalidaddress-string-boolean">isAddressValid(address: string): boolean</a></h4>
 <p>Checks if a given address is valid.</p>
 <table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody>
@@ -542,7 +555,7 @@ Default interval is 5 seconds and max_attempts is 10.</p>
 </tbody></table>
 <p><strong>Returns</strong> the balance getter instance for chained calls.</p>
 <h4 id="gaplimitamount-balancegetter"><a class="header" href="#gaplimitamount-balancegetter">gapLimit(amount): BalanceGetter</a></h4>
-<p>Sets the gapLimit to specify how many addresses will be checked each round. 
+<p>Sets the gapLimit to specify how many addresses will be checked each round.
 If gap_limit amount of addresses in a row have no balance the BalanceGetter will return. Defaults to 20 if the function isn't called.</p>
 <table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody>
 <tr><td>gap_limit</td><td><code>number</code></td><td>The initial address index</td></tr>
