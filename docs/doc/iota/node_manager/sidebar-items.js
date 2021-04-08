@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["NodeDetail","JSON struct for NodeDetail from the node_pool_urls"]]});

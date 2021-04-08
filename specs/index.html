@@ -226,11 +226,16 @@
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Default Value</th><th>Type</th><th>Definition</th></tr></thead><tbody>
 <tr><td><strong>network</strong></td><td>✘</td><td>Testnet</td><td>&amp;str</td><td>Optional, the network type can be &quot;testnet&quot; or &quot;mainnet&quot;. If no node url is provided, some default nodes are used for the specified network. Nodes that aren't in this network will be ignored.</td></tr>
 <tr><td><strong>node</strong></td><td>✘</td><td>None</td><td>&amp;str</td><td>The URL of a node to connect to; format: <code>https://node:port</code></td></tr>
+<tr><td><strong>primary_node</strong></td><td>✘</td><td>None</td><td>&amp;str, auth_name_passw: Option&lt;(&amp;str, &amp;str)&gt;</td><td>The URL of a node to always connect first to with optional name and password for basic authentication, if multiple nodes are available; format: <code>https://node:port</code>, Some(&quot;name&quot;, &quot;password&quot;)</td></tr>
+<tr><td><strong>primary_pow_node</strong></td><td>✘</td><td>None</td><td>&amp;str, auth_name_passw: Option&lt;(&amp;str, &amp;str)&gt;</td><td>The URL of a node to always connect first to when submitting a message with remote PoW, if multiple nodes are available. Will override primary_node in that case. With optional name and password for basic authentication; format: <code>https://node:port</code>, Some(&quot;name&quot;, &quot;password&quot;)</td></tr>
 <tr><td><strong>node_auth</strong></td><td>✘</td><td>None</td><td>&amp;str, &amp;str, &amp;str</td><td>The URL of a node to connect to with name and password for basic authentication; format: <code>https://node:port</code>, <code>name</code>, <code>password</code></td></tr>
 <tr><td><strong>nodes</strong></td><td>✘</td><td>None</td><td>&amp;[&amp;str]</td><td>A list of nodes to connect to; nodes are added with the <code>https://node:port</code> format. The amount of nodes specified in quorum_size are randomly selected from this node list to check for quorum based on the quorum threshold. If quorum_size is not given the full list of nodes is checked.</td></tr>
 <tr><td><strong>node_sync_interval</strong></td><td>✘</td><td>Duration::from_secs(60)</td><td>std::time::Duration</td><td>The interval in milliseconds to check for node health and sync</td></tr>
 <tr><td><strong>node_sync_disabled</strong></td><td>✘</td><td>false</td><td>bool</td><td>If disabled also unhealty nodes will be used</td></tr>
 <tr><td><strong>node_pool_urls</strong></td><td>None</td><td>✘</td><td>&amp;[String]</td><td>A list of node_pool_urls from which nodes are added. The amount of nodes specified in quorum_size are randomly selected from this node list to check for quorum based on the quorum threshold. If quorum_size is not given the full list of nodes is checked.</td></tr>
+<tr><td><strong>quorum</strong></td><td>✘</td><td>false</td><td>bool</td><td>Define if quorum should be used for the requests</td></tr>
+<tr><td><strong>quorum_size</strong></td><td>✘</td><td>3</td><td>usize</td><td>Define how many nodes should be used for quorum</td></tr>
+<tr><td><strong>quorum_threshold</strong></td><td>✘</td><td>66</td><td>usize</td><td>Define the % of nodes that need to return the same response to accept it</td></tr>
 <tr><td><strong>request_timeout</strong></td><td>✘</td><td>Duration::from_secs(30)</td><td>std::time::Duration</td><td>The amount of seconds a request can be outstanding to a node before it's considered timed out</td></tr>
 <tr><td><strong>api_timeout</strong></td><td>✘</td><td>Api::GetInfo: Duration::from_secs(2)),<br /> Api::GetHealth: Duration::from_secs(2),<br />Api::GetPeers: Duration::from_secs(2),<br />Api::GetMilestone: Duration::from_secs(2),<br />Api::GetTips: Duration::from_secs(2),<br />Api::PostMessage: Duration::from_secs(2),<br />Api::PostMessageWithRemotePow: Duration::from_secs(30),<br />Api::GetOutput: Duration::from_secs(2)</td><td>HashMap&lt;<a href="#Api">Api</a>,<br /> std::time::Duration&gt;</td><td>The amount of milliseconds a request to a specific Api endpoint can be outstanding to a node before it's considered timed out.</td></tr>
 <tr><td><strong>local_pow</strong></td><td>✘</td><td>True</td><td>bool</td><td>If not defined it defaults to local PoW to offload node load times</td></tr>
@@ -518,7 +523,11 @@ for node in node_pool_urls{
 <pre><pre class="playground"><code class="language-rust">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>pub struct NodeInfo {
+</span>pub struct NodeInfoWrapper {
+    pub nodeinfo: NodeInfo,
+    pub url: String,
+}
+pub struct NodeInfo {
     pub name: String,
     pub version: String,
     pub is_healthy: bool,

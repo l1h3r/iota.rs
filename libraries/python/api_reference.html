@@ -185,9 +185,9 @@ Also for all the optional values, the default values are the same as the ones in
 <h4 id="get_health-bool"><a class="header" href="#get_health-bool">get_health(): bool</a></h4>
 <p>Gets the node health status.</p>
 <p><strong>Returns</strong> whether the node is healthy.</p>
-<h4 id="get_info-inforesponse"><a class="header" href="#get_info-inforesponse">get_info(): InfoResponse</a></h4>
+<h4 id="get_info-nodeinfowrapper"><a class="header" href="#get_info-nodeinfowrapper">get_info(): NodeInfoWrapper</a></h4>
 <p>Gets information about the node.</p>
-<p><strong>Returns</strong> the <a href="#inforesponse">InfoResponse</a>.</p>
+<p><strong>Returns</strong> the <a href="#nodeinfowrapper">NodeInfoWrapper</a>.</p>
 <h4 id="get_peers-listpeerdto"><a class="header" href="#get_peers-listpeerdto">get_peers(): list[PeerDto]</a></h4>
 <p>Gets peers of the node.</p>
 <p><strong>Returns</strong> the list of <a href="#peerdto">PeerDto</a>.</p>
@@ -640,9 +640,13 @@ Also for all the optional values, the default values are the same as the ones in
     'state': str
 }
 </code></pre>
-<h4 id="inforesponse"><a class="header" href="#inforesponse">InfoResponse</a></h4>
+<h4 id="nodeinfowrapper"><a class="header" href="#nodeinfowrapper">NodeInfoWrapper</a></h4>
 <p>A dict with the following key/value pairs.</p>
-<pre><code class="language-python">info_response = {
+<pre><code class="language-python">nodeinfo_wrapper{
+    url: str,
+    nodeinfo: info_response,
+}
+info_response = {
     'name': str,
     'version': str,
     'is_healthy': bool,
