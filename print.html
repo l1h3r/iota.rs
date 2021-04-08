@@ -549,7 +549,7 @@ Default interval is 5 seconds and max_attempts is 10.</p>
 <tr><td>[options.outputType]</td><td><code>'SignatureLockedSingle' | 'SignatureLockedDustAllowance'</code></td><td>The output type filter</td></tr>
 </tbody></table>
 <p><strong>Returns</strong> a promise resolving to a list of output ids.</p>
-<h4 id="getaddressbalanceaddress-promisenumber"><a class="header" href="#getaddressbalanceaddress-promisenumber">getAddressBalance(address): Promise<number></a></h4>
+<h4 id="getaddressbalanceaddress-promiseaddressbalance"><a class="header" href="#getaddressbalanceaddress-promiseaddressbalance">getAddressBalance(address): Promise<AddressBalance></a></h4>
 <p>Gets the balance of the given address.</p>
 <table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody>
 <tr><td>address</td><td><code>string</code></td><td>The address Bech32 string</td></tr>
@@ -919,6 +919,12 @@ If gap_limit amount of addresses in a row have no balance the BalanceGetter will
 <table><thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead><tbody>
 <tr><td>index</td><td><code>string</code></td><td>Indexation key</td></tr>
 <tr><td>data</td><td><code>Uint8Array</code></td><td>Indexation data</td></tr>
+</tbody></table>
+<h5 id="addressbalance"><a class="header" href="#addressbalance">AddressBalance</a></h5>
+<table><thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td>address</td><td><code>string</code></td><td>Bech32 encoded address</td></tr>
+<tr><td>balance</td><td><code>number</code></td><td>Address balance</td></tr>
+<tr><td>dustAllowed</td><td><code>boolean</code></td><td>Dust allowed</td></tr>
 </tbody></table>
 <h3 id="messagemetadata"><a class="header" href="#messagemetadata">MessageMetadata</a></h3>
 <table><thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead><tbody>
@@ -1652,14 +1658,14 @@ Also for all the optional values, the default values are the same as the ones in
 <table><thead><tr><th>Param</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
 <tr><td>[address]</td><td><code>list[str]</code></td><td><code>undefined</code></td><td>The address Bech32 string</td></tr>
 </tbody></table>
-<p><strong>Returns</strong> the <a href="libraries/python/api_reference.html#balanceaddressresponse">BalanceAddressResponse</a>.</p>
+<p><strong>Returns</strong> the <a href="libraries/python/api_reference.html#BalanceAddressResponse">BalanceAddressResponse</a>.</p>
 <h4 id="get_address_outputsaddress-options-optional-listutxoinput"><a class="header" href="#get_address_outputsaddress-options-optional-listutxoinput">get_address_outputs(address, options (optional)): list[UtxoInput]</a></h4>
 <p>Gets the UTXO outputs associated with the given address.</p>
 <table><thead><tr><th>Param</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
 <tr><td>[address]</td><td><code>str</code></td><td><code>undefined</code></td><td>The address Bech32 string</td></tr>
 <tr><td>[options]</td><td><code>[<a href="libraries/python/api_reference.html#addressoutputsoptions">AddressOutputsOptions</a>]</code></td><td><code>undefined</code></td><td>The query filters</td></tr>
 </tbody></table>
-<p><strong>Returns</strong> the list of <a href="libraries/python/api_reference.html#utxoinput">UtxoInput</a>.</p>
+<p><strong>Returns</strong> the list of <a href="libraries/python/api_reference.html#UtxoInput">UtxoInput</a>.</p>
 <h4 id="find_outputsoutput_ids-optional-addresses-optional-listoutputresponse"><a class="header" href="#find_outputsoutput_ids-optional-addresses-optional-listoutputresponse">find_outputs(output_ids (optional), addresses (optional)): list[OutputResponse]</a></h4>
 <p>Gets the UTXO outputs associated with the given output ids and addresses.</p>
 <table><thead><tr><th>Param</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
@@ -1875,6 +1881,7 @@ Also for all the optional values, the default values are the same as the ones in
 <pre><code class="language-python">address_balance_pair = {
     'address': str,
     'balance': int
+    'dust_allowed': bool
 }
 </code></pre>
 <h4 id="milestonedto"><a class="header" href="#milestonedto">MilestoneDto</a></h4>
@@ -2808,6 +2815,8 @@ struct ReferenceUnlock(u16);
     pub address: String,
     /// Balance in the address
     pub balance: u64,
+    /// If dust is allowed on the address
+    pub dust_allowed: bool,
 }
 </code></pre>
 <h2 id="milestone-1"><a class="header" href="#milestone-1"><code>Milestone</code></a></h2>

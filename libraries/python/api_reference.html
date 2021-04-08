@@ -211,14 +211,14 @@ Also for all the optional values, the default values are the same as the ones in
 <table><thead><tr><th>Param</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
 <tr><td>[address]</td><td><code>list[str]</code></td><td><code>undefined</code></td><td>The address Bech32 string</td></tr>
 </tbody></table>
-<p><strong>Returns</strong> the <a href="#balanceaddressresponse">BalanceAddressResponse</a>.</p>
+<p><strong>Returns</strong> the <a href="#BalanceAddressResponse">BalanceAddressResponse</a>.</p>
 <h4 id="get_address_outputsaddress-options-optional-listutxoinput"><a class="header" href="#get_address_outputsaddress-options-optional-listutxoinput">get_address_outputs(address, options (optional)): list[UtxoInput]</a></h4>
 <p>Gets the UTXO outputs associated with the given address.</p>
 <table><thead><tr><th>Param</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
 <tr><td>[address]</td><td><code>str</code></td><td><code>undefined</code></td><td>The address Bech32 string</td></tr>
 <tr><td>[options]</td><td><code>[<a href="#addressoutputsoptions">AddressOutputsOptions</a>]</code></td><td><code>undefined</code></td><td>The query filters</td></tr>
 </tbody></table>
-<p><strong>Returns</strong> the list of <a href="#utxoinput">UtxoInput</a>.</p>
+<p><strong>Returns</strong> the list of <a href="#UtxoInput">UtxoInput</a>.</p>
 <h4 id="find_outputsoutput_ids-optional-addresses-optional-listoutputresponse"><a class="header" href="#find_outputsoutput_ids-optional-addresses-optional-listoutputresponse">find_outputs(output_ids (optional), addresses (optional)): list[OutputResponse]</a></h4>
 <p>Gets the UTXO outputs associated with the given output ids and addresses.</p>
 <table><thead><tr><th>Param</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
@@ -434,6 +434,7 @@ Also for all the optional values, the default values are the same as the ones in
 <pre><code class="language-python">address_balance_pair = {
     'address': str,
     'balance': int
+    'dust_allowed': bool
 }
 </code></pre>
 <h4 id="milestonedto"><a class="header" href="#milestonedto">MilestoneDto</a></h4>

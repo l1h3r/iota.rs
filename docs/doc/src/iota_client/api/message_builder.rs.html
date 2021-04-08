@@ -675,6 +675,14 @@
 <span id="672">672</span>
 <span id="673">673</span>
 <span id="674">674</span>
+<span id="675">675</span>
+<span id="676">676</span>
+<span id="677">677</span>
+<span id="678">678</span>
+<span id="679">679</span>
+<span id="680">680</span>
+<span id="681">681</span>
+<span id="682">682</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -697,8 +705,10 @@
     },
 };
 
-<span class="kw">const</span> <span class="ident">MAX_ALLOWED_DUST_OUTPUTS</span>: <span class="ident">i64</span> <span class="op">=</span> <span class="number">100</span>;
 <span class="kw">const</span> <span class="ident">ADDRESS_GAP_LIMIT</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">20</span>;
+<span class="comment">// https://github.com/GalRogozinski/protocol-rfcs/blob/dust/text/0032-dust-protection/0032-dust-protection.md</span>
+<span class="kw">const</span> <span class="ident">MAX_ALLOWED_DUST_OUTPUTS</span>: <span class="ident">i64</span> <span class="op">=</span> <span class="number">100</span>;
+<span class="kw">const</span> <span class="ident">DUST_DIVISOR</span>: <span class="ident">i64</span> <span class="op">=</span> <span class="number">100_000</span>;
 <span class="kw">const</span> <span class="ident">DUST_THRESHOLD</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">1_000_000</span>;
 
 <span class="doccomment">/// Structure for sorting of UnlockBlocks</span>
@@ -1228,29 +1238,35 @@
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dust_outputs_amount</span>: <span class="ident">i64</span> <span class="op">=</span> <span class="number">0</span>;
 
     <span class="comment">// Add outputs from this transaction</span>
-    <span class="kw">for</span> <span class="ident">output</span> <span class="kw">in</span> <span class="ident">outputs</span> {
-        <span class="kw">match</span> <span class="ident">output</span>.<span class="number">2</span> {
-            <span class="comment">// add newly created outputs</span>
-            <span class="bool-val">true</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">if</span> <span class="ident">output</span>.<span class="number">0</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">DUST_THRESHOLD</span> {
-                    <span class="ident">dust_allowance_balance</span> <span class="op">+</span><span class="op">=</span> <span class="ident">output</span>.<span class="number">0</span> <span class="kw">as</span> <span class="ident">i64</span>;
-                } <span class="kw">else</span> {
-                    <span class="ident">dust_outputs_amount</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>
-                }
-            }
-            <span class="comment">// remove consumed outputs</span>
-            <span class="bool-val">false</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">if</span> <span class="ident">output</span>.<span class="number">0</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">DUST_THRESHOLD</span> {
-                    <span class="ident">dust_allowance_balance</span> <span class="op">-</span><span class="op">=</span> <span class="ident">output</span>.<span class="number">0</span> <span class="kw">as</span> <span class="ident">i64</span>;
-                } <span class="kw">else</span> {
-                    <span class="ident">dust_outputs_amount</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>;
-                }
-            }
+    <span class="kw">for</span> (<span class="ident">amount</span>, <span class="kw">_</span>, <span class="ident">add_outputs</span>) <span class="kw">in</span> <span class="ident">outputs</span> {
+        <span class="kw">let</span> <span class="ident">sign</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">add_outputs</span> { <span class="number">1</span> } <span class="kw">else</span> { <span class="op">-</span><span class="number">1</span> };
+        <span class="kw">if</span> <span class="ident">amount</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">DUST_THRESHOLD</span> {
+            <span class="ident">dust_allowance_balance</span> <span class="op">+</span><span class="op">=</span> <span class="ident">sign</span> <span class="op">*</span> <span class="ident">amount</span> <span class="kw">as</span> <span class="ident">i64</span>;
+        } <span class="kw">else</span> {
+            <span class="ident">dust_outputs_amount</span> <span class="op">+</span><span class="op">=</span> <span class="ident">sign</span>;
         }
     }
 
     <span class="kw">let</span> <span class="ident">bech32_hrp</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">get_bech32_hrp</span>().<span class="kw">await</span><span class="question-mark">?</span>;
-    <span class="comment">// Get outputs from address and apply values</span>
+
+    <span class="kw">let</span> <span class="ident">address_data</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">get_address</span>().<span class="ident">balance</span>(<span class="kw-2">&amp;</span><span class="ident">address</span>.<span class="ident">to_bech32</span>(<span class="kw-2">&amp;</span><span class="ident">bech32_hrp</span>)).<span class="kw">await</span><span class="question-mark">?</span>;
+    <span class="comment">// If we create a dust output and a dust allowance output we don&#39;t need to check more outputs if the balance/100_000</span>
+    <span class="comment">// is &lt; 100 because then we are sure that we didn&#39;t reach the max dust outputs</span>
+    <span class="kw">if</span> <span class="ident">address_data</span>.<span class="ident">dust_allowed</span>
+        <span class="op">&amp;&amp;</span> <span class="ident">dust_outputs_amount</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span>
+        <span class="op">&amp;&amp;</span> <span class="ident">dust_allowance_balance</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span>
+        <span class="op">&amp;&amp;</span> <span class="ident">address_data</span>.<span class="ident">balance</span> <span class="kw">as</span> <span class="ident">i64</span> <span class="op">/</span> <span class="ident">DUST_DIVISOR</span> <span class="op">&lt;</span> <span class="ident">MAX_ALLOWED_DUST_OUTPUTS</span>
+    {
+        <span class="kw">return</span> <span class="prelude-val">Ok</span>(());
+    } <span class="kw">else</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">address_data</span>.<span class="ident">dust_allowed</span> <span class="op">&amp;&amp;</span> <span class="ident">dust_outputs_amount</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> <span class="op">&amp;&amp;</span> <span class="ident">dust_allowance_balance</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">DustError</span>(<span class="macro">format</span><span class="macro">!</span>(
+            <span class="string">&quot;No dust output allowed on address {}&quot;</span>,
+            <span class="ident">address</span>.<span class="ident">to_bech32</span>(<span class="kw-2">&amp;</span><span class="ident">bech32_hrp</span>)
+        )));
+    }
+
+    <span class="comment">// Check all outputs of the address because we want to consume a dust allowance output and don&#39;t know if we are</span>
+    <span class="comment">// allowed to do that</span>
     <span class="kw">let</span> <span class="ident">address_outputs_metadata</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">find_outputs</span>(<span class="kw-2">&amp;</span>[], <span class="kw-2">&amp;</span>[<span class="ident">address</span>.<span class="ident">to_bech32</span>(<span class="kw-2">&amp;</span><span class="ident">bech32_hrp</span>)]).<span class="kw">await</span><span class="question-mark">?</span>;
     <span class="kw">for</span> <span class="ident">output_metadata</span> <span class="kw">in</span> <span class="ident">address_outputs_metadata</span> {
         <span class="kw">match</span> <span class="ident">output_metadata</span>.<span class="ident">output</span> {
@@ -1268,7 +1284,7 @@
 
     <span class="comment">// Here dust_allowance_balance and dust_outputs_amount should be as if this transaction gets confirmed</span>
     <span class="comment">// Max allowed dust outputs is 100</span>
-    <span class="kw">let</span> <span class="ident">allowed_dust_amount</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">cmp</span>::<span class="ident">min</span>(<span class="ident">dust_allowance_balance</span> <span class="op">/</span> <span class="number">100_000</span>, <span class="ident">MAX_ALLOWED_DUST_OUTPUTS</span>);
+    <span class="kw">let</span> <span class="ident">allowed_dust_amount</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">cmp</span>::<span class="ident">min</span>(<span class="ident">dust_allowance_balance</span> <span class="op">/</span> <span class="ident">DUST_DIVISOR</span>, <span class="ident">MAX_ALLOWED_DUST_OUTPUTS</span>);
     <span class="kw">if</span> <span class="ident">dust_outputs_amount</span> <span class="op">&gt;</span> <span class="ident">allowed_dust_amount</span> {
         <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">DustError</span>(<span class="macro">format</span><span class="macro">!</span>(
             <span class="string">&quot;No dust output allowed on address {}&quot;</span>,
