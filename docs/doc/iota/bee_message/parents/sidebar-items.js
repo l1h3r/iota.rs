@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["MESSAGE_PARENTS_RANGE",""]],"struct":[["Parents",""]]});
+initSidebarItems({"constant":[["MESSAGE_PARENTS_RANGE","The range containing the valid number of parents (directly approved transactions)."]],"struct":[["Parents","A `Message`'s `Parents` are the [`MessageId`]s of the transactions it directly approves."]]});
