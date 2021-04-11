@@ -375,23 +375,25 @@ run()
 </code></pre>
 <p>Output example of <code>getInfo()</code> function of the <code>ClientBuilder</code> instance:</p>
 <pre><code class="language-json">{
-  nodeinfo: {
-    name: 'HORNET',
-    version: '0.6.0-alpha',
-    isHealthy: true,
-    networkId: 'migration',
-    bech32HRP: 'atoi',
-    minPoWScore: 100,
-    messagesPerSecond: 4.2,
-    referencedMessagesPerSecond: 4.1,
-    referencedRate: 97.61904761904762,
-    latestMilestoneTimestamp: 1618139001,
-    latestMilestoneIndex: 7092,
-    confirmedMilestoneIndex: 7092,
-    pruningIndex: 0,
-    features: [ 'PoW' ]
-  },
-  url: 'https://api.lb-0.testnet.chrysalis2.com'
+   &quot;nodeinfo&quot;:{
+      &quot;name&quot;:&quot;HORNET&quot;,
+      &quot;version&quot;:&quot;0.6.0-alpha&quot;,
+      &quot;isHealthy&quot;:true,
+      &quot;networkId&quot;:&quot;migration&quot;,
+      &quot;bech32HRP&quot;:&quot;atoi&quot;,
+      &quot;minPoWScore&quot;:100,
+      &quot;messagesPerSecond&quot;:4.2,
+      &quot;referencedMessagesPerSecond&quot;:4.1,
+      &quot;referencedRate&quot;:97.61904761904762,
+      &quot;latestMilestoneTimestamp&quot;:1618139001,
+      &quot;latestMilestoneIndex&quot;:7092,
+      &quot;confirmedMilestoneIndex&quot;:7092,
+      &quot;pruningIndex&quot;:0,
+      &quot;features&quot;:[
+         &quot;PoW&quot;
+      ]
+   },
+   &quot;url&quot;:&quot;https://api.lb-0.testnet.chrysalis2.com&quot;
 }
 </code></pre>
 <p>The most important properties:</p>
@@ -568,15 +570,17 @@ run()
 </code></pre>
 <p>Example of output:</p>
 <pre><code class="language-json">{
-    'address_type': 0,
-    'address': '4b55799d1930fa049e2f656e1ca6e8d28b4bd55873fa6503293c6e45c14e2bfb',
-    'balance': 10000000
+   &quot;address_type&quot;:0,
+   &quot;address&quot;:&quot;atoi1qp9427varyc05py79ajku89xarfgkj74tpel5egr9y7xu3wpfc4lkpx0l86&quot;,
+   &quot;balance&quot;:10000000,
+   &quot;dust_allowed&quot;:false
 }
 
 10000000
 </code></pre>
 <ul>
 <li><code>address_type</code> indicates type of address. Value 0 denotes a Ed25519 address (currently the default for IOTA 1.5 network)</li>
+<li><code>dust_allowed</code> indicates whether the given address is allowed to accepts a dust due to <a href="https://chrysalis.docs.iota.org/guides/dev_guide.html#dust-protection">dust protection mechanism</a></li>
 </ul>
 <p><code>Client.getBalance(seed)</code> performs a several tasks under the hood.
 It starts generating addresses for the provided <code>seed</code> and <code>.accountIndex</code> from <code>.initialAddressIndex(index)</code>, and checks for a balance of each of the generated addresses. Since it does not know how many addresses are used in fact, there is a condition set by <code>.gapLimit(amount)</code> argument when to stop searching. If <code>.gapLimit</code> amount of addresses in a row have no balance the function returns result and searching does not continue.</p>
@@ -649,16 +653,25 @@ run()
 run()
 </code></pre>
 <p>Output example:</p>
-<pre><code class="language-json">{'message_id': 'f51fb2839e0a24d5b4a97f1f5721fdac0f1eeafd77645968927f7c2f4b46565b',
- 'transaction_id': 'a22cba0667c922cbb1f8bdcaf970b2a881ccd6e88e2fcce50374de2aac7c3772',
- 'output_index': 0,
- 'is_spent': False,
- 'output': {'treasury': None,
-  'signature_locked_single': {'kind': 0,
-   'address': {'ed25519': {'kind': 0,
-     'address': '4b55799d1930fa049e2f656e1ca6e8d28b4bd55873fa6503293c6e45c14e2bfb'}},
-   'amount': 10000000},
-  'signature_locked_dust_allowance': None}
+<pre><code class="language-json">{
+   &quot;message_id&quot;:&quot;f51fb2839e0a24d5b4a97f1f5721fdac0f1eeafd77645968927f7c2f4b46565b&quot;,
+   &quot;transaction_id&quot;:&quot;a22cba0667c922cbb1f8bdcaf970b2a881ccd6e88e2fcce50374de2aac7c3772&quot;,
+   &quot;output_index&quot;:0,
+   &quot;is_spent&quot;:false,
+   &quot;output&quot;:{
+      &quot;treasury&quot;:&quot;None&quot;,
+      &quot;signature_locked_single&quot;:{
+         &quot;kind&quot;:0,
+         &quot;address&quot;:{
+            &quot;ed25519&quot;:{
+               &quot;kind&quot;:0,
+               &quot;address&quot;:&quot;atoi1qp9427varyc05py79ajku89xarfgkj74tpel5egr9y7xu3wpfc4lkpx0l86&quot;
+            }
+         },
+         &quot;amount&quot;:10000000
+      },
+      &quot;signature_locked_dust_allowance&quot;:&quot;None&quot;
+   }
 }
 </code></pre>
 <p>A function <code>Client.findOutputs()</code> is a convenient shortcut combining both mentioned methods in a single call:</p>
@@ -678,17 +691,28 @@ run()
 <li>it supports two arguments, a list of <code>output_ids</code> or a list of <code>addresses</code></li>
 </ul>
 <p>Output example:</p>
-<pre><code class="language-json">{'message_id': 'f51fb2839e0a24d5b4a97f1f5721fdac0f1eeafd77645968927f7c2f4b46565b',
- 'transaction_id': 'a22cba0667c922cbb1f8bdcaf970b2a881ccd6e88e2fcce50374de2aac7c3772',
- 'output_index': 0,
- 'is_spent': False,
- 'output': {'treasury': None,
-  'signature_locked_single': {'kind': 0,
-   'address': {'ed25519': {'kind': 0,
-     'address': '4b55799d1930fa049e2f656e1ca6e8d28b4bd55873fa6503293c6e45c14e2bfb'}},
-   'amount': 10000000},
-  'signature_locked_dust_allowance': None}
-}
+<pre><code class="language-json">[
+   {
+      &quot;message_id&quot;:&quot;7c47db1c4555348c260d91e90cc10fd66c2e73a84ec24bf9533e440f6d945d42&quot;,
+      &quot;transaction_id&quot;:&quot;c3f416b4394dd6e49354444d53e3c33f1169f25889ad7bc1c2ea83e35e291d5c&quot;,
+      &quot;output_index&quot;:1,
+      &quot;is_spent&quot;:false,
+      &quot;output&quot;:{
+         &quot;treasury&quot;:&quot;None&quot;,
+         &quot;signature_locked_single&quot;:{
+            &quot;kind&quot;:0,
+            &quot;address&quot;:{
+               &quot;ed25519&quot;:{
+                  &quot;kind&quot;:0,
+                  &quot;address&quot;:&quot;atoi1qp9427varyc05py79ajku89xarfgkj74tpel5egr9y7xu3wpfc4lkpx0l86&quot;
+               }
+            },
+            &quot;amount&quot;:9000000
+         },
+         &quot;signature_locked_dust_allowance&quot;:&quot;None&quot;
+      }
+   }
+]
 </code></pre>
 <ul>
 <li><code>message_id</code>: refer to the encapsulating message in which the transaction was sent</li>
@@ -738,28 +762,38 @@ run()
 </code></pre>
 <p>Output example:</p>
 <pre><code class="language-json">Message meta data:
-{'message_id': 'e2daa4c6b012b615becd6c12189b2c9e701ba0d53b31a15425b21af5105fc086',
- 'parent_message_ids': ['0e2705ce50fec88f896663d4b7d562e74cbcfdd951ac482b1f03cfa5f27396d7',
-  '0f5a0b2041766127c3f3bff2dd653b450b72e364765fcc805a40423c59ed01f9',
-  '20635b30aee437575d7e6abdf6629eec80543bee30848b0abdda2200fc11a977',
-  'da97cd6cfcbb854b8fd3f064c8459c5c9eae80dbd5ef594a3e1a26dcb8fc078c'],
- 'is_solid': True,
- 'referenced_by_milestone_index': 284866,
- 'milestone_index': None,
- 'ledger_inclusion_state': {'state': 'NoTransaction'},
- 'conflict_reason': None,
- 'should_promote': None,
- 'should_reattach': None}
+{
+   &quot;message_id&quot;:&quot;e2daa4c6b012b615becd6c12189b2c9e701ba0d53b31a15425b21af5105fc086&quot;,
+   &quot;parent_message_ids&quot;:[
+      &quot;0e2705ce50fec88f896663d4b7d562e74cbcfdd951ac482b1f03cfa5f27396d7&quot;,
+      &quot;0f5a0b2041766127c3f3bff2dd653b450b72e364765fcc805a40423c59ed01f9&quot;,
+      &quot;20635b30aee437575d7e6abdf6629eec80543bee30848b0abdda2200fc11a977&quot;,
+      &quot;da97cd6cfcbb854b8fd3f064c8459c5c9eae80dbd5ef594a3e1a26dcb8fc078c&quot;
+   ],
+   &quot;is_solid&quot;:true,
+   &quot;referenced_by_milestone_index&quot;:284866,
+   &quot;milestone_index&quot;:&quot;None&quot;,
+   &quot;ledger_inclusion_state&quot;:{
+      &quot;state&quot;:&quot;NoTransaction&quot;
+   },
+   &quot;conflict_reason&quot;:&quot;None&quot;,
+   &quot;should_promote&quot;:&quot;None&quot;,
+   &quot;should_reattach&quot;:&quot;None&quot;
+}
 
 Message data:
- {'message_id': 'e2daa4c6b012b615becd6c12189b2c9e701ba0d53b31a15425b21af5105fc086',
- 'network_id': 7712883261355838377,
- 'parents': ['0e2705ce50fec88f896663d4b7d562e74cbcfdd951ac482b1f03cfa5f27396d7',
-  '0f5a0b2041766127c3f3bff2dd653b450b72e364765fcc805a40423c59ed01f9',
-  '20635b30aee437575d7e6abdf6629eec80543bee30848b0abdda2200fc11a977',
-  'da97cd6cfcbb854b8fd3f064c8459c5c9eae80dbd5ef594a3e1a26dcb8fc078c'],
- 'payload': None,
- 'nonce': 2305843009213869242}
+{
+   &quot;message_id&quot;:&quot;e2daa4c6b012b615becd6c12189b2c9e701ba0d53b31a15425b21af5105fc086&quot;,
+   &quot;network_id&quot;:7712883261355838377,
+   &quot;parents&quot;:[
+      &quot;0e2705ce50fec88f896663d4b7d562e74cbcfdd951ac482b1f03cfa5f27396d7&quot;,
+      &quot;0f5a0b2041766127c3f3bff2dd653b450b72e364765fcc805a40423c59ed01f9&quot;,
+      &quot;20635b30aee437575d7e6abdf6629eec80543bee30848b0abdda2200fc11a977&quot;,
+      &quot;da97cd6cfcbb854b8fd3f064c8459c5c9eae80dbd5ef594a3e1a26dcb8fc078c&quot;
+   ],
+   &quot;payload&quot;:&quot;None&quot;,
+   &quot;nonce&quot;:2305843009213869242
+}
 </code></pre>
 <ul>
 <li><code>Client.getMessage().metadata()</code> provides information how the given message fits to network structures such as <code>ledger_inclusion_state</code>, etc.</li>
@@ -812,52 +846,69 @@ run()
 </code></pre>
 <p>Example of a message with <code>SignedTransaction</code> payload:</p>
 <pre><code class="language-json">{
-    'message_id': 'f51fb2839e0a24d5b4a97f1f5721fdac0f1eeafd77645968927f7c2f4b46565b',
-    'network_id': 7712883261355838377,
-    'parents': [
-        '4a84bf1d345a441cfdefd0e71d6efe820c1077e5dda9122a09cbf026132d208c',
-        '6e9153884fd1983be4c27c3ccdc69760b4775484eea498ec0707c2ff8901995e',
-        '7ac1407c88007a54d603400b558d5110f2bbf93a68100fb34f0b40cece9d0868',
-        '9ac0fd457998a1b3ddab9c0014f41344475358ad36c64a4b763de3b51f47c09a'
-    ],
-    'payload': {
-        'transaction': [
-            {
-                'essence': {
-                    'inputs': [
-                        {'transaction_id': '4a34274992474d91cf45366425ad1d4df6042cba64f3b6c07d297a2e6b7154a9', 'index': 0}
-                    ],
-                    'outputs': [
-                        {'address': 'atoi1qp9427varyc05py79ajku89xarfgkj74tpel5egr9y7xu3wpfc4lkpx0l86', 'amount': 10000000},
-                        {'address': 'atoi1qzdnav0zdgd4grn25cnwcuudtahvlhgh0r349ur749y9l03vadrfurhkxwj', 'amount': 100016136757200}
-                    ],
-                    'payload': {
-                        'transaction': None,
-                        'milestone': None,
-                        'indexation': [
-                            {'index': '54414e474c454b495420464155434554', 'data': []}
-                        ],
-                        'receipt': None,
-                        'treasury_transaction': None
-                    }
-                },
-                'unlock_blocks': [
-                    {
-                        'signature': {
-                            'public_key': [...],
-                            'signature': [...]
-                        },
-                        'reference': None
-                    }
-                ]
-            }
-        ],
-        'milestone': None,
-        'indexation': None,
-        'receipt': None,
-        'treasury_transaction': None
-    },
-    'nonce': 1146102
+   &quot;message_id&quot;:&quot;f51fb2839e0a24d5b4a97f1f5721fdac0f1eeafd77645968927f7c2f4b46565b&quot;,
+   &quot;network_id&quot;:7712883261355838377,
+   &quot;parents&quot;:[
+      &quot;4a84bf1d345a441cfdefd0e71d6efe820c1077e5dda9122a09cbf026132d208c&quot;,
+      &quot;6e9153884fd1983be4c27c3ccdc69760b4775484eea498ec0707c2ff8901995e&quot;,
+      &quot;7ac1407c88007a54d603400b558d5110f2bbf93a68100fb34f0b40cece9d0868&quot;,
+      &quot;9ac0fd457998a1b3ddab9c0014f41344475358ad36c64a4b763de3b51f47c09a&quot;
+   ],
+   &quot;payload&quot;:{
+      &quot;transaction&quot;:[
+         {
+            &quot;essence&quot;:{
+               &quot;inputs&quot;:[
+                  {
+                     &quot;transaction_id&quot;:&quot;4a34274992474d91cf45366425ad1d4df6042cba64f3b6c07d297a2e6b7154a9&quot;,
+                     &quot;index&quot;:0
+                  }
+               ],
+               &quot;outputs&quot;:[
+                  {
+                     &quot;address&quot;:&quot;4b55799d1930fa049e2f656e1ca6e8d28b4bd55873fa6503293c6e45c14e2bfb&quot;,
+                     &quot;amount&quot;:10000000
+                  },
+                  {
+                     &quot;address&quot;:&quot;9b3eb1e26a1b540e6aa626ec738d5f6ecfdd1778e352f07ea9485fbe2ceb469e&quot;,
+                     &quot;amount&quot;:100016136757200
+                  }
+               ],
+               &quot;payload&quot;:{
+                  &quot;transaction&quot;:&quot;None&quot;,
+                  &quot;milestone&quot;:&quot;None&quot;,
+                  &quot;indexation&quot;:[
+                     {
+                        &quot;index&quot;:&quot;54414e474c454b495420464155434554&quot;,
+                        &quot;data&quot;:[
+                        ]
+                     }
+                  ],
+                  &quot;receipt&quot;:&quot;None&quot;,
+                  &quot;treasury_transaction&quot;:&quot;None&quot;
+               }
+            },
+            &quot;unlock_blocks&quot;:[
+               {
+                  &quot;signature&quot;:{
+                     &quot;public_key&quot;:[
+                        ...
+                     ],
+                     &quot;signature&quot;:[
+                        ...
+                     ]
+                  },
+                  &quot;reference&quot;:&quot;None&quot;
+               }
+            ]
+         }
+      ],
+      &quot;milestone&quot;:&quot;None&quot;,
+      &quot;indexation&quot;:&quot;None&quot;,
+      &quot;receipt&quot;:&quot;None&quot;,
+      &quot;treasury_transaction&quot;:&quot;None&quot;
+   },
+   &quot;nonce&quot;:1146102
 }
 </code></pre>
 <p>Each <code>transaction</code> includes the following set of information:</p>
