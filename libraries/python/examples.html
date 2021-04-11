@@ -761,7 +761,30 @@ message = client.message(
 print(message)
 </code></pre>
 <p>Output example:</p>
-<pre><code class="language-json">                  },
+<pre><code class="language-json">{
+   &quot;message_id&quot;:&quot;7c47db1c4555348c260d91e90cc10fd66c2e73a84ec24bf9533e440f6d945d42&quot;,
+   &quot;network_id&quot;:7712883261355838377,
+   &quot;parents&quot;:[
+      &quot;0ec0cd3c0303845980981bf7cc72371a8cd6e38c15924a2950fb15c5ecf4a53b&quot;,
+      &quot;4011f7724f96b6e39cdf9987ee650c0552d4fc63c09dd72b9be30a3cc7b53806&quot;,
+      &quot;5730d5bd607c6125130df30204c995db5edcbd16c4ab150946dffac37ace26f9&quot;,
+      &quot;8c1982682dbfa0abdd8772e38d044dbfcbea5ebb99bbe7174c07d81adda62419&quot;
+   ],
+   &quot;payload&quot;:{
+      &quot;transaction&quot;:[
+         {
+            &quot;essence&quot;:{
+               &quot;inputs&quot;:[
+                  {
+                     &quot;transaction_id&quot;:&quot;a22cba0667c922cbb1f8bdcaf970b2a881ccd6e88e2fcce50374de2aac7c3772&quot;,
+                     &quot;index&quot;:0
+                  }
+               ],
+               &quot;outputs&quot;:[
+                  {
+                     &quot;address&quot;:&quot;atoi1qqydc70mpjdvl8l2wyseaseqwzhmedzzxrn4l9g2c8wdcsmhldz0ulwjxpz&quot;,
+                     &quot;amount&quot;:1000000
+                  },
                   {
                      &quot;address&quot;:&quot;atoi1qp9427varyc05py79ajku89xarfgkj74tpel5egr9y7xu3wpfc4lkpx0l86&quot;,
                      &quot;amount&quot;:9000000
@@ -773,12 +796,10 @@ print(message)
                {
                   &quot;signature&quot;:{
                      &quot;public_key&quot;:[
-                        243,
-                        &quot;...&lt;trimmed&gt;&quot;
+                        &quot;...&quot;
                      ],
                      &quot;signature&quot;:[
-                        64,
-                        &quot;...&lt;trimmed&gt;&quot;
+                        &quot;...&quot;
                      ]
                   },
                   &quot;reference&quot;:&quot;None&quot;
