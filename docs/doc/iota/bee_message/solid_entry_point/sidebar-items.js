@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["SolidEntryPoint","A SolidEntryPoint is a `MessageId` of a message even if we do not have them or their past in the database. The often come from a snapshot file and allow a node to solidify without needing the full tangle history."]]});
