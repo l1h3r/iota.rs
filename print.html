@@ -908,6 +908,46 @@ run()
 <p>&quot;... microtransaction below 1Mi of IOTA tokens [can be sent] to another address if there is already at least 1Mi on that address&quot;
 That's why we did send 1Mi in the given example to comply with the protection.&quot;</p>
 </blockquote>
+<h2 id="listening-to-mqtt"><a class="header" href="#listening-to-mqtt">Listening to MQTT</a></h2>
+<p>IOTA node(s) provides <a href="https://en.wikipedia.org/wiki/MQTT">Message Queuing Telemetry Transport</a> (MQTT) layer, if enabled, which is a lightweight publish-subscribe network protocol that provides information about events that is being triggered by IOTA network.</p>
+<p><code>iota.rs</code> client library supports asynchronous event listeners that can be listened to, and continuously receive MQTT events based on a <code>topic</code>, which can be:</p>
+<ul>
+<li>milestones/latest</li>
+<li>milestones/confirmed</li>
+<li>messages</li>
+<li>messages/referenced</li>
+<li>messages/indexation/{index}</li>
+<li>messages/{messageId}/metadata</li>
+<li>transactions/{transactionId}/included-message</li>
+<li>outputs/{outputId}</li>
+<li>addresses/{address}/outputs</li>
+<li>addresses/ed25519/{address}/outputs</li>
+</ul>
+<p>The listener is reachable via instance of <code>Client.TopicSubscriber</code> object that is returned from <code>Client.subscriber()</code> function.</p>
+<p>It offers several chaining calls:</p>
+<ul>
+<li><code>.topic(str)</code> / <code>.topics(str[])</code>: a topic or list of topics that should trigger a provided callback</li>
+<li><code>.subscribe(cb)</code>: it subscribes the listener to a callback function that is being triggered every time the given topic(s) is noticed</li>
+<li><code>.unsubscribe(cb)</code>: it unsubscribes the listener from the given topics. Once unsubscribed, then the given callback function is executed in a form <code>(err, message) =&gt; {}</code></li>
+</ul>
+<pre><code class="language-javascript">async function run() {
+    const {
+        ClientBuilder
+    } = require('@iota/client');
+
+    // client connects to a node that has MQTT enabled
+    const client = new ClientBuilder()
+        .node('https://api.hornet-0.testnet.chrysalis2.com')
+        .build();
+
+    client.subscriber().topics(['milestones/confirmed', 'messages']).subscribe((err, data) =&gt; {
+        console.log(data);
+    })
+}
+
+run()
+</code></pre>
+<p>Please note: IOTA node has to have enabled MQTT layer. There is a set of test nodes available that have MQTT enabled. See <a href="https://chrysalis.docs.iota.org/testnet.html">testnet chapter</a> for more information</p>
 <h1 id="api-reference-1"><a class="header" href="#api-reference-1">API Reference</a></h1>
 <p>Connecting to a MQTT broker using raw ip doesn't work. This is a limitation of rustls.</p>
 <h2 id="api-reference-2"><a class="header" href="#api-reference-2">API Reference</a></h2>
