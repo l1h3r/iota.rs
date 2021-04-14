@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["UnlockBlock",""]],"struct":[["ReferenceUnlock",""],["UnlockBlocks",""]]});
+initSidebarItems({"enum":[["UnlockBlock","An UnlockBlock defines the mechanism by which a transaction input is validated for spending."]],"struct":[["ReferenceUnlock","A `ReferenceUnlock` is an `UnlockBlock` that refers to a `SignatureUnlock`."],["UnlockBlocks",""]]});
