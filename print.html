@@ -259,10 +259,362 @@ async fn main() {
 }
 </code></pre></pre>
 <h1 id="examples"><a class="header" href="#examples">Examples</a></h1>
-<p>You can see the examples in the <a href="https://github.com/iotaledger/iota.rs/tree/dev/examples">examples</a> directory and try them with:</p>
-<pre><code class="language-bash">cargo run --example # lists the available examples
-cargo run --example address # execute the `address` example
+<p>It's possible to send transactions with iota.rs, but we strongly recommend to use official <code>wallet.rs</code> library together with <code>stronghold.rs</code> enclave for value-based transfers. This combination incorporates the best security practices while dealing with seeds, related addresses and <code>UTXO</code>. See more information on <a href="https://chrysalis.docs.iota.org/libraries/wallet.html">wallet docs</a>.</p>
+<pre><code class="language-bash">git clone https://github.com/iotaledger/iota.rs
 </code></pre>
+<pre><code class="language-bash">cd iota.rs
+</code></pre>
+<p>Rename the <code>.env.example</code> file to <code>.env</code>.</p>
+<p>Run the examples like:</p>
+<pre><code class="language-bash">cargo run --example 01_get_info --release
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">// Copyright 2021 IOTA Stiftung
+// SPDX-License-Identifier: Apache-2.0
+
+//! cargo run --example 01_get_info --release
+
+use iota::Client;
+
+/// In this example we will get information about the node
+
+#[tokio::main]
+async fn main() {
+    // Create a client instance
+    let iota = Client::builder()
+        .with_node(&quot;https://api.lb-0.testnet.chrysalis2.com&quot;) // Insert your node URL here
+        // .with_node_auth(&quot;https://somechrysalisiotanode.com&quot;, &quot;name&quot;, &quot;password&quot;) // Optional authentication
+        .unwrap()
+        .finish()
+        .await
+        .unwrap();
+
+    let info = iota.get_info().await.unwrap();
+    println!(&quot;Node Info: {:?}&quot;, info);
+}
+</code></pre></pre>
+<pre><pre class="playground"><code class="language-rust">// Copyright 2021 IOTA Stiftung
+// SPDX-License-Identifier: Apache-2.0
+
+//! cargo run --example 02_generate_seed --release
+
+use crypto::signatures::ed25519::SecretKey;
+
+/// In this example we will generate a seed
+
+#[tokio::main]
+async fn main() {
+    let secret_key = SecretKey::generate().unwrap();
+    println!(&quot;{}&quot;, hex::encode(&amp;secret_key.to_le_bytes()));
+}
+</code></pre></pre>
+<pre><pre class="playground"><code class="language-rust">// Copyright 2021 IOTA Stiftung
+// SPDX-License-Identifier: Apache-2.0
+
+//! cargo run --example 03_generate_addresses --release
+
+use iota::{api::GetAddressesBuilder, Client, Seed};
+extern crate dotenv;
+use dotenv::dotenv;
+use std::env;
+
+/// In this example we will create addresses from a seed defined in .env
+
+#[tokio::main]
+async fn main() {
+    // Create a client instance
+    let iota = Client::builder()
+        .with_node(&quot;https://api.lb-0.testnet.chrysalis2.com&quot;) // Insert your node URL here
+        .unwrap()
+        .finish()
+        .await
+        .unwrap();
+
+    // This example uses dotenv, which is not safe for use in production
+    dotenv().ok();
+
+    let seed = Seed::from_bytes(&amp;hex::decode(env::var(&quot;NONSECURE_USE_OF_DEVELOPMENT_SEED_1&quot;).unwrap()).unwrap());
+
+    // Generate addresses with default account index and range
+    let addresses = iota.get_addresses(&amp;seed).finish().await.unwrap();
+    println!(&quot;List of generated public addresses:\n{:?}\n&quot;, addresses);
+
+    // Generate addresses with custom account index and range
+    let addresses = iota
+        .get_addresses(&amp;seed)
+        .with_account_index(0)
+        .with_range(0..4)
+        .finish()
+        .await
+        .unwrap();
+
+    println!(&quot;List of generated public addresses:\n{:?}\n&quot;, addresses);
+
+    // Generate public (false) &amp; internal (true) addresses
+    let addresses = iota.get_addresses(&amp;seed).with_range(0..4).get_all().await.unwrap();
+    println!(&quot;List of generated public and internal addresses:\n{:?}\n&quot;, addresses);
+
+    // Generate public addresses offline with the bech32_hrp defined
+    let addresses = GetAddressesBuilder::new(&amp;seed)
+        .with_bech32_hrp(&quot;atoi&quot;.into())
+        .with_account_index(0)
+        .with_range(0..4)
+        .finish()
+        .await
+        .unwrap();
+
+    println!(&quot;List of offline generated public addresses:\n{:?}\n&quot;, addresses);
+}
+</code></pre></pre>
+<pre><pre class="playground"><code class="language-rust">// Copyright 2021 IOTA Stiftung
+// SPDX-License-Identifier: Apache-2.0
+
+//! cargo run --example 04_get_balance --release
+
+use iota::{Client, Seed};
+extern crate dotenv;
+use dotenv::dotenv;
+use std::env;
+
+/// In this example we will get the account balance of a known seed and the balance and outputs of a known address
+
+#[tokio::main]
+async fn main() {
+    // Create a client instance
+    let iota = Client::builder()
+        .with_node(&quot;https://api.lb-0.testnet.chrysalis2.com&quot;) // Insert your node URL here
+        .unwrap()
+        .with_node_sync_disabled()
+        .finish()
+        .await
+        .unwrap();
+
+    // This example uses dotenv, which is not safe for use in production
+    dotenv().ok();
+
+    let seed = Seed::from_bytes(&amp;hex::decode(env::var(&quot;NONSECURE_USE_OF_DEVELOPMENT_SEED_1&quot;).unwrap()).unwrap());
+
+    let seed_balance = iota.get_balance(&amp;seed).finish().await.unwrap();
+    println!(&quot;Account balance: {:?}i\n&quot;, seed_balance);
+
+    let address = &quot;atoi1qzt0nhsf38nh6rs4p6zs5knqp6psgha9wsv74uajqgjmwc75ugupx3y7x0r&quot;;
+
+    let response = iota.get_address().balance(&amp;address).await.unwrap();
+    println!(&quot;The balance of {:?} is {:?}i\n&quot;, address, response.balance);
+
+    let outputs = iota.get_address().outputs(&amp;address, Default::default()).await.unwrap();
+
+    println!(&quot;The outputs of address {:?} are: {:?}&quot;, address, outputs);
+}
+</code></pre></pre>
+<pre><pre class="playground"><code class="language-rust">// Copyright 2021 IOTA Stiftung
+// SPDX-License-Identifier: Apache-2.0
+
+//! cargo run --example 05_get_address_outputs --release
+
+use iota::{Client, Result};
+
+/// In this example we will get the outputs of a known address
+
+#[tokio::main]
+async fn main() -&gt; Result&lt;()&gt; {
+    let iota = Client::builder()
+        .with_node(&quot;https://api.lb-0.testnet.chrysalis2.com&quot;)?
+        .finish()
+        .await?;
+
+    let address = &quot;atoi1qzt0nhsf38nh6rs4p6zs5knqp6psgha9wsv74uajqgjmwc75ugupx3y7x0r&quot;;
+
+    let outputs = iota.get_address().outputs(&amp;address, Default::default()).await.unwrap();
+
+    println!(&quot;The outputs of address {:?} are: {:?}&quot;, address, outputs);
+    Ok(())
+}
+</code></pre></pre>
+<pre><pre class="playground"><code class="language-rust">// Copyright 2021 IOTA Stiftung
+// SPDX-License-Identifier: Apache-2.0
+
+//! cargo run --example 06_simple_message --release
+
+use iota::{Client, Result};
+
+/// In this example we will send a message without a payload
+
+#[tokio::main]
+async fn main() -&gt; Result&lt;()&gt; {
+    let iota = Client::builder()
+        .with_node(&quot;https://api.lb-0.testnet.chrysalis2.com&quot;)?
+        .finish()
+        .await?;
+
+    let message = iota.message().finish().await?;
+
+    println!(
+        &quot;Empty message sent: https://explorer.iota.org/chrysalis/message/{}&quot;,
+        message.id().0
+    );
+    Ok(())
+}
+</code></pre></pre>
+<pre><pre class="playground"><code class="language-rust">// Copyright 2021 IOTA Stiftung
+// SPDX-License-Identifier: Apache-2.0
+
+//! cargo run --example 07_get_message_metadata --release
+
+use iota::{Client, Result};
+
+/// In this example we will send a message and get the metadata for it
+
+#[tokio::main]
+async fn main() -&gt; Result&lt;()&gt; {
+    let iota = Client::builder()
+        .with_node(&quot;https://api.lb-0.testnet.chrysalis2.com&quot;)?
+        .finish()
+        .await?;
+
+    let message = iota.message().finish().await?;
+
+    let metadata = iota.get_message().metadata(&amp;message.id().0).await?;
+    println!(&quot;Message metadata: {:?}&quot;, metadata);
+    Ok(())
+}
+</code></pre></pre>
+<pre><pre class="playground"><code class="language-rust">// Copyright 2021 IOTA Stiftung
+// SPDX-License-Identifier: Apache-2.0
+
+//! cargo run --example 08_data_message --release
+
+use iota::{Client, Result};
+
+/// In this example we will send a message without a payload
+
+#[tokio::main]
+async fn main() -&gt; Result&lt;()&gt; {
+    let iota = Client::builder()
+        .with_node(&quot;https://api.lb-0.testnet.chrysalis2.com&quot;)?
+        .finish()
+        .await?;
+
+    let message = iota
+        .message()
+        .with_index(&quot;Hello&quot;)
+        .with_data(&quot;Tangle&quot;.to_string().as_bytes().to_vec())
+        .finish()
+        .await?;
+
+    println!(
+        &quot;Message sent https://explorer.iota.org/chrysalis/message/{}\n&quot;,
+        message.id().0
+    );
+
+    let fetched_message_ids = iota.get_message().index(&quot;Hello&quot;).await.unwrap();
+    println!(&quot;Messages with Hello index: {:?}&quot;, fetched_message_ids);
+    Ok(())
+}
+</code></pre></pre>
+<pre><pre class="playground"><code class="language-rust">// Copyright 2021 IOTA Stiftung
+// SPDX-License-Identifier: Apache-2.0
+
+//! cargo run --example 09_transaction --release
+
+use iota::{client::Result, Client, Seed};
+extern crate dotenv;
+use dotenv::dotenv;
+use std::env;
+
+/// In this example we will send a transaction
+
+#[tokio::main]
+async fn main() -&gt; Result&lt;()&gt; {
+    let iota = Client::builder()
+        .with_node(&quot;https://api.lb-0.testnet.chrysalis2.com&quot;)?
+        .finish()
+        .await?;
+
+    // This example uses dotenv, which is not safe for use in production
+    // Configure your own seed in &quot;.env&quot;. Since the output amount cannot be zero, the seed must contain non-zero balance
+    dotenv().ok();
+    let seed_1 = Seed::from_bytes(&amp;hex::decode(env::var(&quot;NONSECURE_USE_OF_DEVELOPMENT_SEED_1&quot;).unwrap())?);
+
+    let message = iota
+        .message()
+        .with_seed(&amp;seed_1)
+        // Insert the output address and amount to spent. The amount cannot be zero.
+        .with_output(
+            // We generate an address from our seed so that we send the funds to ourselves
+            &amp;iota.get_addresses(&amp;seed_1).with_range(0..1).finish().await?[0],
+            1_000_000,
+        )?
+        .finish()
+        .await?;
+
+    println!(
+        &quot;Transaction sent: https://explorer.iota.org/chrysalis/message/{}&quot;,
+        message.id().0
+    );
+    Ok(())
+}
+</code></pre></pre>
+<pre><pre class="playground"><code class="language-rust">// Copyright 2021 IOTA Stiftung
+// SPDX-License-Identifier: Apache-2.0
+
+//! cargo run --example 10_mqtt --release
+
+use iota::{Client, Message, MqttEvent, Result, Topic};
+use std::sync::{mpsc::channel, Arc, Mutex};
+
+// Connecting to a MQTT broker using raw ip doesn't work. This is a limitation of rustls.
+#[tokio::main]
+async fn main() -&gt; Result&lt;()&gt; {
+    // Create a client instance
+    let mut iota = Client::builder()
+        .with_node(&quot;https://api.hornet-0.testnet.chrysalis2.com&quot;)?
+        .finish()
+        .await?;
+
+    let (tx, rx) = channel();
+    let tx = Arc::new(Mutex::new(tx));
+
+    let mut event_rx = iota.mqtt_event_receiver();
+    tokio::spawn(async move {
+        while event_rx.changed().await.is_ok() {
+            let event = event_rx.borrow();
+            if *event == MqttEvent::Disconnected {
+                println!(&quot;mqtt disconnected&quot;);
+                std::process::exit(1);
+            }
+        }
+    });
+
+    iota.subscriber()
+        .with_topics(vec![
+            Topic::new(&quot;milestones/latest&quot;).unwrap(),
+            Topic::new(&quot;messages&quot;).unwrap(),
+        ])
+        .subscribe(move |event| {
+            match event.topic.as_str() {
+                &quot;messages&quot; =&gt; {
+                    let message: Message = serde_json::from_str(&amp;event.payload).unwrap();
+                    println!(&quot;{:?}&quot;, event);
+                    println!(&quot;{:?}&quot;, message);
+                }
+                _ =&gt; println!(&quot;{:?}&quot;, event),
+            }
+            tx.lock().unwrap().send(()).unwrap();
+        })
+        .await
+        .unwrap();
+
+    for _ in 0..10 {
+        rx.recv().unwrap();
+    }
+
+    iota.subscriber().disconnect().await.unwrap();
+    // alternatively
+    // iota.subscriber().unsubscribe().unwrap();
+    Ok(())
+}
+</code></pre></pre>
+<p>You can find more advanced examples in the <a href="https://github.com/iotaledger/iota.rs/tree/dev/examples">examples</a> folder.</p>
 <h1 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h1>
 <p>API reference</p>
 <p>You can read the <a href="https://client-lib.docs.iota.org/docs/iota_client/">API reference</a> here, or generate it yourself.</p>
