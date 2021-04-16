@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["TreasuryTransactionPayload",""]]});
+initSidebarItems({"struct":[["TreasuryTransactionPayload","`TreasuryTransaction` represents a transaction which moves funds from the treasury."]]});

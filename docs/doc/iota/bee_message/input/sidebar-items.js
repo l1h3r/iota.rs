@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Input",""]],"struct":[["TreasuryInput",""],["UtxoInput","An `UtxoInput` represents an input block within a transaction payload, and references the output from a previous transaction."]]});
+initSidebarItems({"enum":[["Input","A generic input supporting different input kinds."]],"struct":[["TreasuryInput","`TreasuryInput` is an input which references a milestone which generated a `TreasuryOutput`."],["UtxoInput","Represents an input referencing an output."]]});
