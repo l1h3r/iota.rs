@@ -1850,7 +1850,7 @@
         } <span class="kw">else</span> {
             <span class="self">self</span>.<span class="ident">get_timeout</span>(<span class="ident">Api</span>::<span class="ident">PostMessageWithRemotePow</span>)
         };
-        <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident">MessageDto</span>::<span class="ident">try_from</span>(<span class="ident">message</span>).<span class="ident">map_err</span>(<span class="kw">crate</span>::<span class="ident">Error</span>::<span class="ident">DtoError</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident">MessageDto</span>::<span class="ident">from</span>(<span class="ident">message</span>);
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
         <span class="kw">struct</span> <span class="ident">ResponseWrapper</span> {
             <span class="ident">data</span>: <span class="ident">MessageIdWrapper</span>,
@@ -2032,7 +2032,7 @@
             <span class="ident">data</span>: <span class="ident">MessageDto</span>,
         }
         <span class="kw">let</span> <span class="ident">resp</span>: <span class="ident">ResponseWrapper</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">node_manager</span>.<span class="ident">get_request</span>(<span class="ident">path</span>, <span class="prelude-val">None</span>, <span class="ident">GET_API_TIMEOUT</span>).<span class="kw">await</span><span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="ident">Message</span>::<span class="ident">try_from</span>(<span class="kw-2">&amp;</span><span class="ident">resp</span>.<span class="ident">data</span>).<span class="ident">map_err</span>(<span class="kw">crate</span>::<span class="ident">Error</span>::<span class="ident">DtoError</span>)<span class="question-mark">?</span>)
+        <span class="prelude-val">Ok</span>(<span class="ident">Message</span>::<span class="ident">try_from</span>(<span class="kw-2">&amp;</span><span class="ident">resp</span>.<span class="ident">data</span>)<span class="question-mark">?</span>)
     }
     <span class="doccomment">/// Reattaches messages for provided message id. Messages can be reattached only if they are valid and haven&#39;t been</span>
     <span class="doccomment">/// confirmed for a while.</span>

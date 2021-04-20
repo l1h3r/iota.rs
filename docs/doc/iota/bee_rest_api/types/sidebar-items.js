@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["body",""],["dtos",""],["responses",""]]});
+initSidebarItems({"mod":[["body",""],["dtos",""],["error",""],["responses",""]]});
