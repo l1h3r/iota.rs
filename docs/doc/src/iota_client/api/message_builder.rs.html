@@ -707,7 +707,6 @@
 <span id="704">704</span>
 <span id="705">705</span>
 <span id="706">706</span>
-<span id="707">707</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -734,7 +733,6 @@
 <span class="kw">const</span> <span class="ident">DUST_THRESHOLD</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">1_000_000</span>;
 
 <span class="doccomment">/// Structure for sorting of UnlockBlocks</span>
-<span class="comment">// TODO: move the sorting process to the `Message` crate</span>
 <span class="kw">struct</span> <span class="ident">AddressIndexRecorder</span> {
     <span class="ident">input</span>: <span class="ident">Input</span>,
     <span class="ident">address_index</span>: <span class="ident">usize</span>,
@@ -742,7 +740,7 @@
     <span class="ident">internal</span>: <span class="ident">bool</span>,
 }
 
-<span class="doccomment">/// Builder of send API</span>
+<span class="doccomment">/// Builder of the message API</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ClientMessageBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="ident">client</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Client</span>,
     <span class="ident">seed</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Seed</span><span class="op">&gt;</span>,
@@ -757,7 +755,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">ClientMessageBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Create send builder</span>
+    <span class="doccomment">/// Create message builder</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">client</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Client</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">client</span>,

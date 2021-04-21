@@ -579,6 +579,7 @@
 <span id="576">576</span>
 <span id="577">577</span>
 <span id="578">578</span>
+<span id="579">579</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -611,6 +612,8 @@
 <span class="kw">const</span> <span class="ident">DEFAULT_QUORUM_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">3</span>;
 <span class="kw">const</span> <span class="ident">DEFAULT_QUORUM_THRESHOLD</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">66</span>;
 
+<span class="comment">// Nodemanger, takes care of selecting node(s) for requests until a result is returned or if quorum</span>
+<span class="comment">// is enabled it will send the requests for some endpoints to multiple nodes and compares the results</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">NodeManager</span> {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">primary_node</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Url</span><span class="op">&gt;</span>,
     <span class="ident">primary_pow_node</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Url</span><span class="op">&gt;</span>,
@@ -793,7 +796,6 @@
             .<span class="ident">max_by_key</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">v</span>.<span class="number">1</span>)
             .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">error</span>.<span class="ident">unwrap_or</span>(<span class="ident">Error</span>::<span class="ident">NodeError</span>))<span class="question-mark">?</span>;
 
-        <span class="comment">// todo if quorum then only for: balance, outputs(only unspent?), message metadata</span>
         <span class="comment">// Return if quorum is false or check if quorum was reached</span>
         <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">quorum</span>
             <span class="op">|</span><span class="op">|</span> <span class="ident">res</span>.<span class="number">1</span> <span class="kw">as</span> <span class="ident">f64</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">quorum_size</span> <span class="kw">as</span> <span class="ident">f64</span> <span class="op">*</span> (<span class="self">self</span>.<span class="ident">quorum_threshold</span> <span class="kw">as</span> <span class="ident">f64</span> <span class="op">/</span> <span class="number">100.0</span>)
