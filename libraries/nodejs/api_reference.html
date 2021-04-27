@@ -463,19 +463,19 @@ Default interval is 5 seconds and max_attempts is 10.</p>
 <h4 id="indexindex-messagesender"><a class="header" href="#indexindex-messagesender">index(index): MessageSender</a></h4>
 <p>Sets the message indexation. This field is required for indexation payloads.</p>
 <table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody>
-<tr><td>index</td><td><code>string</code></td><td>The indexation</td></tr>
+<tr><td>index</td><td><code>string</td><td>number[]</td></tr>
+</tbody></table>
+<p><strong>Returns</strong> the message submit instance for chained calls.</p>
+<h4 id="datadata-messagesender"><a class="header" href="#datadata-messagesender">data(data): MessageSender</a></h4>
+<p>Sets the indexation data.</p>
+<table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td>data</td><td><code>string</td><td>Uint8Array</code></td></tr>
 </tbody></table>
 <p><strong>Returns</strong> the message submit instance for chained calls.</p>
 <h4 id="seedseed-messagesender"><a class="header" href="#seedseed-messagesender">seed(seed): MessageSender</a></h4>
 <p>Sets the transaction account seed. This field is required for transaction payloads.</p>
 <table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody>
 <tr><td>seed</td><td><code>string</code></td><td>The hex-encoded seed of the account to spend</td></tr>
-</tbody></table>
-<p><strong>Returns</strong> the message submit instance for chained calls.</p>
-<h4 id="datadata-messagesender"><a class="header" href="#datadata-messagesender">data(data): MessageSender</a></h4>
-<p>Sets the indexation data.</p>
-<table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody>
-<tr><td>data</td><td><code>Uint8Array</code></td><td>The message's data</td></tr>
 </tbody></table>
 <p><strong>Returns</strong> the message submit instance for chained calls.</p>
 <h4 id="parentsmessageid-messagesender"><a class="header" href="#parentsmessageid-messagesender">parents(messageId): MessageSender</a></h4>
@@ -524,7 +524,7 @@ Default interval is 5 seconds and max_attempts is 10.</p>
 <tr><td>index</td><td><code>number</code></td><td>The initial address index</td></tr>
 </tbody></table>
 <p><strong>Returns</strong> the message submit instance for chained calls.</p>
-<h4 id="submit-promisestring"><a class="header" href="#submit-promisestring">submit(): Promise<string></a></h4>
+<h4 id="submit-promisemessagewrapper"><a class="header" href="#submit-promisemessagewrapper">submit(): Promise<MessageWrapper></a></h4>
 <p>Submits the message.</p>
 <p><strong>Returns</strong> a promise resolving to the message identifier.</p>
 <h3 id="unspentaddressgetter"><a class="header" href="#unspentaddressgetter">UnspentAddressGetter</a></h3>
@@ -634,6 +634,11 @@ If gap_limit amount of addresses in a row have no balance the BalanceGetter will
 <tr><td>parents</td><td><code>string[]</code></td><td>Message ids of the message references</td></tr>
 <tr><td>payload</td><td><code><a href="#payload">Payload</a></code></td><td>Message payload</td></tr>
 <tr><td>nonce</td><td><code>number</code></td><td>Message nonce</td></tr>
+</tbody></table>
+<h3 id="messagewrapper"><a class="header" href="#messagewrapper">MessageWrapper</a></h3>
+<table><thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td>message</td><td><code>Message</code></td><td>Message</td></tr>
+<tr><td>messageId</td><td><code>string</code></td><td>The message id</td></tr>
 </tbody></table>
 <h4 id="payload"><a class="header" href="#payload">Payload</a></h4>
 <table><thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead><tbody>
