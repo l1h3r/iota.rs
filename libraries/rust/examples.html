@@ -350,7 +350,7 @@ async fn main() -&gt; Result&lt;()&gt; {
     let message = iota.message().finish().await?;
 
     println!(
-        &quot;Empty message sent: https://explorer.iota.org/chrysalis/message/{}&quot;,
+        &quot;Empty message sent: https://explorer.iota.org/testnet/message/{}&quot;,
         message.id().0
     );
     Ok(())
@@ -403,7 +403,7 @@ async fn main() -&gt; Result&lt;()&gt; {
         .await?;
 
     println!(
-        &quot;Message sent https://explorer.iota.org/chrysalis/message/{}\n&quot;,
+        &quot;Message sent https://explorer.iota.org/testnet/message/{}\n&quot;,
         message.id().0
     );
 
@@ -449,7 +449,7 @@ async fn main() -&gt; Result&lt;()&gt; {
         .await?;
 
     println!(
-        &quot;Transaction sent: https://explorer.iota.org/chrysalis/message/{}&quot;,
+        &quot;Transaction sent: https://explorer.iota.org/testnet/message/{}&quot;,
         message.id().0
     );
     Ok(())

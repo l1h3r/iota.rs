@@ -216,7 +216,7 @@
 </ul>
 <h2 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h2>
 <p>It is a recommended approach to start your interactions with IOTA on a <code>testnet</code> network. API load balancer: https://api.lb-0.testnet.chrysalis2.com:443</p>
-<p>Network explorer is available at <a href="https://explorer.iota.org/chrysalis">IOTA Tangle Explorer</a>.</p>
+<p>Network explorer is available at <a href="https://explorer.iota.org/testnet">IOTA Tangle Explorer</a>.</p>
 <p>In order to properly test value-based transactions on testnet network, you are going to need some tokens! You can get some testnet tokens using the <a href="https://faucet.testnet.chrysalis2.com/">faucet</a>. However, we strongly recommend to leverage official <a href="https://wallet-lib.docs.iota.org/">wallet.rs</a> library in case of value-based IOTA transfers.</p>
 <h1 id="iota-client-rust-library"><a class="header" href="#iota-client-rust-library">IOTA Client Rust Library</a></h1>
 <p><a href="https://github.com/iotaledger/iota.rs"><img src="https://img.shields.io/badge/Status-Alpha-yellow.svg" alt="status" /></a></p>
@@ -449,7 +449,7 @@ async fn main() -&gt; Result&lt;()&gt; {
     let message = iota.message().finish().await?;
 
     println!(
-        &quot;Empty message sent: https://explorer.iota.org/chrysalis/message/{}&quot;,
+        &quot;Empty message sent: https://explorer.iota.org/testnet/message/{}&quot;,
         message.id().0
     );
     Ok(())
@@ -502,7 +502,7 @@ async fn main() -&gt; Result&lt;()&gt; {
         .await?;
 
     println!(
-        &quot;Message sent https://explorer.iota.org/chrysalis/message/{}\n&quot;,
+        &quot;Message sent https://explorer.iota.org/testnet/message/{}\n&quot;,
         message.id().0
     );
 
@@ -548,7 +548,7 @@ async fn main() -&gt; Result&lt;()&gt; {
         .await?;
 
     println!(
-        &quot;Transaction sent: https://explorer.iota.org/chrysalis/message/{}&quot;,
+        &quot;Transaction sent: https://explorer.iota.org/testnet/message/{}&quot;,
         message.id().0
     );
     Ok(())
@@ -1132,7 +1132,7 @@ run()
 <pre><code class="language-plaintext">8d4fa37be3c00691131c2c3e03e7b8b956c9118a2ce4be3a8597d51d82ed2de9
 </code></pre>
 <ul>
-<li>Feel free to check the given message using its <code>message_id</code> via <a href="https://explorer.iota.org/chrysalis/message/8d4fa37be3c00691131c2c3e03e7b8b956c9118a2ce4be3a8597d51d82ed2de9">Tangle explorer</a></li>
+<li>Feel free to check the given message using its <code>message_id</code> via <a href="https://explorer.iota.org/testnet/message/8d4fa37be3c00691131c2c3e03e7b8b956c9118a2ce4be3a8597d51d82ed2de9">Tangle explorer</a></li>
 <li>There are three payloads prepared (<code>transaction</code>, <code>milestone</code> and <code>indexation</code>) however only <code>indexation</code> payload is leveraged this time</li>
 <li><code>data</code> contains an arbitrary data encoded in bytes</li>
 <li>Please note there is no IOTA address involved while sending data messages. Such messages are referenced using <code>message_id</code> or key <code>index</code></li>
@@ -2488,10 +2488,10 @@ print(message)
 }
 </code></pre>
 <ul>
-<li>Feel free to check the given message using its <code>message_id</code> via <a href="https://explorer.iota.org/chrysalis/message/8d4fa37be3c00691131c2c3e03e7b8b956c9118a2ce4be3a8597d51d82ed2de9">Tangle explorer</a></li>
+<li>Feel free to check the given message using its <code>message_id</code> via <a href="https://explorer.iota.org/testnet/message/8d4fa37be3c00691131c2c3e03e7b8b956c9118a2ce4be3a8597d51d82ed2de9">Tangle explorer</a></li>
 <li>In comparison to an empty message sent in the previous chapter, the <code>payload</code> section looks more interesting</li>
 <li>There are three payloads prepared (<code>transaction</code>, <code>milestone</code> and <code>indexation</code>) however only <code>indexation</code> payload is leveraged this time</li>
-<li><code>index</code> was simply encoded to <code>list[bytes]</code> in hex (no hash algorithm) and the resulting string can be leveraged as an additional way how to search for a set of indexed messages with the same key index via <a href="https://explorer.iota.org/chrysalis/indexed/736f6d655f646174615f696e646578">Tangle explorer</a> or <code>Client.find_messages()</code> API call</li>
+<li><code>index</code> was simply encoded to <code>list[bytes]</code> in hex (no hash algorithm) and the resulting string can be leveraged as an additional way how to search for a set of indexed messages with the same key index via <a href="https://explorer.iota.org/testnet/indexed/736f6d655f646174615f696e646578">Tangle explorer</a> or <code>Client.find_messages()</code> API call</li>
 <li><code>data</code> contains an arbitrary data encoded in bytes</li>
 <li>Please note there is no IOTA address involved while sending data messages. Such messages are referenced using <code>message_id</code> or key <code>index</code></li>
 <li>IOTA addresses are part of <code>UTXO</code> data structure that is sent using <code>SignedTransaction</code> payload explained below</li>
