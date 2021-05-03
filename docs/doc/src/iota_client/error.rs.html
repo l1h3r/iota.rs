@@ -135,6 +135,8 @@
 <span id="132">132</span>
 <span id="133">133</span>
 <span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -157,6 +159,11 @@
     <span class="doccomment">/// The wallet account doesn&#39;t have enough balance</span>
     <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;The wallet account doesn&#39;t have enough balance. It only has {0}, required is {1}&quot;</span>)]</span>
     <span class="ident">NotEnoughBalance</span>(<span class="ident">u64</span>, <span class="ident">u64</span>),
+    <span class="doccomment">/// The wallet account doesn&#39;t have enough balance</span>
+    <span class="attribute">#[<span class="ident">error</span>(
+        <span class="string">&quot;The wallet account has enough funds, but splitted on too many outputs: {0}, max. is 127, consolidate them&quot;</span>
+    )]</span>
+    <span class="ident">ConsolidationRequired</span>(<span class="ident">usize</span>),
     <span class="doccomment">/// Dust error, for example not enough balance on an address</span>
     <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Dust error: {0}&quot;</span>)]</span>
     <span class="ident">DustError</span>(<span class="ident">String</span>),
@@ -166,9 +173,6 @@
     <span class="doccomment">/// Invalid parameters</span>
     <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Parameter is invalid:{0}&quot;</span>)]</span>
     <span class="ident">InvalidParameter</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>),
-    <span class="doccomment">/// Found spent output</span>
-    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Found spent output.&quot;</span>)]</span>
-    <span class="ident">SpentOutput</span>,
     <span class="doccomment">/// No node available in the synced node pool</span>
     <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;No synced node available&quot;</span>)]</span>
     <span class="ident">SyncedNodePoolEmpty</span>,

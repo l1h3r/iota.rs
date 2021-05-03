@@ -85,7 +85,6 @@
 <span id="82">82</span>
 <span id="83">83</span>
 <span id="84">84</span>
-<span id="85">85</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -93,7 +92,6 @@
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Client</span>, <span class="prelude-ty">Result</span>};
 <span class="kw">use</span> <span class="ident">crypto</span>::<span class="ident">keys</span>::<span class="ident">slip10</span>::<span class="ident">Seed</span>;
 
-<span class="kw">const</span> <span class="ident">DEFAULT_GAP_LIMIT</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">20</span>;
 <span class="doccomment">/// Builder of get_balance API</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetBalanceBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="ident">client</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Client</span>,
@@ -111,7 +109,7 @@
             <span class="ident">seed</span>,
             <span class="ident">account_index</span>: <span class="number">0</span>,
             <span class="ident">initial_address_index</span>: <span class="number">0</span>,
-            <span class="ident">gap_limit</span>: <span class="ident">DEFAULT_GAP_LIMIT</span>,
+            <span class="ident">gap_limit</span>: <span class="kw">super</span>::<span class="ident">ADDRESS_GAP_RANGE</span>,
         }
     }
 
@@ -162,8 +160,8 @@
                     }
                 }
             }
-
-            <span class="kw">if</span> <span class="ident">found_zero_balance</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">gap_limit</span> {
+            <span class="comment">// The gap limit is 20 and use reference 40 here because there&#39;s public and internal addresses</span>
+            <span class="kw">if</span> <span class="ident">found_zero_balance</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">gap_limit</span> <span class="op">*</span> <span class="number">2</span> {
                 <span class="kw">break</span>;
             }
             <span class="ident">index</span> <span class="op">+</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">gap_limit</span>;
