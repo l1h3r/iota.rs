@@ -338,7 +338,7 @@
     <span class="ident">time</span>::<span class="ident">Duration</span>,
 };
 
-<span class="kw">const</span> <span class="ident">DEFAULT_REQUEST_TIMEOUT</span>: <span class="ident">Duration</span> <span class="op">=</span> <span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="number">30</span>);
+<span class="kw">const</span> <span class="ident">DEFAULT_REMOTE_POW_TIMEOUT</span>: <span class="ident">Duration</span> <span class="op">=</span> <span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="number">50</span>);
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">GET_API_TIMEOUT</span>: <span class="ident">Duration</span> <span class="op">=</span> <span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="number">10</span>);
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;wasm&quot;</span>))]</span>
 <span class="kw">const</span> <span class="ident">NODE_SYNC_INTERVAL</span>: <span class="ident">Duration</span> <span class="op">=</span> <span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="number">60</span>);
@@ -406,7 +406,7 @@
                 <span class="ident">bech32_hrp</span>: <span class="ident">DEFAULT_BECH32_HRP</span>.<span class="ident">into</span>(),
                 <span class="ident">tips_interval</span>: <span class="ident">TIPS_INTERVAL</span>,
             },
-            <span class="ident">request_timeout</span>: <span class="ident">DEFAULT_REQUEST_TIMEOUT</span>,
+            <span class="ident">request_timeout</span>: <span class="ident">DEFAULT_REMOTE_POW_TIMEOUT</span>,
             <span class="ident">api_timeout</span>: <span class="ident">Default</span>::<span class="ident">default</span>(),
         }
     }
@@ -598,7 +598,7 @@
             <span class="ident">Api</span>::<span class="ident">PostMessageWithRemotePow</span>,
             <span class="self">self</span>.<span class="ident">api_timeout</span>
                 .<span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="ident">Api</span>::<span class="ident">PostMessageWithRemotePow</span>)
-                .<span class="ident">unwrap_or</span>(<span class="ident">DEFAULT_REQUEST_TIMEOUT</span>),
+                .<span class="ident">unwrap_or</span>(<span class="ident">DEFAULT_REMOTE_POW_TIMEOUT</span>),
         );
         <span class="ident">api_timeout</span>.<span class="ident">insert</span>(
             <span class="ident">Api</span>::<span class="ident">GetOutput</span>,
