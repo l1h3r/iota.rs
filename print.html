@@ -243,7 +243,7 @@ iota-core = { git = &quot;https://github.com/iotaledger/iota.rs&quot;, branch = 
 <p>And then you can use the library in your code with <code>use iota;</code>.</p>
 <h3 id="initialisation"><a class="header" href="#initialisation">Initialisation</a></h3>
 <p>This example fetches node information</p>
-<pre><pre class="playground"><code class="language-rust">use iota::Client;
+<pre><pre class="playground"><code class="language-rust">use iota_client::Client;
 
 #[tokio::main]
 async fn main() {
@@ -273,7 +273,7 @@ async fn main() {
 
 //! cargo run --example 01_get_info --release
 
-use iota::Client;
+use iota_client::Client;
 
 /// In this example we will get information about the node
 
@@ -297,7 +297,7 @@ async fn main() {
 
 //! cargo run --example 02_generate_seed --release
 
-use iota::crypto::signatures::ed25519::SecretKey;
+use iota_client::crypto::signatures::ed25519::SecretKey;
 
 /// In this example we will generate a seed
 
@@ -312,7 +312,7 @@ async fn main() {
 
 //! cargo run --example 03_generate_addresses --release
 
-use iota::{api::GetAddressesBuilder, Client, Seed};
+use iota_client::{api::GetAddressesBuilder, Client, Seed};
 extern crate dotenv;
 use dotenv::dotenv;
 use std::env;
@@ -370,7 +370,7 @@ async fn main() {
 
 //! cargo run --example 04_get_balance --release
 
-use iota::{Client, Seed};
+use iota_client::{Client, Seed};
 extern crate dotenv;
 use dotenv::dotenv;
 use std::env;
@@ -411,7 +411,7 @@ async fn main() {
 
 //! cargo run --example 05_get_address_outputs --release
 
-use iota::{Client, Result};
+use iota_client::{Client, Result};
 
 /// In this example we will get the outputs of a known address
 
@@ -435,7 +435,7 @@ async fn main() -&gt; Result&lt;()&gt; {
 
 //! cargo run --example 06_simple_message --release
 
-use iota::{Client, Result};
+use iota_client::{Client, Result};
 
 /// In this example we will send a message without a payload
 
@@ -460,7 +460,7 @@ async fn main() -&gt; Result&lt;()&gt; {
 
 //! cargo run --example 07_get_message_metadata --release
 
-use iota::{Client, Result};
+use iota_client::{Client, Result};
 
 /// In this example we will send a message and get the metadata for it
 
@@ -483,7 +483,7 @@ async fn main() -&gt; Result&lt;()&gt; {
 
 //! cargo run --example 08_data_message --release
 
-use iota::{Client, Result};
+use iota_client::{Client, Result};
 
 /// In this example we will send a message without a payload
 
@@ -516,7 +516,7 @@ async fn main() -&gt; Result&lt;()&gt; {
 
 //! cargo run --example 09_transaction --release
 
-use iota::{client::Result, Client, Seed};
+use iota_client::{Client, Result, Seed};
 extern crate dotenv;
 use dotenv::dotenv;
 use std::env;
@@ -559,7 +559,7 @@ async fn main() -&gt; Result&lt;()&gt; {
 
 //! cargo run --example 10_mqtt --release
 
-use iota::{Client, Message, MqttEvent, Result, Topic};
+use iota_client::{bee_message::Message, Client, MqttEvent, Result, Topic};
 use std::sync::{mpsc::channel, Arc, Mutex};
 
 // Connecting to a MQTT broker using raw ip doesn't work. This is a limitation of rustls.
