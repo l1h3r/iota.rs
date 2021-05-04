@@ -137,6 +137,9 @@
 <span id="134">134</span>
 <span id="135">135</span>
 <span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -240,6 +243,9 @@
     <span class="doccomment">/// Crypto.rs error</span>
     <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;{0}&quot;</span>)]</span>
     <span class="ident">CryptoError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">crypto</span>::<span class="ident">Error</span>),
+    <span class="doccomment">/// Crypto.rs mnemonic error</span>
+    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;{0}&quot;</span>)]</span>
+    <span class="ident">MnemonicError</span>(<span class="ident">String</span>),
     <span class="doccomment">/// Invalid amount of parents</span>
     <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Invalid amount of parents: {0}, length must be in 1..=8&quot;</span>)]</span>
     <span class="ident">InvalidParentsAmount</span>(<span class="ident">usize</span>),

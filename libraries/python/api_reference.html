@@ -344,6 +344,15 @@ Also for all the optional values, the default values are the same as the ones in
 <tr><td>[addresses]</td><td><code>list[str]</code></td><td><code>undefined</code></td><td>The list of addresses to search</td></tr>
 </tbody></table>
 <p><strong>Returns</strong> the list of <a href="#addressbalancepair">AddressBalancePair</a>.</p>
+<h4 id="generate_mnemonic"><a class="header" href="#generate_mnemonic">generate_mnemonic()</a></h4>
+<p>Returns a random generated Bip39 mnemonic with the English word list.</p>
+<p><strong>Returns</strong> A String</p>
+<h4 id="mnemonic_to_hex_seedmnemonic"><a class="header" href="#mnemonic_to_hex_seedmnemonic">mnemonic_to_hex_seed(mnemonic)</a></h4>
+<p>Returns the seed hex encoded.</p>
+<table><thead><tr><th>Param</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<tr><td>mnemonic</td><td><code>string</code></td><td><code>undefined</code></td><td>Bip39 mnemonic with words from the English word list.</td></tr>
+</tbody></table>
+<p><strong>Returns</strong> A String</p>
 <h4 id="bech32_to_hexbech32"><a class="header" href="#bech32_to_hexbech32">bech32_to_hex(bech32)</a></h4>
 <p>Returns a parsed hex String from bech32.</p>
 <table><thead><tr><th>Param</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>

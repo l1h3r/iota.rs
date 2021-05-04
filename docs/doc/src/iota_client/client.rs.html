@@ -1153,6 +1153,29 @@
 <span id="1150">1150</span>
 <span id="1151">1151</span>
 <span id="1152">1152</span>
+<span id="1153">1153</span>
+<span id="1154">1154</span>
+<span id="1155">1155</span>
+<span id="1156">1156</span>
+<span id="1157">1157</span>
+<span id="1158">1158</span>
+<span id="1159">1159</span>
+<span id="1160">1160</span>
+<span id="1161">1161</span>
+<span id="1162">1162</span>
+<span id="1163">1163</span>
+<span id="1164">1164</span>
+<span id="1165">1165</span>
+<span id="1166">1166</span>
+<span id="1167">1167</span>
+<span id="1168">1168</span>
+<span id="1169">1169</span>
+<span id="1170">1170</span>
+<span id="1171">1171</span>
+<span id="1172">1172</span>
+<span id="1173">1173</span>
+<span id="1174">1174</span>
+<span id="1175">1175</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -1181,8 +1204,14 @@
 };
 <span class="kw">use</span> <span class="ident">crypto</span>::{
     <span class="ident">hashes</span>::{<span class="ident">blake2b</span>::<span class="ident">Blake2b256</span>, <span class="ident">Digest</span>},
-    <span class="ident">keys</span>::<span class="ident">slip10</span>::<span class="ident">Seed</span>,
+    <span class="ident">keys</span>::{
+        <span class="ident">bip39</span>::{<span class="ident">mnemonic_to_seed</span>, <span class="ident">wordlist</span>},
+        <span class="ident">slip10</span>::<span class="ident">Seed</span>,
+    },
+    <span class="ident">utils</span>,
 };
+
+<span class="kw">use</span> <span class="ident">zeroize</span>::<span class="ident">Zeroize</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;mqtt&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">rumqttc</span>::<span class="ident">AsyncClient</span> <span class="kw">as</span> <span class="ident">MqttClient</span>;
@@ -1702,6 +1731,23 @@
             .<span class="ident">iter</span>()
             .<span class="ident">filter</span>(<span class="op">|</span><span class="ident">node</span><span class="op">|</span> <span class="op">!</span><span class="ident">synced</span>.<span class="ident">contains</span>(<span class="ident">node</span>))
             .<span class="ident">collect</span>()
+    }
+
+    <span class="doccomment">/// Generates a new mnemonic.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">generate_mnemonic</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">entropy</span> <span class="op">=</span> [<span class="number">0u8</span>; <span class="number">32</span>];
+        <span class="ident">utils</span>::<span class="ident">rand</span>::<span class="ident">fill</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">entropy</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">mnemonic</span> <span class="op">=</span> <span class="ident">wordlist</span>::<span class="ident">encode</span>(<span class="kw-2">&amp;</span><span class="ident">entropy</span>, <span class="kw-2">&amp;</span><span class="ident">crypto</span>::<span class="ident">keys</span>::<span class="ident">bip39</span>::<span class="ident">wordlist</span>::<span class="ident">ENGLISH</span>)
+            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="kw">crate</span>::<span class="ident">Error</span>::<span class="ident">MnemonicError</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>;
+        <span class="ident">entropy</span>.<span class="ident">zeroize</span>();
+        <span class="prelude-val">Ok</span>(<span class="ident">mnemonic</span>)
+    }
+
+    <span class="doccomment">/// Returns a hex encoded seed for a mnemonic.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mnemonic_to_hex_seed</span>(<span class="ident">mnemonic</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">mnemonic_seed</span> <span class="op">=</span> [<span class="number">0u8</span>; <span class="number">64</span>];
+        <span class="ident">mnemonic_to_seed</span>(<span class="ident">mnemonic</span>, <span class="kw-2">&amp;</span><span class="string">&quot;&quot;</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">mnemonic_seed</span>);
+        <span class="prelude-val">Ok</span>(<span class="ident">hex</span>::<span class="ident">encode</span>(<span class="ident">mnemonic_seed</span>))
     }
 
     <span class="comment">///////////////////////////////////////////////////////////////////////</span>
