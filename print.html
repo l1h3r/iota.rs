@@ -887,8 +887,6 @@ run()
    &quot;balance&quot;:10000000,
    &quot;dustAllowed&quot;:false
 }
-
-10000000
 </code></pre>
 <ul>
 <li><code>address_type</code> indicates type of address. Value 0 denotes a Ed25519 address (currently the default for IOTA 1.5 network)</li>
@@ -1673,9 +1671,13 @@ Default interval is 5 seconds and max_attempts is 10.</p>
 <tr><td>end</td><td><code>number</code></td><td>The last address index</td></tr>
 </tbody></table>
 <p><strong>Returns</strong> the address finder instance for chained calls.</p>
-<h4 id="get-address"><a class="header" href="#get-address">get(): Address[]</a></h4>
+<h4 id="includeinternal-addressgetter"><a class="header" href="#includeinternal-addressgetter">includeInternal(): AddressGetter</a></h4>
+<p>Defines that public and internal address will be returned instead of only public addresses.</p>
+<p><strong>Returns</strong> the address finder instance for chained calls.</p>
+<h4 id="get-address--address-bool"><a class="header" href="#get-address--address-bool">get(): Address[] | [Address, bool][]</a></h4>
 <p>Performs the operation.</p>
-<p><strong>Returns</strong> an array of <a href="libraries/nodejs/api_reference.html#address">Address</a> instances.</p>
+<p><strong>Returns</strong> an array of public <a href="libraries/nodejs/api_reference.html#address">Address</a> instances or an array of arrays with an Address and a bool,
+where the bool defines whether it's an internal address or not.</p>
 <h3 id="balancegetter"><a class="header" href="#balancegetter">BalanceGetter</a></h3>
 <p>Gets balance on a given seed.</p>
 <h4 id="accountindexindex-balancegetter"><a class="header" href="#accountindexindex-balancegetter">accountIndex(index): BalanceGetter</a></h4>
@@ -1739,7 +1741,6 @@ If gapLimit amount of addresses in a row have no balance the BalanceGetter will 
 </tbody></table>
 <h3 id="address"><a class="header" href="#address">Address</a></h3>
 <table><thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead><tbody>
-<tr><td>type</td><td><code>'Ed25519'</code></td><td>Address type</td></tr>
 <tr><td>data</td><td><code>string</code></td><td>Address as a Bech32 string</td></tr>
 </tbody></table>
 <h3 id="message"><a class="header" href="#message">Message</a></h3>
