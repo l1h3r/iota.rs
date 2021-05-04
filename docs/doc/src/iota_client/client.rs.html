@@ -1152,6 +1152,7 @@
 <span id="1149">1149</span>
 <span id="1150">1150</span>
 <span id="1151">1151</span>
+<span id="1152">1152</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -1224,6 +1225,7 @@
     <span class="doccomment">/// Milestone index.</span>
     <span class="kw">pub</span> <span class="ident">index</span>: <span class="ident">u32</span>,
     <span class="doccomment">/// Milestone message id.</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;messageId&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">message_id</span>: <span class="ident">MessageId</span>,
     <span class="doccomment">/// Milestone timestamp.</span>
     <span class="kw">pub</span> <span class="ident">timestamp</span>: <span class="ident">u64</span>,

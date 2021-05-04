@@ -381,14 +381,14 @@ run()
    &quot;address_type&quot;:0,
    &quot;address&quot;:&quot;atoi1qp9427varyc05py79ajku89xarfgkj74tpel5egr9y7xu3wpfc4lkpx0l86&quot;,
    &quot;balance&quot;:10000000,
-   &quot;dust_allowed&quot;:false
+   &quot;dustAllowed&quot;:false
 }
 
 10000000
 </code></pre>
 <ul>
 <li><code>address_type</code> indicates type of address. Value 0 denotes a Ed25519 address (currently the default for IOTA 1.5 network)</li>
-<li><code>dust_allowed</code> indicates whether the given address is allowed to accepts a dust due to <a href="https://chrysalis.docs.iota.org/guides/dev_guide.html#dust-protection">dust protection mechanism</a></li>
+<li><code>dustAllowed</code> indicates whether the given address is allowed to accepts a dust due to <a href="https://chrysalis.docs.iota.org/guides/dev_guide.html#dust-protection">dust protection mechanism</a></li>
 </ul>
 <p><code>Client.getBalance(seed)</code> performs a several tasks under the hood.
 It starts generating addresses for the provided <code>seed</code> and <code>.accountIndex</code> from <code>.initialAddressIndex(index)</code>, and checks for a balance of each of the generated addresses. Since it does not know how many addresses are used in fact, there is a condition set by <code>.gapLimit(amount)</code> argument when to stop searching. If <code>.gapLimit</code> amount of addresses in a row have no balance the function returns result and searching does not continue.</p>
@@ -445,6 +445,14 @@ So basically sum of outputs and their amounts under the given address is a balan
 
 run()
 </code></pre>
+<p>Output example:
+```json`
+[
+'0f2d5d2651f8061a9f5417d0658009f32b2e3f77f9706b0be3b4b3f466171f360000',
+'7614ba900a90b130707766a660a454942ac7cc4adea3fb9ad0cdca90114417c20000',
+'768c20c15a290e02a43b83263a98501b9d7eb0b57da40a9247289c672de63ea60000'
+]
+``</p>
 <p>Then the function <code>Client.getOutput(str)</code> can be used to get metadata about the given <code>output_id</code>:</p>
 <pre><code class="language-javascript">async function run() {
     const { ClientBuilder } = require('@iota/client');
@@ -460,24 +468,12 @@ run()
 </code></pre>
 <p>Output example:</p>
 <pre><code class="language-json">{
-   &quot;message_id&quot;:&quot;f51fb2839e0a24d5b4a97f1f5721fdac0f1eeafd77645968927f7c2f4b46565b&quot;,
-   &quot;transaction_id&quot;:&quot;a22cba0667c922cbb1f8bdcaf970b2a881ccd6e88e2fcce50374de2aac7c3772&quot;,
-   &quot;output_index&quot;:0,
-   &quot;is_spent&quot;:false,
-   &quot;output&quot;:{
-      &quot;treasury&quot;:&quot;None&quot;,
-      &quot;signature_locked_single&quot;:{
-         &quot;kind&quot;:0,
-         &quot;address&quot;:{
-            &quot;ed25519&quot;:{
-               &quot;kind&quot;:0,
-               &quot;address&quot;:&quot;atoi1qp9427varyc05py79ajku89xarfgkj74tpel5egr9y7xu3wpfc4lkpx0l86&quot;
-            }
-         },
-         &quot;amount&quot;:10000000
-      },
-      &quot;signature_locked_dust_allowance&quot;:&quot;None&quot;
-   }
+  &quot;messageId&quot;: &quot;f303bc90a5ed3ef15af5fc6aa81a739978c59458a71e68ce8e380f1f534da1e6&quot;,
+  &quot;transactionId&quot;: &quot;0f2d5d2651f8061a9f5417d0658009f32b2e3f77f9706b0be3b4b3f466171f36&quot;,
+  &quot;outputIndex&quot;: 0,
+  &quot;isSpent&quot;: false,
+  &quot;address&quot;: &quot;atoi1qzt0nhsf38nh6rs4p6zs5knqp6psgha9wsv74uajqgjmwc75ugupx3y7x0r&quot;,
+  &quot;amount&quot;: 1000000
 }
 </code></pre>
 <p>A function <code>Client.findOutputs()</code> is a convenient shortcut combining both mentioned methods in a single call:</p>
@@ -498,26 +494,22 @@ run()
 </ul>
 <p>Output example:</p>
 <pre><code class="language-json">[
-   {
-      &quot;message_id&quot;:&quot;7c47db1c4555348c260d91e90cc10fd66c2e73a84ec24bf9533e440f6d945d42&quot;,
-      &quot;transaction_id&quot;:&quot;c3f416b4394dd6e49354444d53e3c33f1169f25889ad7bc1c2ea83e35e291d5c&quot;,
-      &quot;output_index&quot;:1,
-      &quot;is_spent&quot;:false,
-      &quot;output&quot;:{
-         &quot;treasury&quot;:&quot;None&quot;,
-         &quot;signature_locked_single&quot;:{
-            &quot;kind&quot;:0,
-            &quot;address&quot;:{
-               &quot;ed25519&quot;:{
-                  &quot;kind&quot;:0,
-                  &quot;address&quot;:&quot;atoi1qp9427varyc05py79ajku89xarfgkj74tpel5egr9y7xu3wpfc4lkpx0l86&quot;
-               }
-            },
-            &quot;amount&quot;:9000000
-         },
-         &quot;signature_locked_dust_allowance&quot;:&quot;None&quot;
-      }
-   }
+  {
+    &quot;messageId&quot;: &quot;f303bc90a5ed3ef15af5fc6aa81a739978c59458a71e68ce8e380f1f534da1e6&quot;,
+    &quot;transactionId&quot;: &quot;0f2d5d2651f8061a9f5417d0658009f32b2e3f77f9706b0be3b4b3f466171f36&quot;,
+    &quot;outputIndex&quot;: 0,
+    &quot;isSpent&quot;: false,
+    &quot;address&quot;: &quot;atoi1qzt0nhsf38nh6rs4p6zs5knqp6psgha9wsv74uajqgjmwc75ugupx3y7x0r&quot;,
+    &quot;amount&quot;: 1000000
+  },
+  {
+    &quot;messageId&quot;: &quot;825266a79c0ffb6001ed263eb150357863b7d0052627c5766e8ef5acd6fed533&quot;,
+    &quot;transactionId&quot;: &quot;768c20c15a290e02a43b83263a98501b9d7eb0b57da40a9247289c672de63ea6&quot;,
+    &quot;outputIndex&quot;: 0,
+    &quot;isSpent&quot;: false,
+    &quot;address&quot;: &quot;atoi1qzt0nhsf38nh6rs4p6zs5knqp6psgha9wsv74uajqgjmwc75ugupx3y7x0r&quot;,
+    &quot;amount&quot;: 1000000
+  }
 ]
 </code></pre>
 <ul>
@@ -570,36 +562,36 @@ run()
 <p>Output example:</p>
 <pre><code class="language-json">Message meta data:
 {
-   &quot;message_id&quot;:&quot;e2daa4c6b012b615becd6c12189b2c9e701ba0d53b31a15425b21af5105fc086&quot;,
-   &quot;parent_message_ids&quot;:[
-      &quot;0e2705ce50fec88f896663d4b7d562e74cbcfdd951ac482b1f03cfa5f27396d7&quot;,
-      &quot;0f5a0b2041766127c3f3bff2dd653b450b72e364765fcc805a40423c59ed01f9&quot;,
-      &quot;20635b30aee437575d7e6abdf6629eec80543bee30848b0abdda2200fc11a977&quot;,
-      &quot;da97cd6cfcbb854b8fd3f064c8459c5c9eae80dbd5ef594a3e1a26dcb8fc078c&quot;
-   ],
-   &quot;is_solid&quot;:true,
-   &quot;referenced_by_milestone_index&quot;:284866,
-   &quot;milestone_index&quot;:&quot;None&quot;,
-   &quot;ledger_inclusion_state&quot;:{
-      &quot;state&quot;:&quot;NoTransaction&quot;
-   },
-   &quot;conflict_reason&quot;:&quot;None&quot;,
-   &quot;should_promote&quot;:&quot;None&quot;,
-   &quot;should_reattach&quot;:&quot;None&quot;
+  &quot;messageId&quot;: &quot;656f753d781a4c4f545ac6a69e391ec400b7f33ac8bed98add70f7310de910b6&quot;,
+  &quot;parentMessageIds&quot;: [
+    &quot;28359f7010ec08b1ed67465f495424f9046ec3890164dddc0240a275f20cecdb&quot;,
+    &quot;93b142fdf1bdfe1c5fa68d807287480aa14f2347f601fb349a3f89127b7a9e53&quot;,
+    &quot;cf192d94f2af091b1094e7b6513ff6752fcf477dd919b16c8ab823944a78aee7&quot;,
+    &quot;dbca8d2119b00fd5ef130bdb900592cafde56142e81c279b80cf18dcaae86f44&quot;
+  ],
+  &quot;isSolid&quot;: true,
+  &quot;referencedByMilestoneIndex&quot;: 224175,
+  &quot;ledgerInclusionState&quot;: &quot;noTransaction&quot;
 }
 
 Message data:
 {
-   &quot;message_id&quot;:&quot;e2daa4c6b012b615becd6c12189b2c9e701ba0d53b31a15425b21af5105fc086&quot;,
-   &quot;network_id&quot;:7712883261355838377,
-   &quot;parents&quot;:[
-      &quot;0e2705ce50fec88f896663d4b7d562e74cbcfdd951ac482b1f03cfa5f27396d7&quot;,
-      &quot;0f5a0b2041766127c3f3bff2dd653b450b72e364765fcc805a40423c59ed01f9&quot;,
-      &quot;20635b30aee437575d7e6abdf6629eec80543bee30848b0abdda2200fc11a977&quot;,
-      &quot;da97cd6cfcbb854b8fd3f064c8459c5c9eae80dbd5ef594a3e1a26dcb8fc078c&quot;
-   ],
-   &quot;payload&quot;:&quot;None&quot;,
-   &quot;nonce&quot;:2305843009213869242
+  &quot;message&quot;: {
+    &quot;networkId&quot;: &quot;14379272398717628000&quot;,
+    &quot;parentMessageIds&quot;: [
+      &quot;28359f7010ec08b1ed67465f495424f9046ec3890164dddc0240a275f20cecdb&quot;,
+      &quot;93b142fdf1bdfe1c5fa68d807287480aa14f2347f601fb349a3f89127b7a9e53&quot;,
+      &quot;cf192d94f2af091b1094e7b6513ff6752fcf477dd919b16c8ab823944a78aee7&quot;,
+      &quot;dbca8d2119b00fd5ef130bdb900592cafde56142e81c279b80cf18dcaae86f44&quot;
+    ],
+    &quot;payload&quot;: {
+      &quot;type&quot;: 2,
+      &quot;index&quot;: &quot;494f54412e52532042494e44494e47202d204e4f44452e4a53&quot;,
+      &quot;data&quot;: &quot;736f6d65207574662062617365642064617461&quot;
+    },
+    &quot;nonce&quot;: 9223372036855090000
+  },
+  &quot;messageId&quot;: &quot;656f753d781a4c4f545ac6a69e391ec400b7f33ac8bed98add70f7310de910b6&quot;
 }
 </code></pre>
 <ul>
@@ -651,77 +643,59 @@ run()
 </code></pre>
 <p>Example of a message with <code>SignedTransaction</code> payload:</p>
 <pre><code class="language-json">{
-   &quot;message_id&quot;:&quot;f51fb2839e0a24d5b4a97f1f5721fdac0f1eeafd77645968927f7c2f4b46565b&quot;,
-   &quot;network_id&quot;:7712883261355838377,
-   &quot;parents&quot;:[
-      &quot;4a84bf1d345a441cfdefd0e71d6efe820c1077e5dda9122a09cbf026132d208c&quot;,
-      &quot;6e9153884fd1983be4c27c3ccdc69760b4775484eea498ec0707c2ff8901995e&quot;,
-      &quot;7ac1407c88007a54d603400b558d5110f2bbf93a68100fb34f0b40cece9d0868&quot;,
-      &quot;9ac0fd457998a1b3ddab9c0014f41344475358ad36c64a4b763de3b51f47c09a&quot;
-   ],
-   &quot;payload&quot;:{
-      &quot;transaction&quot;:[
-         {
-            &quot;essence&quot;:{
-               &quot;inputs&quot;:[
-                  {
-                     &quot;transaction_id&quot;:&quot;4a34274992474d91cf45366425ad1d4df6042cba64f3b6c07d297a2e6b7154a9&quot;,
-                     &quot;index&quot;:0
-                  }
-               ],
-               &quot;outputs&quot;:[
-                  {
-                     &quot;address&quot;:&quot;4b55799d1930fa049e2f656e1ca6e8d28b4bd55873fa6503293c6e45c14e2bfb&quot;,
-                     &quot;amount&quot;:10000000
-                  },
-                  {
-                     &quot;address&quot;:&quot;9b3eb1e26a1b540e6aa626ec738d5f6ecfdd1778e352f07ea9485fbe2ceb469e&quot;,
-                     &quot;amount&quot;:100016136757200
-                  }
-               ],
-               &quot;payload&quot;:{
-                  &quot;transaction&quot;:&quot;None&quot;,
-                  &quot;milestone&quot;:&quot;None&quot;,
-                  &quot;indexation&quot;:[
-                     {
-                        &quot;index&quot;:&quot;54414e474c454b495420464155434554&quot;,
-                        &quot;data&quot;:[
-                        ]
-                     }
-                  ],
-                  &quot;receipt&quot;:&quot;None&quot;,
-                  &quot;treasury_transaction&quot;:&quot;None&quot;
-               }
-            },
-            &quot;unlock_blocks&quot;:[
-               {
-                  &quot;signature&quot;:{
-                     &quot;public_key&quot;:[
-                        ...
-                     ],
-                     &quot;signature&quot;:[
-                        ...
-                     ]
-                  },
-                  &quot;reference&quot;:&quot;None&quot;
-               }
-            ]
-         }
+   &quot;message&quot;:{
+      &quot;networkId&quot;:&quot;14379272398717627559&quot;,
+      &quot;parentMessageIds&quot;:[
+         &quot;108e58d210b3b918d75fe2c4d7a5248878e29454cfb071688393ec9d1f9ad81b&quot;,
+         &quot;90d8d2722bc661aa893a7fa7bb044f7dcdd8503da7e10f5c907649897f110c44&quot;,
+         &quot;ac4a389ee6985b9238dbc5882a0a27e3a8b6cf5960d176e64c6f832bdadbe7c6&quot;,
+         &quot;c20dc0da13802f9c1e34c269fe19fa96a92c184e5776ed211bfa74ebe33d82a8&quot;
       ],
-      &quot;milestone&quot;:&quot;None&quot;,
-      &quot;indexation&quot;:&quot;None&quot;,
-      &quot;receipt&quot;:&quot;None&quot;,
-      &quot;treasury_transaction&quot;:&quot;None&quot;
+      &quot;payload&quot;:{
+         &quot;type&quot;:0,
+         &quot;essence&quot;:{
+            &quot;type&quot;:0,
+            &quot;inputs&quot;:[
+               {
+                  &quot;type&quot;:0,
+                  &quot;transactionId&quot;:&quot;7614ba900a90b130707766a660a454942ac7cc4adea3fb9ad0cdca90114417c2&quot;,
+                  &quot;transactionOutputIndex&quot;:0
+               }
+            ],
+            &quot;outputs&quot;:[
+               {
+                  &quot;type&quot;:0,
+                  &quot;address&quot;:{
+                     &quot;type&quot;:0,
+                     &quot;address&quot;:&quot;08dc79fb0c9acf9fea71219ec32070afbcb44230e75f950ac1dcdc4377fb44fe&quot;
+                  },
+                  &quot;amount&quot;:1000000
+               }
+            ],
+            &quot;payload&quot;:null
+         },
+         &quot;unlockBlocks&quot;:[
+            {
+               &quot;type&quot;:0,
+               &quot;signature&quot;:{
+                  &quot;type&quot;:0,
+                  &quot;publicKey&quot;:&quot;2baaf3bca8ace9f862e60184bd3e79df25ff230f7eaaa4c7f03daa9833ba854a&quot;,
+                  &quot;signature&quot;:&quot;a0354502ef69dbbfdadb4248791a271ac59c2707b55f3c758de9f5762278a2800553cfec278a4b270c501bbfd5cfcdf8613eda5879d9088835d328228f789d08&quot;
+               }
+            }
+         ]
+      },
+      &quot;nonce&quot;:&quot;17293822569102755792&quot;
    },
-   &quot;nonce&quot;:1146102
+   &quot;messageId&quot;:&quot;0cd0a0362217a3fec8c03c22fa7135cef96e808f0e2f4a40d3be67c639b17b85&quot;
 }
 </code></pre>
 <p>Each <code>transaction</code> includes the following set of information:</p>
 <ul>
 <li><code>inputs</code>: list of valid <code>outputs</code> that should be used to fund the given message. Those <code>outputs</code> will be spent and once the message is confirmed, those outputs are not valid anymore. Outputs are uniquely referenced via <code>transaction_id</code> and inner <code>index</code>. At least one output has to be given with enough balance to source all <code>outputs</code> of the given message</li>
 <li><code>outputs</code>: list of IOTA address(es) and related amount(s) the input <code>outputs</code> should be split among. Based on this information, new <code>UTXO</code> entities (outputs) are being created</li>
-<li><code>unlock_blocks</code>: it includes a transaction signature(s) (currently based on <code>Ed25519</code> scheme) that proofs token ownership based on a valid seed. Needless to say, only valid seed owner is able to correctly sign the given transaction and proofs the ownership of tokens under the given output(s). Each input <code>output</code> has to have a corresponding <code>unblock_block</code> entry in case more <code>outputs</code> are used to fund the operation either using the given signature or as a reference to existing signature</li>
-<li><code>payload</code>: each <code>SignedTransaction</code> can include additional payload(s) such as <code>IndexationPayload</code>, etc. Meaning, any value-based messages can also contain arbitrary data and its key index. It is also an example how individual payloads can be encapsulated on different levels of concern</li>
+<li><code>unlock_blocks</code>: it includes a transaction signature(s) (currently based on <code>Ed25519</code> scheme) that proofs token ownership based on a valid seed. Needless to say, only valid seed owner is able to correctly sign the given transaction and proofs the ownership of tokens under the given output(s). Each input <code>output</code> has to have a corresponding <code>unblockBlocks</code> entry in case more <code>outputs</code> are used to fund the operation either using the given signature or as a reference to existing signature</li>
+<li><code>payload</code>: each <code>SignedTransaction</code>(payload type 0) can include additional payload(s) such as <code>IndexationPayload</code> (payload type 1), etc. Meaning, any value-based messages can also contain arbitrary data and its key index. It is also an example how individual payloads can be encapsulated on different levels of concern</li>
 </ul>
 <p>Sending value-based messages is also very straightforward process via <code>MessageSender</code> helper class.</p>
 <p>As a minimum, it needs a valid seed, output addresses and amount. The method finds valid output(s) that can be used to fund the given amount(s) and the unspent amount is sent to the same address:</p>

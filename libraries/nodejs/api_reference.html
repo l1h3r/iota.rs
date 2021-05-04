@@ -333,13 +333,13 @@ Nodes that don't belong to this network are ignored.</p>
 <tr><td>messageId</td><td><code>string</code></td><td>The id of the message to retry</td></tr>
 </tbody></table>
 <p><strong>Returns</strong> A promise resolving to the new <a href="#message">Message</a> instance.</p>
-<h4 id="retryuntilincludedmessageid-string-interval-int-max_attempts-int-promisemessage"><a class="header" href="#retryuntilincludedmessageid-string-interval-int-max_attempts-int-promisemessage">retryUntilIncluded(messageId: string[, interval: int, max_attempts: int]): Promise<Message></a></h4>
+<h4 id="retryuntilincludedmessageid-string-interval-int-maxattempts-int-promisemessage"><a class="header" href="#retryuntilincludedmessageid-string-interval-int-maxattempts-int-promisemessage">retryUntilIncluded(messageId: string[, interval: int, maxAttempts: int]): Promise<Message></a></h4>
 <p>Retries (promotes or reattaches) the message associated with the given id until it's included in the Tangle.
 Default interval is 5 seconds and max_attempts is 10.</p>
 <table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody>
 <tr><td>messageId</td><td><code>string</code></td><td>The id of the message to retry</td></tr>
 <tr><td>[options.interval]</td><td><code>int</code></td><td>The interval in seconds in which we retry the message.</td></tr>
-<tr><td>[options.max_attempts]</td><td><code>int</code></td><td>The maximum of attempts we retry the message.</td></tr>
+<tr><td>[options.maxAttempts]</td><td><code>int</code></td><td>The maximum of attempts we retry the message.</td></tr>
 </tbody></table>
 <p><strong>Returns</strong> the message ids and <a href="#message">Message</a> of reattached messages.</p>
 <h4 id="getinfo-promisenodeinfowrapper"><a class="header" href="#getinfo-promisenodeinfowrapper">getInfo(): Promise<NodeInfoWrapper></a></h4>
@@ -578,9 +578,9 @@ Default interval is 5 seconds and max_attempts is 10.</p>
 <p><strong>Returns</strong> the balance getter instance for chained calls.</p>
 <h4 id="gaplimitamount-balancegetter"><a class="header" href="#gaplimitamount-balancegetter">gapLimit(amount): BalanceGetter</a></h4>
 <p>Sets the gapLimit to specify how many addresses will be checked each round.
-If gap_limit amount of addresses in a row have no balance the BalanceGetter will return. Defaults to 20 if the function isn't called.</p>
+If gapLimit amount of addresses in a row have no balance the BalanceGetter will return. Defaults to 20 if the function isn't called.</p>
 <table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody>
-<tr><td>gap_limit</td><td><code>number</code></td><td>The initial address index</td></tr>
+<tr><td>gapLimit</td><td><code>number</code></td><td>The initial address index</td></tr>
 </tbody></table>
 <p><strong>Returns</strong> the balance getter instance for chained calls.</p>
 <h4 id="get-promisenumber"><a class="header" href="#get-promisenumber">get(): Promise<number></a></h4>
@@ -702,10 +702,10 @@ If gap_limit amount of addresses in a row have no balance the BalanceGetter will
 <tr><td>index</td><td><code>number</code></td><td>Milestone index</td></tr>
 <tr><td>timestamp</td><td><code>number</code></td><td>Timestamp</td></tr>
 <tr><td>parents</td><td><code>string[]</code></td><td>Message ids of the messages the milestone references</td></tr>
-<tr><td>merkle_proof</td><td><code>number[]</code></td><td>Merkle proof</td></tr>
-<tr><td>next_pow_score</td><td><code>number</code></td><td>Next PoW score</td></tr>
-<tr><td>next_pow_score_milestone_index</td><td><code>number</code></td><td>Milestone index at which the next_pow_score will be used</td></tr>
-<tr><td>public_keys</td><td><code>number[][]</code></td><td>public keys</td></tr>
+<tr><td>merkleProof</td><td><code>number[]</code></td><td>Merkle proof</td></tr>
+<tr><td>nextPoWScore</td><td><code>number</code></td><td>Next PoW score</td></tr>
+<tr><td>nextPoWScoreMilestoneIndex</td><td><code>number</code></td><td>Milestone index at which the nextPoWScore will be used</td></tr>
+<tr><td>publicKeys</td><td><code>number[][]</code></td><td>public keys</td></tr>
 </tbody></table>
 <h3 id="messagedto"><a class="header" href="#messagedto">MessageDto</a></h3>
 <table><thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead><tbody>
@@ -782,11 +782,11 @@ If gap_limit amount of addresses in a row have no balance the BalanceGetter will
 <tr><td>isHealthy</td><td><code>boolean</code></td><td>Node health status</td></tr>
 <tr><td>networkId</td><td><code>string</code></td><td>Node network identifier</td></tr>
 <tr><td>bech32HRP</td><td><code>string</code></td><td>Bech32 HRP for this network</td></tr>
-<tr><td>min_pow_score</td><td><code>number</code></td><td>Min PoW score</td></tr>
-<tr><td>messages_per_second</td><td><code>number</code></td><td>Network stats: Messages per second in the network</td></tr>
-<tr><td>referenced_messages_per_second</td><td><code>number</code></td><td>Network stats: Referenced messages per second</td></tr>
-<tr><td>referenced_rate</td><td><code>number</code></td><td>Network stats: referenced rate</td></tr>
-<tr><td>latest_milestone_timestamp</td><td><code>number</code></td><td>Timestamp of the latest milestone</td></tr>
+<tr><td>minPoWScore</td><td><code>number</code></td><td>Min PoW score</td></tr>
+<tr><td>messagesPerSecond</td><td><code>number</code></td><td>Network stats: Messages per second in the network</td></tr>
+<tr><td>referencedMessagesPerSecond</td><td><code>number</code></td><td>Network stats: Referenced messages per second</td></tr>
+<tr><td>referencedRate</td><td><code>number</code></td><td>Network stats: referenced rate</td></tr>
+<tr><td>latestMilestoneTimestamp</td><td><code>number</code></td><td>Timestamp of the latest milestone</td></tr>
 <tr><td>latestMilestoneIndex</td><td><code>number</code></td><td>Index of the latest milestone</td></tr>
 <tr><td>confirmedMilestoneIndex</td><td><code>number</code></td><td>Index of the confirmed milestone</td></tr>
 <tr><td>pruningIndex</td><td><code>number</code></td><td>Pruning index</td></tr>
@@ -816,11 +816,11 @@ If gap_limit amount of addresses in a row have no balance the BalanceGetter will
 <h3 id="receipts"><a class="header" href="#receipts">Receipts</a></h3>
 <table><thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead><tbody>
 <tr><td>receipt</td><td><code>receipt</code></td><td>Receipt</td></tr>
-<tr><td>milestone_index</td><td><code>number</code></td><td>Milestone index</td></tr>
+<tr><td>milestoneIndex</td><td><code>number</code></td><td>Milestone index</td></tr>
 </tbody></table>
 <h3 id="treasury"><a class="header" href="#treasury">Treasury</a></h3>
 <table><thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead><tbody>
-<tr><td>milestone_id</td><td><code>string</code></td><td>Milestone id</td></tr>
+<tr><td>milestoneId</td><td><code>string</code></td><td>Milestone id</td></tr>
 <tr><td>amount</td><td><code>number</code></td><td>Amount</td></tr>
 </tbody></table>
 
