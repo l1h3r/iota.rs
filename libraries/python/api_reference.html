@@ -386,6 +386,15 @@ Also for all the optional values, the default values are the same as the ones in
 <tr><td>max_attempts</td><td><code>int</code></td><td><code>10</code></td><td>The maximum of attempts we retry the message.</td></tr>
 </tbody></table>
 <p><strong>Returns</strong> the message ids and <a href="#message">Message</a> of reattached messages.</p>
+<h4 id="consolidate_fundsseed-account_index-start_index-end_index-str"><a class="header" href="#consolidate_fundsseed-account_index-start_index-end_index-str">consolidate_funds(seed, account_index, start_index, end_index): str</a></h4>
+<p>Function to consolidate all funds from a range of addresses to the address with the lowest index in that range</p>
+<table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td>[seed]</td><td><code>string</code></td><td>The seed</td></tr>
+<tr><td>[account_index]</td><td><code>int</code></td><td>The account index.</td></tr>
+<tr><td>[start_index]</td><td><code>int</code></td><td>The lowest address index, funds will be consolidated to this address.</td></tr>
+<tr><td>[end_index]</td><td><code>int</code></td><td>The address index until which funds will be consolidated</td></tr>
+</tbody></table>
+<p><strong>Returns</strong> the address to which the funds got consolidated, if any were available.</p>
 <h4 id="reattachmessage_id-str-message"><a class="header" href="#reattachmessage_id-str-message">reattach(message_id): (str, Message)</a></h4>
 <p>Reattaches the message associated with the given id.</p>
 <table><thead><tr><th>Param</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>

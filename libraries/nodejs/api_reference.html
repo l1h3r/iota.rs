@@ -351,6 +351,15 @@ Default interval is 5 seconds and max_attempts is 10.</p>
 <tr><td>[options.maxAttempts]</td><td><code>int</code></td><td>The maximum of attempts we retry the message.</td></tr>
 </tbody></table>
 <p><strong>Returns</strong> the message ids and <a href="#message">Message</a> of reattached messages.</p>
+<h4 id="consolidatefundsseed-string-accountindex-int-startindex-int-endindex-int-promisestring"><a class="header" href="#consolidatefundsseed-string-accountindex-int-startindex-int-endindex-int-promisestring">consolidateFunds(seed: string, accountIndex: int, startIndex: int, endIndex: int): Promise<string></a></h4>
+<p>Function to consolidate all funds from a range of addresses to the address with the lowest index in that range</p>
+<table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td>seed</td><td><code>string</code></td><td>The seed</td></tr>
+<tr><td>accountIndex</td><td><code>int</code></td><td>The account index.</td></tr>
+<tr><td>startIndex</td><td><code>int</code></td><td>The lowest address index, funds will be consolidated to this address.</td></tr>
+<tr><td>endIndex</td><td><code>int</code></td><td>The address index until which funds will be consolidated</td></tr>
+</tbody></table>
+<p><strong>Returns</strong> the address to which the funds got consolidated, if any were available.</p>
 <h4 id="getinfo-promisenodeinfowrapper"><a class="header" href="#getinfo-promisenodeinfowrapper">getInfo(): Promise<NodeInfoWrapper></a></h4>
 <p>Gets information about the node.</p>
 <p><strong>Returns</strong> a promise resolving to the <a href="#nodeinfowrapper">NodeInfoWrapper</a> object.</p>
