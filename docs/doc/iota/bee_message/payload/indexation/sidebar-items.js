@@ -1,1 +1,0 @@
-initSidebarItems({"constant":[["INDEXATION_INDEX_LENGTH_RANGE","Valid lengths for an indexation payload index."],["INDEXATION_PADDED_INDEX_LENGTH","Length of an indexation padded index."]],"struct":[["IndexationPayload","A payload which holds an index and associated data."],["PaddedIndex","An indexation payload index padded with `0` up to the maximum length."]]});

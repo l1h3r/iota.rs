@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["ClientBuilder","Builder to construct client instance with sensible default values"],["NetworkInfo","Struct containing network and PoW related information"]]});

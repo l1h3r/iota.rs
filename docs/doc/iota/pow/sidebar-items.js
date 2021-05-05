@@ -1,1 +1,0 @@
-initSidebarItems({"mod":[["providers","Contains nonce providers for Proof of Work."],["score","Contains utilities to score Proof of Work."]]});

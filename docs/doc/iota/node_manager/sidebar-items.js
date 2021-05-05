@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["validate_url","Validates if the url starts with http or https"]],"struct":[["NodeDetail","JSON struct for NodeDetail from the node_pool_urls"]]});

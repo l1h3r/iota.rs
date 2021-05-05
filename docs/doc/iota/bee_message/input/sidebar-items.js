@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["Input","A generic input supporting different input kinds."]],"struct":[["TreasuryInput","`TreasuryInput` is an input which references a milestone which generated a `TreasuryOutput`."],["UtxoInput","Represents an input referencing an output."]]});

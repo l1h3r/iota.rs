@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["mnemonic_to_seed",""]],"mod":[["wordlist",""]]});

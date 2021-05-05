@@ -1,1 +1,0 @@
-initSidebarItems({"mod":[["miner","Contains a nonce provider that mine nonces."],["u64","Contains a nonce provider that returns a given constant nonce."]],"trait":[["NonceProvider","A trait describing how a nonce is provided."],["NonceProviderBuilder","A trait to build nonce providers."]]});

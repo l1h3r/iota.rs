@@ -1,1 +1,0 @@
-initSidebarItems({"constant":[["STORAGE_ID","The storage id."]],"struct":[["SqliteStorageAdapter","Key value storage adapter."]]});

@@ -175,8 +175,6 @@
 </blockquote>
 <h2 id="changes-from-iota-10-to-15"><a class="header" href="#changes-from-iota-10-to-15">Changes from IOTA 1.0 to 1.5</a></h2>
 <p>For an overview of all significant changes in the protocol, please see <a href="https://chrysalis.docs.iota.org/guides/index.html">Chrysalis documentation</a>.</p>
-<h2 id="warning"><a class="header" href="#warning">Warning</a></h2>
-<p>This library is in active development. The library targets the Chrysalis testnet and does not work with current IOTA mainnet.</p>
 <h2 id="testnet"><a class="header" href="#testnet">Testnet</a></h2>
 <p>To join the Chrysalis public testnet checkout <a href="https://blog.iota.org/chrysalis-phase-2-testnet-out-now/">this link</a>. More information about Chrysalis components is available at <a href="https://chrysalis.docs.iota.org/">documentation portal</a>.</p>
 <h2 id="joining-the-discussion"><a class="header" href="#joining-the-discussion">Joining the discussion</a></h2>
@@ -220,8 +218,6 @@
 <p>In order to properly test value-based transactions on testnet network, you are going to need some tokens! You can get some testnet tokens using the <a href="https://faucet.testnet.chrysalis2.com/">faucet</a>. However, we strongly recommend to leverage official <a href="https://wallet-lib.docs.iota.org/">wallet.rs</a> library in case of value-based IOTA transfers.</p>
 <h1 id="iota-client-rust-library"><a class="header" href="#iota-client-rust-library">IOTA Client Rust Library</a></h1>
 <p><a href="https://github.com/iotaledger/iota.rs"><img src="https://img.shields.io/badge/Status-Alpha-yellow.svg" alt="status" /></a></p>
-<h2 id="warning-1"><a class="header" href="#warning-1">Warning</a></h2>
-<p>This library is in active development. The library targets the Chrysalis testnet and does not work with current IOTA mainnet.</p>
 <h2 id="joining-the-discussion-1"><a class="header" href="#joining-the-discussion-1">Joining the discussion</a></h2>
 <p>If you want to get involved in discussions about this library, or you're looking for support, go to the #clients-discussion channel on <a href="https://discord.iota.org">Discord</a>.</p>
 <h2 id="overview-1"><a class="header" href="#overview-1">Overview</a></h2>
@@ -238,9 +234,9 @@
 <h2 id="using-the-library"><a class="header" href="#using-the-library">Using the library</a></h2>
 <p>Using the library is easy, just add it as dependency in your <code>Cargo.toml</code>:</p>
 <pre><code class="language-bash">[dependencies]
-iota-core = { git = &quot;https://github.com/iotaledger/iota.rs&quot;, branch = &quot;dev&quot; }
+iota-client = { git = &quot;https://github.com/iotaledger/iota.rs&quot;, branch = &quot;dev&quot; }
 </code></pre>
-<p>And then you can use the library in your code with <code>use iota;</code>.</p>
+<p>And then you can use the library in your code with <code>use iota_client;</code>.</p>
 <h3 id="initialisation"><a class="header" href="#initialisation">Initialisation</a></h3>
 <p>This example fetches node information</p>
 <pre><pre class="playground"><code class="language-rust">use iota_client::Client;
@@ -631,8 +627,6 @@ async fn main() -&gt; Result&lt;()&gt; {
 <p>If you want to get involved in discussions about this library, or you're looking for support, go to the #clients-discussion channel on <a href="https://discord.iota.org">Discord</a>.</p>
 <h1 id="iota-client-nodejs-library"><a class="header" href="#iota-client-nodejs-library">IOTA Client Node.js Library</a></h1>
 <p><a href="https://github.com/iotaledger/iota.rs"><img src="https://img.shields.io/badge/Status-Alpha-yellow.svg" alt="status" /></a></p>
-<h2 id="warning-2"><a class="header" href="#warning-2">Warning</a></h2>
-<p>This library is in active development. The library targets the Chrysalis testnet and does not work with current IOTA mainnet.</p>
 <h2 id="joining-the-discussion-3"><a class="header" href="#joining-the-discussion-3">Joining the discussion</a></h2>
 <p>If you want to get involved in discussions about this library, or you're looking for support, go to the #clients-discussion channel on <a href="https://discord.iota.org">Discord</a>.</p>
 <h2 id="changes-from-iota-10-to-15-1"><a class="header" href="#changes-from-iota-10-to-15-1">Changes from IOTA 1.0 to 1.5</a></h2>
@@ -1965,8 +1959,6 @@ If gapLimit amount of addresses in a row have no balance the BalanceGetter will 
 <p>If you want to get involved in discussions about this library, or you're looking for support, go to the #clients-discussion channel on <a href="https://discord.iota.org">Discord</a>.</p>
 <h1 id="iota-client-python-library"><a class="header" href="#iota-client-python-library">IOTA Client Python Library</a></h1>
 <p><a href="https://github.com/iotaledger/iota.rs"><img src="https://img.shields.io/badge/Status-Alpha-yellow.svg" alt="status" /></a></p>
-<h2 id="warning-3"><a class="header" href="#warning-3">Warning</a></h2>
-<p>This library is in active development. The library targets the Chrysalis testnet and does not work with current IOTA mainnet.</p>
 <h2 id="joining-the-discussion-5"><a class="header" href="#joining-the-discussion-5">Joining the discussion</a></h2>
 <p>If you want to get involved in discussions about this library, or you're looking for support, go to the #clients-discussion channel on <a href="https://discord.iota.org">Discord</a>.</p>
 <h2 id="changes-from-iota-10-to-15-2"><a class="header" href="#changes-from-iota-10-to-15-2">Changes from IOTA 1.0 to 1.5</a></h2>
@@ -1990,7 +1982,7 @@ If gapLimit amount of addresses in a row have no balance the BalanceGetter will 
 <p>You should see the similar output:</p>
 <pre><code class="language-plaintext">Package                    Version
 -------------------------- -------
-iota-core-python           0.2.0a3
+iota-client-python           0.2.0a3
 </code></pre>
 <p>Once installed in the given python environment you are all set and can start hacking using python binding!</p>
 <h2 id="usage"><a class="header" href="#usage">Usage</a></h2>

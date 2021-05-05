@@ -1,1 +1,0 @@
-initSidebarItems({"constant":[["MESSAGE_PARENTS_RANGE","The range representing the valid number of parents."]],"struct":[["Parents","A [`Message`]'s `Parents` are the [`MessageId`]s of the messages it directly approves."]]});

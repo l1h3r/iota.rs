@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["UnlockBlock","Defines the mechanism by which a transaction input is authorized to be consumed."]],"struct":[["ReferenceUnlock","An `UnlockBlock` that refers to another unlock block."],["UnlockBlocks","A collection of unlock blocks."]]});

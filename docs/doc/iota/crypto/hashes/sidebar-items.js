@@ -1,1 +1,0 @@
-initSidebarItems({"mod":[["blake2b",""],["sha",""]],"trait":[["Digest","The `Digest` trait specifies an interface common for digest functions."]],"type":[["Output","Output of a [`Digest`] function"]]});

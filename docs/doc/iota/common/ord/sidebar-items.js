@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["is_sorted","Checks if an iterator yields ordered values."],["is_unique_sorted","Checks if an iterator yields ordered and unique values."]]});

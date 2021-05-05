@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["DefaultErrorResponse","Describes the default error format."],["ErrorBody","Describes the response body of a unsuccessful HTTP request."],["SuccessBody","Describes the response body of a successful HTTP request."]],"trait":[["BodyInner","A marker trait to represent the data that can be included into `SuccessBody` and `ErrorBody`."]]});

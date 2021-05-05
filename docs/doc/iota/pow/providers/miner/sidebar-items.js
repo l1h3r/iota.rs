@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["Error","Errors occurring when computing nonces with the `Miner` nonce provider."]],"struct":[["Miner","A nonce provider that mine nonces."],["MinerBuilder","Builder for the `Miner` nonce provider."],["MinerCancel","A type to cancel the `Miner` nonce provider to abort operations."]]});
