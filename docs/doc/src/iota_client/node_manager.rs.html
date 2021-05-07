@@ -875,7 +875,7 @@
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">NodeManagerBuilder</span> {
     <span class="ident">primary_node</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Url</span><span class="op">&gt;</span>,
     <span class="ident">primary_pow_node</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Url</span><span class="op">&gt;</span>,
-    <span class="ident">nodes</span>: <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">Url</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">nodes</span>: <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">Url</span><span class="op">&gt;</span>,
     <span class="ident">sync</span>: <span class="ident">bool</span>,
     <span class="ident">sync_interval</span>: <span class="ident">Duration</span>,
     <span class="ident">quorum</span>: <span class="ident">bool</span>,
@@ -1012,7 +1012,7 @@
             <span class="ident">primary_node</span>: <span class="prelude-val">None</span>,
             <span class="ident">primary_pow_node</span>: <span class="prelude-val">None</span>,
             <span class="ident">nodes</span>: <span class="ident">HashSet</span>::<span class="ident">new</span>(),
-            <span class="ident">sync</span>: <span class="bool-val">false</span>,
+            <span class="ident">sync</span>: <span class="bool-val">true</span>,
             <span class="ident">sync_interval</span>: <span class="ident">NODE_SYNC_INTERVAL</span>,
             <span class="ident">quorum</span>: <span class="bool-val">false</span>,
             <span class="ident">quorum_size</span>: <span class="ident">DEFAULT_QUORUM_SIZE</span>,
