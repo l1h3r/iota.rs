@@ -278,7 +278,12 @@ async fn main() {
     // Create a client instance
     let iota = Client::builder()
         .with_node(&quot;https://api.lb-0.testnet.chrysalis2.com&quot;) // Insert your node URL here
-        // .with_node_auth(&quot;https://somechrysalisiotanode.com&quot;, &quot;name&quot;, &quot;password&quot;) // Optional authentication
+        // Node with optional authentication
+        // .with_node_auth(
+        //     &quot;https://somechrysalisiotanode.com&quot;,
+        //     Some(&quot;Some JWT&quot;),
+        //     Some((&quot;name&quot;, &quot;password&quot;)),
+        // )
         .unwrap()
         .finish()
         .await
@@ -1283,28 +1288,25 @@ run()
 <tr><td>url</td><td><code>string</code></td><td>A node URL</td></tr>
 </tbody></table>
 <p><strong>Returns</strong> the client builder instance for chained calls.</p>
-<h4 id="nodeauthurl-name-password-clientbuilder"><a class="header" href="#nodeauthurl-name-password-clientbuilder">nodeAuth(url, name, password): ClientBuilder</a></h4>
-<p>Adds an IOTA node with basic authentication to the client pool.</p>
+<h4 id="nodeauthurl-authoptions-clientbuilder"><a class="header" href="#nodeauthurl-authoptions-clientbuilder">nodeAuth(url, authOptions): ClientBuilder</a></h4>
+<p>Adds an IOTA node with authentication to the client pool.</p>
 <table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody>
 <tr><td>url</td><td><code>string</code></td><td>A node URL</td></tr>
-<tr><td>name</td><td><code>string</code></td><td>A name</td></tr>
-<tr><td>password</td><td><code>string</code></td><td>A password</td></tr>
+<tr><td>authOptions</td><td><code><a href="libraries/nodejs/api_reference.html#brokeroptions">BrokerOptions</a></code></td><td>Options for node authentication</td></tr>
 </tbody></table>
 <p><strong>Returns</strong> the client builder instance for chained calls.</p>
-<h4 id="primarynodeurl--name-password-clientbuilder"><a class="header" href="#primarynodeurl--name-password-clientbuilder">primaryNode(url, [, name, password]): ClientBuilder</a></h4>
-<p>Add a node to always connect first to with optional name and password for basic authentication.</p>
+<h4 id="primarynodeurl--authoptions-clientbuilder"><a class="header" href="#primarynodeurl--authoptions-clientbuilder">primaryNode(url, [, authOptions]): ClientBuilder</a></h4>
+<p>Add a node to always connect first to with optional authentication.</p>
 <table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody>
 <tr><td>url</td><td><code>string</code></td><td>A node URL</td></tr>
-<tr><td>name</td><td><code>string</code></td><td>A name</td></tr>
-<tr><td>password</td><td><code>string</code></td><td>A password</td></tr>
+<tr><td>authOptions</td><td><code><a href="libraries/nodejs/api_reference.html#brokeroptions">BrokerOptions</a></code></td><td>Options for node authentication</td></tr>
 </tbody></table>
 <p><strong>Returns</strong> the client builder instance for chained calls.</p>
-<h4 id="primarypownodeurl--name-password-clientbuilder"><a class="header" href="#primarypownodeurl--name-password-clientbuilder">primaryPowNode(url, [, name, password]): ClientBuilder</a></h4>
-<p>Add a node to always connect first to when using remote PoW with optional name and password for basic authentication. Will overwrite the primary node for this case.</p>
+<h4 id="primarypownodeurl--authoptions-clientbuilder"><a class="header" href="#primarypownodeurl--authoptions-clientbuilder">primaryPowNode(url, [, authOptions]): ClientBuilder</a></h4>
+<p>Add a node to always connect first to when using remote PoW with optional authentication. Will overwrite the primary node for this case.</p>
 <table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody>
 <tr><td>url</td><td><code>string</code></td><td>A node URL</td></tr>
-<tr><td>name</td><td><code>string</code></td><td>A name</td></tr>
-<tr><td>password</td><td><code>string</code></td><td>A password</td></tr>
+<tr><td>authOptions</td><td><code><a href="libraries/nodejs/api_reference.html#brokeroptions">BrokerOptions</a></code></td><td>Options for node authentication</td></tr>
 </tbody></table>
 <p><strong>Returns</strong> the client builder instance for chained calls.</p>
 <h4 id="nodesurls-clientbuilder"><a class="header" href="#nodesurls-clientbuilder">nodes(urls): ClientBuilder</a></h4>
@@ -1758,6 +1760,12 @@ If gapLimit amount of addresses in a row have no balance the BalanceGetter will 
 <table><thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead><tbody>
 <tr><td>automaticDisconnect</td><td><code>number</code></td><td>Whether the MQTT broker should be automatically disconnected when all topics are unsubscribed or not.</td></tr>
 <tr><td>timeout</td><td><code>number</code></td><td>MQTT connection timeout in secods</td></tr>
+</tbody></table>
+<h3 id="nodeauthoptions"><a class="header" href="#nodeauthoptions">NodeAuthOptions</a></h3>
+<table><thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td>jwt</td><td><code>string</code></td><td>Optional JSON Web Token.</td></tr>
+<tr><td>basicAuthName</td><td><code>string</code></td><td>Optional name for basic authentication</td></tr>
+<tr><td>basicAuthPassword</td><td><code>string</code></td><td>Optional password for basic authentication</td></tr>
 </tbody></table>
 <h3 id="address"><a class="header" href="#address">Address</a></h3>
 <table><thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead><tbody>
@@ -2667,12 +2675,15 @@ Also for all the optional values, the default values are the same as the ones in
 <table><thead><tr><th>Param</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
 <tr><td>[network]</td><td><code>str</code></td><td><code>undefined</code></td><td>The network</td></tr>
 <tr><td>[node]</td><td><code>str</code></td><td><code>undefined</code></td><td>A node URL</td></tr>
-<tr><td>[name]</td><td><code>str</code></td><td><code>undefined</code></td><td>The name for basic authentication</td></tr>
-<tr><td>[password]</td><td><code>str</code></td><td><code>undefined</code></td><td>The password for basic authentication</td></tr>
-<tr><td>[nodes]</td><td><code>list[str]</code></td><td><code>undefined</code></td><td>An array of node URLs</td></tr>
+<tr><td>[primary_node_jwt_name_password]</td><td><code>list[str]</code></td><td><code>undefined</code></td><td>An array of array with node URLs and optional JWT and basic auth name and password (length 1 is only the url, length 2 is url with JWT, length 3 is url with basic auth name and password and length 4 is url with JWT and basic auth name and password)</td></tr>
+<tr><td>[primary_pow_node_jwt_name_password]</td><td><code>list[str]</code></td><td><code>undefined</code></td><td>An array of array with node URLs and optional JWT and basic auth name and password (length 1 is only the url, length 2 is url with JWT, length 3 is url with basic auth name and password and length 4 is url with JWT and basic auth name and password)</td></tr>
+<tr><td>[nodes_name_password]</td><td><code>list[]list[str]</code></td><td><code>undefined</code></td><td>An array of array with node URLs and optional JWT and basic auth name and password (length 1 is only the url, length 2 is url with JWT, length 3 is url with basic auth name and password and length 4 is url with JWT and basic auth name and password)</td></tr>
 <tr><td>[node_sync_interval]</td><td><code>int</code></td><td><code>undefined</code></td><td>The interval for the node syncing process</td></tr>
 <tr><td>[node_sync_disabled]</td><td><code>bool</code></td><td><code>undefined</code></td><td>Disables the node syncing process. Every node will be considered healthy and ready to use</td></tr>
 <tr><td>[node_pool_urls]</td><td><code>str</code></td><td><code>undefined</code></td><td>An array of node pool URLs</td></tr>
+<tr><td>[quorum]</td><td><code>bool</code></td><td><code>false</code></td><td>Bool to define if quorum should be used</td></tr>
+<tr><td>[quorum_size]</td><td><code>int</code></td><td><code>3</code></td><td>An int that defines how many nodes should be used for quorum</td></tr>
+<tr><td>[quorum_threshold]</td><td><code>int</code></td><td><code>66</code></td><td>Define the % of nodes that need to return the same response to accept it</td></tr>
 <tr><td>[request_timeout]</td><td><code>int</code></td><td><code>undefined</code></td><td>Sets the default HTTP request timeout</td></tr>
 <tr><td>[api_timeout]</td><td><code>dict</code></td><td><code>undefined</code></td><td>The API to set the request timeout. Key: 'GetHealth', 'GetInfo', 'GetPeers', 'GetTips', 'PostMessage', 'GetOutput', 'GetMilestone' Value: timeout in milliseconds</td></tr>
 <tr><td>[local_pow]</td><td><code>bool</code></td><td><code>undefined</code></td><td>Flag determining if PoW should be done locally or remotely</td></tr>
@@ -3325,9 +3336,9 @@ info_response = {
 <table><thead><tr><th>Parameter</th><th>Required</th><th>Default Value</th><th>Type</th><th>Definition</th></tr></thead><tbody>
 <tr><td><strong>network</strong></td><td>✘</td><td>Testnet</td><td>&amp;str</td><td>Optional, the network type can be &quot;testnet&quot; or &quot;mainnet&quot;. If no node url is provided, some default nodes are used for the specified network. Nodes that aren't in this network will be ignored.</td></tr>
 <tr><td><strong>node</strong></td><td>✘</td><td>None</td><td>&amp;str</td><td>The URL of a node to connect to; format: <code>https://node:port</code></td></tr>
-<tr><td><strong>primary_node</strong></td><td>✘</td><td>None</td><td>&amp;str, auth_name_passw: Option&lt;(&amp;str, &amp;str)&gt;</td><td>The URL of a node to always connect first to with optional name and password for basic authentication, if multiple nodes are available; format: <code>https://node:port</code>, Some(&quot;name&quot;, &quot;password&quot;)</td></tr>
-<tr><td><strong>primary_pow_node</strong></td><td>✘</td><td>None</td><td>&amp;str, auth_name_passw: Option&lt;(&amp;str, &amp;str)&gt;</td><td>The URL of a node to always connect first to when submitting a message with remote PoW, if multiple nodes are available. Will override primary_node in that case. With optional name and password for basic authentication; format: <code>https://node:port</code>, Some(&quot;name&quot;, &quot;password&quot;)</td></tr>
-<tr><td><strong>node_auth</strong></td><td>✘</td><td>None</td><td>&amp;str, &amp;str, &amp;str</td><td>The URL of a node to connect to with name and password for basic authentication; format: <code>https://node:port</code>, <code>name</code>, <code>password</code></td></tr>
+<tr><td><strong>primary_node</strong></td><td>✘</td><td>None</td><td>&amp;str, auth_name_pwd: Option&lt;(&amp;str, &amp;str)&gt;</td><td>The URL of a node to always connect first to, if multiple nodes are available. Optional JWT and or name and password for basic authentication; format: <code>https://node:port</code>, Some(&quot;JWT&quot;), Some(&quot;name&quot;, &quot;password&quot;)</td></tr>
+<tr><td><strong>primary_pow_node</strong></td><td>✘</td><td>None</td><td>&amp;str, auth_name_pwd: Option&lt;(&amp;str, &amp;str)&gt;</td><td>The URL of a node to always connect first to when submitting a message with remote PoW, if multiple nodes are available. Will override primary_node in that case. With optional JWT or name and password for basic authentication; format: <code>https://node:port</code>, Some(&quot;JWT&quot;), Some(&quot;name&quot;, &quot;password&quot;)</td></tr>
+<tr><td><strong>node_auth</strong></td><td>✘</td><td>None</td><td>&amp;str, Option<String>, Option&lt;(&amp;str, &amp;str)&gt;</td><td>The URL of a node to connect to with optional JWT and or name and password for basic authentication; format: <code>https://node:port</code>, Some(&quot;JWT&quot;), Some(&quot;name&quot;, &quot;password&quot;)</td></tr>
 <tr><td><strong>nodes</strong></td><td>✘</td><td>None</td><td>&amp;[&amp;str]</td><td>A list of nodes to connect to; nodes are added with the <code>https://node:port</code> format. The amount of nodes specified in quorum_size are randomly selected from this node list to check for quorum based on the quorum threshold. If quorum_size is not given the full list of nodes is checked.</td></tr>
 <tr><td><strong>node_sync_interval</strong></td><td>✘</td><td>Duration::from_secs(60)</td><td>std::time::Duration</td><td>The interval in milliseconds to check for node health and sync</td></tr>
 <tr><td><strong>node_sync_disabled</strong></td><td>✘</td><td>false</td><td>bool</td><td>If disabled also unhealty nodes will be used</td></tr>

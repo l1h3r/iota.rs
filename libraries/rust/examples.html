@@ -183,7 +183,12 @@ async fn main() {
     // Create a client instance
     let iota = Client::builder()
         .with_node(&quot;https://api.lb-0.testnet.chrysalis2.com&quot;) // Insert your node URL here
-        // .with_node_auth(&quot;https://somechrysalisiotanode.com&quot;, &quot;name&quot;, &quot;password&quot;) // Optional authentication
+        // Node with optional authentication
+        // .with_node_auth(
+        //     &quot;https://somechrysalisiotanode.com&quot;,
+        //     Some(&quot;Some JWT&quot;),
+        //     Some((&quot;name&quot;, &quot;password&quot;)),
+        // )
         .unwrap()
         .finish()
         .await

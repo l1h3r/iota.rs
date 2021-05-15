@@ -168,12 +168,15 @@ Also for all the optional values, the default values are the same as the ones in
 <table><thead><tr><th>Param</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
 <tr><td>[network]</td><td><code>str</code></td><td><code>undefined</code></td><td>The network</td></tr>
 <tr><td>[node]</td><td><code>str</code></td><td><code>undefined</code></td><td>A node URL</td></tr>
-<tr><td>[name]</td><td><code>str</code></td><td><code>undefined</code></td><td>The name for basic authentication</td></tr>
-<tr><td>[password]</td><td><code>str</code></td><td><code>undefined</code></td><td>The password for basic authentication</td></tr>
-<tr><td>[nodes]</td><td><code>list[str]</code></td><td><code>undefined</code></td><td>An array of node URLs</td></tr>
+<tr><td>[primary_node_jwt_name_password]</td><td><code>list[str]</code></td><td><code>undefined</code></td><td>An array of array with node URLs and optional JWT and basic auth name and password (length 1 is only the url, length 2 is url with JWT, length 3 is url with basic auth name and password and length 4 is url with JWT and basic auth name and password)</td></tr>
+<tr><td>[primary_pow_node_jwt_name_password]</td><td><code>list[str]</code></td><td><code>undefined</code></td><td>An array of array with node URLs and optional JWT and basic auth name and password (length 1 is only the url, length 2 is url with JWT, length 3 is url with basic auth name and password and length 4 is url with JWT and basic auth name and password)</td></tr>
+<tr><td>[nodes_name_password]</td><td><code>list[]list[str]</code></td><td><code>undefined</code></td><td>An array of array with node URLs and optional JWT and basic auth name and password (length 1 is only the url, length 2 is url with JWT, length 3 is url with basic auth name and password and length 4 is url with JWT and basic auth name and password)</td></tr>
 <tr><td>[node_sync_interval]</td><td><code>int</code></td><td><code>undefined</code></td><td>The interval for the node syncing process</td></tr>
 <tr><td>[node_sync_disabled]</td><td><code>bool</code></td><td><code>undefined</code></td><td>Disables the node syncing process. Every node will be considered healthy and ready to use</td></tr>
 <tr><td>[node_pool_urls]</td><td><code>str</code></td><td><code>undefined</code></td><td>An array of node pool URLs</td></tr>
+<tr><td>[quorum]</td><td><code>bool</code></td><td><code>false</code></td><td>Bool to define if quorum should be used</td></tr>
+<tr><td>[quorum_size]</td><td><code>int</code></td><td><code>3</code></td><td>An int that defines how many nodes should be used for quorum</td></tr>
+<tr><td>[quorum_threshold]</td><td><code>int</code></td><td><code>66</code></td><td>Define the % of nodes that need to return the same response to accept it</td></tr>
 <tr><td>[request_timeout]</td><td><code>int</code></td><td><code>undefined</code></td><td>Sets the default HTTP request timeout</td></tr>
 <tr><td>[api_timeout]</td><td><code>dict</code></td><td><code>undefined</code></td><td>The API to set the request timeout. Key: 'GetHealth', 'GetInfo', 'GetPeers', 'GetTips', 'PostMessage', 'GetOutput', 'GetMilestone' Value: timeout in milliseconds</td></tr>
 <tr><td>[local_pow]</td><td><code>bool</code></td><td><code>undefined</code></td><td>Flag determining if PoW should be done locally or remotely</td></tr>

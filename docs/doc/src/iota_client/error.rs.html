@@ -144,9 +144,6 @@
 <span id="141">141</span>
 <span id="142">142</span>
 <span id="143">143</span>
-<span id="144">144</span>
-<span id="145">145</span>
-<span id="146">146</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -286,9 +283,6 @@
     <span class="doccomment">/// Output Error</span>
     <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Output error: {0}&quot;</span>)]</span>
     <span class="ident">OutputError</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>),
-    <span class="doccomment">/// Error when parsing from bech32 to hex</span>
-    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Failed to parse bech32 to hex&quot;</span>)]</span>
-    <span class="ident">FailedToParseBech32ToHex</span>,
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;wasm&quot;</span>))]</span>
     <span class="doccomment">/// Tokio task join error</span>
     <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;{0}&quot;</span>)]</span>
