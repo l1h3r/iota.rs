@@ -1148,6 +1148,33 @@
 <span id="1145">1145</span>
 <span id="1146">1146</span>
 <span id="1147">1147</span>
+<span id="1148">1148</span>
+<span id="1149">1149</span>
+<span id="1150">1150</span>
+<span id="1151">1151</span>
+<span id="1152">1152</span>
+<span id="1153">1153</span>
+<span id="1154">1154</span>
+<span id="1155">1155</span>
+<span id="1156">1156</span>
+<span id="1157">1157</span>
+<span id="1158">1158</span>
+<span id="1159">1159</span>
+<span id="1160">1160</span>
+<span id="1161">1161</span>
+<span id="1162">1162</span>
+<span id="1163">1163</span>
+<span id="1164">1164</span>
+<span id="1165">1165</span>
+<span id="1166">1166</span>
+<span id="1167">1167</span>
+<span id="1168">1168</span>
+<span id="1169">1169</span>
+<span id="1170">1170</span>
+<span id="1171">1171</span>
+<span id="1172">1172</span>
+<span id="1173">1173</span>
+<span id="1174">1174</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -1266,6 +1293,10 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">automatic_disconnect</span>: <span class="ident">bool</span>,
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span> <span class="op">=</span> <span class="string">&quot;default_broker_timeout&quot;</span>)]</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">timeout</span>: <span class="ident">Duration</span>,
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span> <span class="op">=</span> <span class="string">&quot;default_broker_use_ws&quot;</span>, <span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;defaultBrokerUseWs&quot;</span>)]</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">use_ws</span>: <span class="ident">bool</span>,
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span> <span class="op">=</span> <span class="string">&quot;default_broker_port&quot;</span>, <span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;defaultBrokerPort&quot;</span>)]</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">port</span>: <span class="ident">u16</span>,
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;maxReconnectionAttempts&quot;</span>, <span class="ident">default</span>)]</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">max_reconnection_attempts</span>: <span class="ident">usize</span>,
 }
@@ -1279,6 +1310,15 @@
 <span class="kw">fn</span> <span class="ident">default_broker_timeout</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Duration</span> {
     <span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="number">30</span>)
 }
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;mqtt&quot;</span>)]</span>
+<span class="kw">fn</span> <span class="ident">default_broker_use_ws</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="bool-val">true</span>
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;mqtt&quot;</span>)]</span>
+<span class="kw">fn</span> <span class="ident">default_broker_port</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u16</span> {
+    <span class="number">1883</span>
+}
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;mqtt&quot;</span>)]</span>
 <span class="kw">fn</span> <span class="ident">default_max_reconnection_attempts</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
@@ -1291,6 +1331,8 @@
         <span class="self">Self</span> {
             <span class="ident">automatic_disconnect</span>: <span class="ident">default_broker_automatic_disconnect</span>(),
             <span class="ident">timeout</span>: <span class="ident">default_broker_timeout</span>(),
+            <span class="ident">use_ws</span>: <span class="ident">default_broker_use_ws</span>(),
+            <span class="ident">port</span>: <span class="ident">default_broker_port</span>(),
             <span class="ident">max_reconnection_attempts</span>: <span class="ident">default_max_reconnection_attempts</span>(),
         }
     }
@@ -1312,6 +1354,18 @@
     <span class="doccomment">/// Sets the timeout used for the MQTT operations.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">timeout</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">timeout</span>: <span class="ident">Duration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">timeout</span> <span class="op">=</span> <span class="ident">timeout</span>;
+        <span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Sets the use_ws used for the MQTT operations.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">use_ws</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">use_ws</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">use_ws</span> <span class="op">=</span> <span class="ident">use_ws</span>;
+        <span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Sets the port used for the MQTT operations.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">port</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">port</span>: <span class="ident">u16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">port</span> <span class="op">=</span> <span class="ident">port</span>;
         <span class="self">self</span>
     }
 
