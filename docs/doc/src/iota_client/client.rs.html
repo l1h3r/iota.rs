@@ -1296,11 +1296,11 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">automatic_disconnect</span>: <span class="ident">bool</span>,
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span> <span class="op">=</span> <span class="string">&quot;default_broker_timeout&quot;</span>)]</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">timeout</span>: <span class="ident">Duration</span>,
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span> <span class="op">=</span> <span class="string">&quot;default_broker_use_ws&quot;</span>, <span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;defaultBrokerUseWs&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span> <span class="op">=</span> <span class="string">&quot;default_broker_use_ws&quot;</span>, <span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;useWs&quot;</span>)]</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">use_ws</span>: <span class="ident">bool</span>,
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span> <span class="op">=</span> <span class="string">&quot;default_broker_port&quot;</span>, <span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;defaultBrokerPort&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span> <span class="op">=</span> <span class="string">&quot;default_broker_port&quot;</span>)]</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">port</span>: <span class="ident">u16</span>,
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;maxReconnectionAttempts&quot;</span>, <span class="ident">default</span>)]</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span> <span class="op">=</span> <span class="string">&quot;default_max_reconnection_attempts&quot;</span>, <span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;maxReconnectionAttempts&quot;</span>)]</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">max_reconnection_attempts</span>: <span class="ident">usize</span>,
 }
 

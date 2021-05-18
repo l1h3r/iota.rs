@@ -370,30 +370,31 @@ Just a recap:</p>
     // client will connect to testnet by default
     const client = new ClientBuilder().build();
 
+    // Get the balance of a single known address
     console.log(
         await client.getAddressBalance(&quot;atoi1qp9427varyc05py79ajku89xarfgkj74tpel5egr9y7xu3wpfc4lkpx0l86&quot;)
     );
 
+    // Get the balance of addresses from an account
     const balance = await client.getBalance(IOTA_SEED_SECRET)
         .accountIndex(0)
         .initialAddressIndex(0)
         .get();
 
-    console.log(balance);
+    console.log(&quot;Account balance: &quot; + balance);
 }
 
 run()
 </code></pre>
 <p>Example of output:</p>
 <pre><code class="language-json">{
-   &quot;address_type&quot;:0,
    &quot;address&quot;:&quot;atoi1qp9427varyc05py79ajku89xarfgkj74tpel5egr9y7xu3wpfc4lkpx0l86&quot;,
    &quot;balance&quot;:10000000,
    &quot;dustAllowed&quot;:false
 }
+Account balance: 0
 </code></pre>
 <ul>
-<li><code>address_type</code> indicates type of address. Value 0 denotes a Ed25519 address (currently the default for IOTA 1.5 network)</li>
 <li><code>dustAllowed</code> indicates whether the given address is allowed to accepts a dust due to <a href="https://chrysalis.docs.iota.org/guides/dev_guide.html#dust-protection">dust protection mechanism</a></li>
 </ul>
 <p><code>Client.getBalance(seed)</code> performs a several tasks under the hood.
