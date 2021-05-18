@@ -622,6 +622,8 @@
 <span id="619">619</span>
 <span id="620">620</span>
 <span id="621">621</span>
+<span id="622">622</span>
+<span id="623">623</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2021 IOTA Stiftung</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -657,8 +659,10 @@
 <span class="doccomment">/// Node struct</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>, <span class="ident">Hash</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Node</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">url</span>: <span class="ident">Url</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">jwt</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// node url</span>
+    <span class="kw">pub</span> <span class="ident">url</span>: <span class="ident">Url</span>,
+    <span class="doccomment">/// node jwt</span>
+    <span class="kw">pub</span> <span class="ident">jwt</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
 }
 
 <span class="comment">// Nodemanger, takes care of selecting node(s) for requests until a result is returned or if quorum</span>
