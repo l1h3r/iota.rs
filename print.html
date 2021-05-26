@@ -1273,6 +1273,7 @@ That's why we did send 1Mi in the given example to comply with the protection.&q
 
     client.subscriber().topics(['milestones/confirmed', 'messages']).subscribe((err, data) =&gt; {
         console.log(data);
+        // To get the message id `client.getMessageId(data.payload)` can be used
     })
 }
 
@@ -1451,6 +1452,12 @@ Nodes that don't belong to this network are ignored.</p>
 <tr><td>address</td><td><code>string</code></td><td>The address Bech32 string</td></tr>
 </tbody></table>
 <p><strong>Returns</strong> A boolean.</p>
+<h4 id="getmessageidmessage-string-boolean"><a class="header" href="#getmessageidmessage-string-boolean">getMessageId(message: string): boolean</a></h4>
+<p>Returns the message id from a message.</p>
+<table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td>message</td><td><code>string</code></td><td>The message id</td></tr>
+</tbody></table>
+<p><strong>Returns</strong> the message id.</p>
 <h4 id="retrymessageid-string-promisemessage"><a class="header" href="#retrymessageid-string-promisemessage">retry(messageId: string): Promise<Message></a></h4>
 <p>Retries (promotes or reattaches) the message associated with the given id.</p>
 <table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody>
@@ -2832,6 +2839,12 @@ Also for all the optional values, the default values are the same as the ones in
 <tr><td>[message_id]</td><td><code>str</code></td><td><code>undefined</code></td><td>The message id</td></tr>
 </tbody></table>
 <p><strong>Returns</strong> the list of children strings.</p>
+<h4 id="get_message_idpayload_str-str"><a class="header" href="#get_message_idpayload_str-str">get_message_id(payload_str): str</a></h4>
+<p>Get the message id from the payload string.</p>
+<table><thead><tr><th>Param</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<tr><td>payload_str</td><td><code>str</code></td><td><code>undefined</code></td><td>The payload string from the mqtt message event</td></tr>
+</tbody></table>
+<p><strong>Returns</strong> The identifier of message.</p>
 <h4 id="get_message_indexindex-liststr"><a class="header" href="#get_message_indexindex-liststr">get_message_index(index): list[str]</a></h4>
 <p>Gets the list of message indices from the message_id.</p>
 <table><thead><tr><th>Param</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>

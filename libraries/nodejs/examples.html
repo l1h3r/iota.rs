@@ -770,6 +770,7 @@ That's why we did send 1Mi in the given example to comply with the protection.&q
 
     client.subscriber().topics(['milestones/confirmed', 'messages']).subscribe((err, data) =&gt; {
         console.log(data);
+        // To get the message id `client.getMessageId(data.payload)` can be used
     })
 }
 

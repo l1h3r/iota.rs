@@ -331,6 +331,12 @@ Nodes that don't belong to this network are ignored.</p>
 <tr><td>address</td><td><code>string</code></td><td>The address Bech32 string</td></tr>
 </tbody></table>
 <p><strong>Returns</strong> A boolean.</p>
+<h4 id="getmessageidmessage-string-boolean"><a class="header" href="#getmessageidmessage-string-boolean">getMessageId(message: string): boolean</a></h4>
+<p>Returns the message id from a message.</p>
+<table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td>message</td><td><code>string</code></td><td>The message id</td></tr>
+</tbody></table>
+<p><strong>Returns</strong> the message id.</p>
 <h4 id="retrymessageid-string-promisemessage"><a class="header" href="#retrymessageid-string-promisemessage">retry(messageId: string): Promise<Message></a></h4>
 <p>Retries (promotes or reattaches) the message associated with the given id.</p>
 <table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody>
