@@ -492,6 +492,7 @@ use iota_client::{Client, Result};
 async fn main() -&gt; Result&lt;()&gt; {
     let iota = Client::builder()
         .with_node(&quot;https://api.lb-0.testnet.chrysalis2.com&quot;)?
+        // .with_permanode(&quot;http://18.196.167.57:8000/api/permanode/&quot;, None, None)?
         .finish()
         .await?;
 
@@ -1329,6 +1330,13 @@ run()
 <p><strong>Returns</strong> the client builder instance for chained calls.</p>
 <h4 id="primarypownodeurl--authoptions-clientbuilder"><a class="header" href="#primarypownodeurl--authoptions-clientbuilder">primaryPowNode(url, [, authOptions]): ClientBuilder</a></h4>
 <p>Add a node to always connect first to when using remote PoW with optional authentication. Will overwrite the primary node for this case.</p>
+<table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td>url</td><td><code>string</code></td><td>A node URL</td></tr>
+<tr><td>authOptions</td><td><code><a href="libraries/nodejs/api_reference.html#nodeauthoptions">NodeAuthOptions</a></code></td><td>Options for node authentication</td></tr>
+</tbody></table>
+<p><strong>Returns</strong> the client builder instance for chained calls.</p>
+<h4 id="permanodeurl--authoptions-clientbuilder"><a class="header" href="#permanodeurl--authoptions-clientbuilder">permanode(url, [, authOptions]): ClientBuilder</a></h4>
+<p>Add a permanode.</p>
 <table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody>
 <tr><td>url</td><td><code>string</code></td><td>A node URL</td></tr>
 <tr><td>authOptions</td><td><code><a href="libraries/nodejs/api_reference.html#nodeauthoptions">NodeAuthOptions</a></code></td><td>Options for node authentication</td></tr>
@@ -2734,6 +2742,7 @@ Also for all the optional values, the default values are the same as the ones in
 <tr><td>[primary_node_jwt_name_password]</td><td><code>list[str]</code></td><td><code>undefined</code></td><td>An array of array with node URLs and optional JWT and basic auth name and password (length 1 is only the url, length 2 is url with JWT, length 3 is url with basic auth name and password and length 4 is url with JWT and basic auth name and password)</td></tr>
 <tr><td>[primary_pow_node_jwt_name_password]</td><td><code>list[str]</code></td><td><code>undefined</code></td><td>An array of array with node URLs and optional JWT and basic auth name and password (length 1 is only the url, length 2 is url with JWT, length 3 is url with basic auth name and password and length 4 is url with JWT and basic auth name and password)</td></tr>
 <tr><td>[nodes_name_password]</td><td><code>list[]list[str]</code></td><td><code>undefined</code></td><td>An array of array with node URLs and optional JWT and basic auth name and password (length 1 is only the url, length 2 is url with JWT, length 3 is url with basic auth name and password and length 4 is url with JWT and basic auth name and password)</td></tr>
+<tr><td>[permanodes_name_password]</td><td><code>list[]list[str]</code></td><td><code>undefined</code></td><td>An array of array with node URLs and optional JWT and basic auth name and password (length 1 is only the url, length 2 is url with JWT, length 3 is url with basic auth name and password and length 4 is url with JWT and basic auth name and password)</td></tr>
 <tr><td>[node_sync_interval]</td><td><code>int</code></td><td><code>undefined</code></td><td>The interval for the node syncing process</td></tr>
 <tr><td>[node_sync_disabled]</td><td><code>bool</code></td><td><code>undefined</code></td><td>Disables the node syncing process. Every node will be considered healthy and ready to use</td></tr>
 <tr><td>[node_pool_urls]</td><td><code>str</code></td><td><code>undefined</code></td><td>An array of node pool URLs</td></tr>
@@ -3400,6 +3409,7 @@ info_response = {
 <tr><td><strong>node</strong></td><td>✘</td><td>None</td><td>&amp;str</td><td>The URL of a node to connect to; format: <code>https://node:port</code></td></tr>
 <tr><td><strong>primary_node</strong></td><td>✘</td><td>None</td><td>&amp;str, auth_name_pwd: Option&lt;(&amp;str, &amp;str)&gt;</td><td>The URL of a node to always connect first to, if multiple nodes are available. Optional JWT and or name and password for basic authentication; format: <code>https://node:port</code>, Some(&quot;JWT&quot;), Some(&quot;name&quot;, &quot;password&quot;)</td></tr>
 <tr><td><strong>primary_pow_node</strong></td><td>✘</td><td>None</td><td>&amp;str, auth_name_pwd: Option&lt;(&amp;str, &amp;str)&gt;</td><td>The URL of a node to always connect first to when submitting a message with remote PoW, if multiple nodes are available. Will override primary_node in that case. With optional JWT or name and password for basic authentication; format: <code>https://node:port</code>, Some(&quot;JWT&quot;), Some(&quot;name&quot;, &quot;password&quot;)</td></tr>
+<tr><td><strong>permanode</strong></td><td>✘</td><td>None</td><td>&amp;str, auth_name_pwd: Option&lt;(&amp;str, &amp;str)&gt;</td><td>The URL of a permanode. With optional JWT or name and password for basic authentication; format: <code>https://node:port</code>, Some(&quot;JWT&quot;), Some(&quot;name&quot;, &quot;password&quot;)</td></tr>
 <tr><td><strong>node_auth</strong></td><td>✘</td><td>None</td><td>&amp;str, Option<String>, Option&lt;(&amp;str, &amp;str)&gt;</td><td>The URL of a node to connect to with optional JWT and or name and password for basic authentication; format: <code>https://node:port</code>, Some(&quot;JWT&quot;), Some(&quot;name&quot;, &quot;password&quot;)</td></tr>
 <tr><td><strong>nodes</strong></td><td>✘</td><td>None</td><td>&amp;[&amp;str]</td><td>A list of nodes to connect to; nodes are added with the <code>https://node:port</code> format. The amount of nodes specified in quorum_size are randomly selected from this node list to check for quorum based on the quorum threshold. If quorum_size is not given the full list of nodes is checked.</td></tr>
 <tr><td><strong>node_sync_interval</strong></td><td>✘</td><td>Duration::from_secs(60)</td><td>std::time::Duration</td><td>The interval in milliseconds to check for node health and sync</td></tr>
