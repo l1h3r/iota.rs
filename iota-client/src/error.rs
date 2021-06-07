@@ -136,8 +136,8 @@ pub enum Error {
     /// Output Error
     #[error("Output error: {0}")]
     OutputError(&'static str),
-    #[cfg(not(feature = "wasm"))]
     /// Tokio task join error
+    #[cfg(not(feature = "wasm"))]
     #[error("{0}")]
     TaskJoinError(#[from] tokio::task::JoinError),
     /// Invalid mnemonic error
